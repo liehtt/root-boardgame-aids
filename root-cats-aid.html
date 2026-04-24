@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Marquise de Cat — Play Aid</title>
+<style>
+  :root {
+    --bg: #1a1410;
+    --bg2: #241a12;
+    --bg3: #2e2218;
+    --bg4: #3a2c1f;
+    --fg: #f1e6d3;
+    --fg-dim: #a89680;
+    --fg-dim2: #776652;
+    --border: #3d2e20;
+    --border2: #5a4632;
+    --accent: #ff8c3a;
+    --accent-deep: #d35400;
+    --accent-glow: rgba(255,140,58,0.25);
+    --green: #7fb069;
+    --red: #d64545;
+    --yellow: #e3b341;
+    --blue: #6ba3c4;
+    --purple: #b07cc4;
+    --essential: #7fb069;
+    --essential-glow: rgba(127,176,105,0.28);
+    --core: #6ba3c4;
+    --advanced: #8a7560;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    color: var(--fg);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 14px;
+    line-height: 1.4;
+  }
+  body {
+    background:
+      radial-gradient(ellipse at 50% -10%, rgba(255,140,58,0.08) 0%, transparent 55%),
+      radial-gradient(ellipse at 10% 100%, rgba(211,84,0,0.05) 0%, transparent 50%),
+      var(--bg);
+    background-attachment: fixed;
+    min-height: 100vh;
+  }
+  body.dense { font-size: 12.5px; }
+  body.dense .tile .body { padding: 8px 10px; }
+  body.dense .card { padding: 6px 8px; margin: 4px 0; }
+  body.dense .tile h3 { padding: 8px 12px; }
+
+  .dim { color: var(--fg-dim); }
+
+  /* ============ Layout ============ */
+  .app {
+    display: grid;
+    grid-template-columns: 230px 1fr;
+    grid-template-rows: auto auto 1fr;
+    grid-template-areas:
+      "header header"
+      "hero   hero"
+      "rail   main";
+    min-height: 100vh;
+  }
+
+  /* ============ Header ============ */
+  header {
+    grid-area: header;
+    position: sticky; top: 0; z-index: 100;
+    background: linear-gradient(180deg, rgba(36,26,18,0.98) 0%, rgba(26,20,16,0.92) 100%);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 2px 20px rgba(0,0,0,0.4), 0 1px 0 rgba(255,140,58,0.08) inset;
+    padding: 10px 14px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 14px;
+    align-items: center;
+    backdrop-filter: blur(10px);
+  }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; }
+  .brand .cat {
+    width: 34px; height: 34px;
+    background: linear-gradient(135deg, #ffa558 0%, #d35400 100%);
+    color: #1a1004;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    box-shadow: 0 2px 8px rgba(211,84,0,0.45), inset 0 1px 0 rgba(255,255,255,0.2);
+  }
+  .brand .sub { color: var(--fg-dim); font-size: 11px; font-weight: 500; }
+
+  .modes {
+    display: flex;
+    gap: 0;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 3px;
+  }
+  .mode-btn {
+    padding: 6px 14px;
+    background: transparent;
+    border: none;
+    color: var(--fg-dim);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 4px;
+    letter-spacing: 0.02em;
+  }
+  .mode-btn:hover { color: var(--fg); }
+  .mode-btn.active {
+    background: linear-gradient(135deg, #ffa558 0%, #d35400 100%);
+    color: #1a1004;
+    box-shadow: 0 2px 6px rgba(211,84,0,0.4), inset 0 1px 0 rgba(255,255,255,0.25);
+  }
+  .mode-btn .count {
+    font-size: 10px;
+    opacity: 0.7;
+    margin-left: 4px;
+  }
+
+  .controls { display: flex; gap: 6px; align-items: center; }
+  .controls input {
+    height: 34px; width: 180px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    color: var(--fg);
+    padding: 0 10px;
+    font-size: 13px;
+  }
+  .controls input:focus { outline: 2px solid var(--accent); border-color: var(--accent); }
+  .btn {
+    height: 34px; padding: 0 10px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    color: var(--fg);
+    font-size: 12px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .btn:hover { background: var(--bg4); border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent-glow); }
+  .btn.active {
+    background: linear-gradient(135deg, #ffa558 0%, #d35400 100%);
+    color: #1a1004;
+    border-color: var(--accent);
+    box-shadow: 0 2px 6px rgba(211,84,0,0.4), inset 0 1px 0 rgba(255,255,255,0.25);
+  }
+
+  /* ============ HERO ZONE ============ */
+  .hero {
+    grid-area: hero;
+    background:
+      radial-gradient(ellipse at 50% 0%, rgba(255,140,58,0.18) 0%, transparent 65%),
+      linear-gradient(180deg, rgba(58,44,31,0.6) 0%, rgba(36,26,18,0.3) 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 18px 20px 16px;
+    position: relative;
+  }
+  .hero::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; bottom: 0; height: 1px;
+    background: linear-gradient(90deg, transparent 0%, rgba(255,140,58,0.35) 50%, transparent 100%);
+  }
+  .hero-banner {
+    text-align: center;
+    font-size: clamp(20px, 3.2vw, 30px);
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    background: linear-gradient(180deg, #ffb074 0%, #ff8c3a 60%, #d35400 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 16px;
+    text-shadow: 0 0 40px rgba(255,140,58,0.3);
+    filter: drop-shadow(0 2px 8px rgba(211,84,0,0.25));
+  }
+  .hero-banner .small {
+    display: block;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    color: var(--fg-dim);
+    font-weight: 700;
+    margin-bottom: 6px;
+    -webkit-text-fill-color: var(--fg-dim);
+  }
+  .gate-big {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+  }
+  @media (max-width: 900px) { .gate-big { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 500px) { .gate-big { grid-template-columns: 1fr; } }
+  .gate-step {
+    background: linear-gradient(180deg, rgba(58,44,31,0.8) 0%, rgba(36,26,18,0.6) 100%);
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    padding: 12px 14px 12px 34px;
+    position: relative;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,200,140,0.06);
+    transition: transform 150ms, box-shadow 150ms;
+  }
+  .gate-step:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(211,84,0,0.25), inset 0 1px 0 rgba(255,200,140,0.1);
+    border-color: var(--accent);
+  }
+  .gate-step .n {
+    position: absolute;
+    top: 50%; left: 10px;
+    transform: translateY(-50%);
+    width: 22px; height: 22px;
+    background: linear-gradient(135deg, #ffa558 0%, #d35400 100%);
+    color: #1a1004;
+    font-family: ui-monospace, monospace;
+    font-size: 10px;
+    font-weight: 800;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 2px 6px rgba(211,84,0,0.5), inset 0 1px 0 rgba(255,255,255,0.25);
+  }
+  .gate-step .q { font-weight: 700; font-size: 14px; color: var(--fg); }
+  .gate-step .a { font-size: 12px; color: var(--fg-dim); margin-top: 3px; }
+
+  .first-time {
+    margin-top: 14px;
+    background: linear-gradient(90deg, rgba(127,176,105,0.18) 0%, rgba(127,176,105,0.06) 100%);
+    border: 1px solid rgba(127,176,105,0.45);
+    border-left: 4px solid var(--essential);
+    border-radius: 8px;
+    padding: 11px 14px;
+    font-size: 13px;
+    display: flex; align-items: center; gap: 12px;
+    box-shadow: 0 2px 10px rgba(127,176,105,0.12), inset 0 1px 0 rgba(127,176,105,0.1);
+  }
+  .first-time .pill {
+    background: linear-gradient(135deg, #96c47f 0%, #5e8f4d 100%);
+    color: #0a1a0f;
+    font-weight: 800;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    padding: 4px 10px;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+    white-space: nowrap;
+  }
+  body.mode-advanced .first-time { display: none; }
+  body.mode-all .first-time { display: none; }
+
+  /* ============ Left Rail ============ */
+  .rail {
+    grid-area: rail;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    padding: 10px 6px;
+    overflow-y: auto;
+    position: sticky;
+    top: 64px;
+    height: calc(100vh - 64px);
+  }
+  .rail-group {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--fg-dim2);
+    text-transform: uppercase;
+    padding: 10px 10px 4px;
+    margin-top: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .rail-group .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+  }
+  .rail-group.g1 .dot { background: var(--essential); }
+  .rail-group.g2 .dot { background: var(--core); }
+  .rail-group.g3 .dot { background: var(--advanced); }
+
+  .rail a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 10px;
+    color: var(--fg-dim);
+    text-decoration: none;
+    font-size: 13px;
+    border-radius: 5px;
+    border-left: 3px solid transparent;
+    margin-bottom: 2px;
+  }
+  .rail a:hover { background: var(--bg3); color: var(--fg); }
+  .rail a.active {
+    background: linear-gradient(90deg, rgba(255,140,58,0.18) 0%, rgba(255,140,58,0.02) 100%);
+    color: var(--fg);
+    border-left-color: var(--accent);
+    box-shadow: inset 0 0 0 1px rgba(255,140,58,0.15);
+  }
+  .rail a .n {
+    font-family: ui-monospace, monospace;
+    font-size: 11px;
+    color: var(--fg-dim2);
+    min-width: 20px;
+  }
+  .rail a.active .n { color: var(--accent); }
+  .rail a.t1::before { content: "●"; color: var(--essential); margin-left: auto; font-size: 10px; }
+  .rail a.t2::before { content: "●"; color: var(--core); margin-left: auto; font-size: 10px; }
+  .rail a.t3::before { content: "●"; color: var(--advanced); margin-left: auto; font-size: 10px; }
+
+  /* mode-based hiding in rail */
+  body.mode-beginner .rail a.t3 { display: none; }
+  body.mode-beginner .rail-group.g3 { display: none; }
+  body.mode-advanced .rail a.t1 { display: none; }
+  body.mode-advanced .rail-group.g1 { display: none; }
+
+  /* ============ Main ============ */
+  main {
+    grid-area: main;
+    padding: 14px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-auto-rows: min-content;
+    grid-auto-flow: dense;
+    gap: 12px;
+    align-content: start;
+  }
+  body.dense main { gap: 8px; padding: 8px; }
+
+  /* ============ Tile tiers ============ */
+  .tile {
+    background: linear-gradient(180deg, rgba(46,34,24,0.85) 0%, rgba(36,26,18,0.85) 100%);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    scroll-margin-top: 80px;
+    position: relative;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,200,140,0.04);
+    transition: transform 180ms, box-shadow 180ms;
+  }
+  .tile:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,140,58,0.2), inset 0 1px 0 rgba(255,200,140,0.08);
+  }
+  .tile h3 {
+    margin: 0;
+    padding: 11px 14px;
+    background: linear-gradient(180deg, rgba(58,44,31,0.9) 0%, rgba(46,34,24,0.6) 100%);
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-left: 3px solid var(--accent);
+    letter-spacing: 0.01em;
+  }
+  .tile h3 .num {
+    font-family: ui-monospace, monospace;
+    font-size: 11px;
+    color: var(--fg-dim2);
+    background: var(--bg);
+    padding: 1px 6px;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+  }
+  .tile .body { padding: 10px 14px; flex: 1; }
+  .tile-badge {
+    position: absolute;
+    top: 8px; right: 10px;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    padding: 2px 7px;
+    border-radius: 3px;
+    z-index: 2;
+  }
+
+  /* TIER 1 — Essential */
+  .tile.t1 {
+    border: 2px solid var(--essential);
+    box-shadow: 0 0 0 1px var(--essential-glow), 0 6px 20px rgba(127,176,105,0.18), inset 0 1px 0 rgba(127,176,105,0.15);
+  }
+  .tile.t1:hover {
+    box-shadow: 0 0 0 1px var(--essential-glow), 0 10px 28px rgba(127,176,105,0.3), inset 0 1px 0 rgba(127,176,105,0.2);
+  }
+  .tile.t1 h3 {
+    background: linear-gradient(90deg, rgba(127,176,105,0.22) 0%, rgba(58,44,31,0.7) 100%);
+    border-left-color: var(--essential);
+    border-left-width: 4px;
+    font-size: 15px;
+  }
+  .tile.t1 h3 .priority {
+    background: linear-gradient(135deg, #96c47f 0%, #5e8f4d 100%);
+    color: #0a1a0f;
+    font-family: ui-monospace, monospace;
+    font-size: 10px;
+    font-weight: 800;
+    padding: 3px 7px;
+    border-radius: 4px;
+    letter-spacing: 0.05em;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+  }
+  .tile.t1 .tile-badge {
+    background: linear-gradient(135deg, #96c47f 0%, #5e8f4d 100%);
+    color: #0a1a0f;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  }
+
+  /* TIER 2 — Core */
+  .tile.t2 h3 { border-left-color: var(--core); }
+  .tile.t2 .tile-badge {
+    background: rgba(88,166,255,0.15);
+    color: var(--core);
+    border: 1px solid rgba(88,166,255,0.4);
+  }
+
+  /* TIER 3 — Advanced */
+  .tile.t3 {
+    opacity: 0.92;
+  }
+  .tile.t3 h3 {
+    border-left-color: var(--advanced);
+    background: var(--bg2);
+    font-size: 12px;
+    color: var(--fg-dim);
+  }
+  .tile.t3 .tile-badge {
+    background: var(--bg3);
+    color: var(--fg-dim);
+    border: 1px solid var(--border2);
+  }
+  .tile.t3 .body { font-size: 13px; color: var(--fg-dim); }
+  .tile.t3 .body b { color: var(--fg); }
+
+  /* mode-based tier display */
+  body.mode-beginner .tile.t3 { display: none; }
+  body.mode-advanced .tile.t1 { display: none; }
+
+  /* tier ordering in grid */
+  .tile.t1 { order: 1; }
+  .tile.t2 { order: 2; }
+  .tile.t3 { order: 3; }
+
+  .tile.span2 { grid-column: span 2; }
+  .tile.span3 { grid-column: span 3; }
+  @media (max-width: 1200px) { .tile.span3 { grid-column: span 2; } }
+  @media (max-width: 900px) { .tile.span2, .tile.span3 { grid-column: span 1; } }
+
+  /* ============ Content bits ============ */
+  .tile h4 {
+    margin: 8px 0 4px;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .tile ul, .tile ol { margin: 4px 0; padding-left: 20px; }
+  .tile li { margin: 2px 0; }
+  .tile p { margin: 4px 0; }
+
+  .card {
+    background: linear-gradient(180deg, rgba(58,44,31,0.7) 0%, rgba(46,34,24,0.7) 100%);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 11px;
+    margin: 6px 0;
+    box-shadow: inset 0 1px 0 rgba(255,200,140,0.05), 0 1px 2px rgba(0,0,0,0.2);
+  }
+  .card.do    { border-left-color: var(--green); }
+  .card.dont  { border-left-color: var(--red); }
+  .card.cond  { border-left-color: var(--yellow); }
+  .card.info  { border-left-color: var(--blue); }
+  .card .hdr { display: flex; align-items: center; gap: 6px; margin-bottom: 3px; font-size: 12px; font-weight: 600; }
+  .card ul, .card ol { margin: 2px 0; padding-left: 18px; }
+  .card li { font-size: 12px; }
+
+  .badge {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    padding: 1px 5px;
+    border-radius: 2px;
+    text-transform: uppercase;
+  }
+  .badge.do   { background: rgba(63,185,80,0.15);  color: var(--green);  border: 1px solid rgba(63,185,80,0.4); }
+  .badge.dont { background: rgba(248,81,73,0.15);  color: var(--red);    border: 1px solid rgba(248,81,73,0.4); }
+  .badge.cond { background: rgba(227,179,65,0.15); color: var(--yellow); border: 1px solid rgba(227,179,65,0.4); }
+  .badge.info { background: rgba(88,166,255,0.15); color: var(--blue);   border: 1px solid rgba(88,166,255,0.4); }
+
+  .line {
+    font-family: ui-monospace, monospace;
+    background: var(--bg);
+    padding: 4px 8px;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+    display: inline-block;
+    margin: 3px 3px 3px 0;
+    font-size: 12px;
+  }
+
+  .mini-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 6px;
+    margin: 6px 0;
+  }
+
+  .rule-big {
+    font-size: 15px;
+    text-align: center;
+    padding: 12px;
+    background: linear-gradient(180deg, rgba(214,69,69,0.18) 0%, rgba(214,69,69,0.08) 100%);
+    border: 2px solid rgba(214,69,69,0.5);
+    border-radius: 8px;
+    margin: 8px 0 10px;
+    font-weight: 700;
+    color: #ffd1c4;
+    box-shadow: 0 0 20px rgba(214,69,69,0.15), inset 0 1px 0 rgba(255,180,165,0.12);
+    letter-spacing: 0.01em;
+  }
+
+  .hidden { display: none !important; }
+  .dimmed { opacity: 0.15; pointer-events: none; }
+
+  .kbd {
+    display: inline-block;
+    font-family: ui-monospace, monospace;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-bottom-width: 2px;
+    border-radius: 3px;
+    padding: 0 5px;
+    font-size: 11px;
+  }
+
+  /* Mobile */
+  @media (max-width: 900px) {
+    .app { grid-template-columns: 1fr; grid-template-areas: "header" "hero" "main"; }
+    .rail { display: none; }
+    header { grid-template-columns: 1fr; gap: 8px; }
+    .controls input { width: 100%; }
+    .controls { flex-wrap: wrap; }
+  }
+
+  /* Print */
+  @media print {
+    body { background: #fff; color: #000; font-size: 9pt; }
+    header, .rail, .controls, .modes, .first-time { display: none; }
+    .app { display: block; }
+    .hero { background: #eee; color: #000; padding: 8px; }
+    .hero-banner { color: #000; }
+    .gate-step { background: #fff; color: #000; border: 1px solid #666; }
+    main { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; padding: 0; }
+    .tile { border: 1px solid #666; page-break-inside: avoid; background: #fff; opacity: 1 !important; display: flex !important; }
+    .tile h3 { background: #eee; color: #000; font-size: 11pt !important; }
+    .tile.span2, .tile.span3 { grid-column: span 2; }
+    .card { background: #f6f6f6; color: #000; border: 1px solid #999; }
+    .badge, .tile-badge { border: 1px solid #000; color: #000; background: #eee; }
+  }
+</style>
+</head>
+<body class="mode-beginner">
+
+<div class="app">
+
+  <!-- ============ HEADER ============ -->
+  <header>
+    <div class="brand">
+      <div class="cat">🐱</div>
+      <div>
+        <div>Marquise de Cat</div>
+        <div class="sub">Complete Play Aid</div>
+      </div>
+    </div>
+
+    <div class="modes" role="tablist">
+      <button class="mode-btn active" data-mode="beginner">Beginner<span class="count">5 tiles</span></button>
+      <button class="mode-btn" data-mode="all">All<span class="count">17</span></button>
+      <button class="mode-btn" data-mode="advanced">Advanced<span class="count">12</span></button>
+    </div>
+
+    <div class="controls">
+      <input id="search" type="search" placeholder="🔍 Filter… /" aria-label="Filter">
+      <button class="btn" id="dense" title="Dense mode (D)">Dense</button>
+      <button class="btn" id="reset" title="Reset (R)">Reset</button>
+    </div>
+  </header>
+
+  <!-- ============ HERO ZONE ============ -->
+  <div class="hero">
+    <div class="hero-banner">
+      <span class="small">THE ONE RULE</span>
+      If you are not building, you are losing.
+    </div>
+
+    <div class="gate-big">
+      <div class="gate-step">
+        <span class="n">01</span>
+        <div class="q">Can I build?</div>
+        <div class="a">No → fix first. Yes → continue.</div>
+      </div>
+      <div class="gate-step">
+        <span class="n">02</span>
+        <div class="q">Connected?</div>
+        <div class="a">No → restore Rule (move/fight).</div>
+      </div>
+      <div class="gate-step">
+        <span class="n">03</span>
+        <div class="q">Should I craft?</div>
+        <div class="a">Only if immediate action-economy gain.</div>
+      </div>
+      <div class="gate-step">
+        <span class="n">04</span>
+        <div class="q">Should I fight?</div>
+        <div class="a">Only: enables build / restores rule / high-value.</div>
+      </div>
+      <div class="gate-step">
+        <span class="n">05</span>
+        <div class="q">Maximize builds</div>
+        <div class="a">Build → Build → everything else.</div>
+      </div>
+    </div>
+
+    <div class="first-time">
+      <span class="pill">START HERE</span>
+      <div>New to Cats? The <b>5 green-bordered tiles below</b> cover 80% of winning play. Master these first — advanced topics (matchups, maps, replay) are hidden until you're ready.</div>
+    </div>
+  </div>
+
+  <!-- ============ LEFT RAIL ============ -->
+  <aside class="rail" aria-label="Section navigation">
+    <div class="rail-group g1"><span class="dot"></span> Essential</div>
+    <a href="#s3" class="t1"><span class="n">03</span>Opening (T1–3)</a>
+    <a href="#s7" class="t1"><span class="n">07</span>Combat (Don't Fight)</a>
+    <a href="#s6" class="t1"><span class="n">06</span>Movement (Don't March)</a>
+    <a href="#s4" class="t1"><span class="n">04</span>Building Targets</a>
+    <a href="#s12" class="t1"><span class="n">12</span>5 Failure Modes</a>
+
+    <div class="rail-group g2"><span class="dot"></span> Core</div>
+    <a href="#s1" class="t2"><span class="n">01</span>Core Model</a>
+    <a href="#s2" class="t2"><span class="n">02</span>Action Economy</a>
+    <a href="#s5" class="t2"><span class="n">05</span>Crafting</a>
+    <a href="#s11" class="t2"><span class="n">11</span>Defense</a>
+    <a href="#s14" class="t2"><span class="n">14</span>Mental Model</a>
+    <a href="#s13" class="t2"><span class="n">13</span>Decision Tree</a>
+
+    <div class="rail-group g3"><span class="dot"></span> Advanced</div>
+    <a href="#s9" class="t3"><span class="n">09</span>Midgame</a>
+    <a href="#s10" class="t3"><span class="n">10</span>Late Game</a>
+    <a href="#s8" class="t3"><span class="n">08</span>Board Geometry</a>
+    <a href="#s15" class="t3"><span class="n">15</span>Matchups</a>
+    <a href="#s16" class="t3"><span class="n">16</span>Map Openings</a>
+    <a href="#s17" class="t3"><span class="n">17</span>Replay Checklist</a>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <main>
+
+    <!-- ============================================ -->
+    <!-- TIER 1 — ESSENTIAL                           -->
+    <!-- ============================================ -->
+
+    <section class="tile t1 span2" id="s3" data-keys="opening turns 1 2 3 ignition stabilize scale">
+      <span class="tile-badge">ESSENTIAL</span>
+      <h3><span class="num">03</span><span class="priority">PRIORITY 1</span>Opening (Turns 1–3)</h3>
+      <div class="body">
+        <p><b>Goal:</b> stable, connected, defensible engine. Messed-up openings lose more Cat games than anything else.</p>
+
+        <h4>Turn 1 — Ignition</h4>
+        <div class="mini-grid">
+          <div class="card do">
+            <div class="hdr"><span class="badge do">Default</span></div>
+            <span class="line">Build → Overwork → Build</span>
+            <ol><li>Sawmill (safe clearing)</li><li>Overwork (if matching card)</li><li>Recruiter (chokepoint)</li></ol>
+          </div>
+          <div class="card cond">
+            <div class="hdr"><span class="badge cond">No Overwork card</span></div>
+            <span class="line">Build → Build → (March?)</span>
+            <ul><li>2 builds > anything else</li><li>March only: secure 3-slot / wood / block Alliance</li></ul>
+          </div>
+        </div>
+        <div class="card info">
+          <span class="badge info">Placement</span> Sawmill = safe clearing · Recruiter = chokepoint · prefer 2–3 slot clearings.
+        </div>
+
+        <h4>Turn 2 — Stabilize vs Scale</h4>
+        <div class="mini-grid">
+          <div class="card do">
+            <div class="hdr"><span class="badge do">Safe — Greedy</span></div>
+            <span class="line">Sawmill → Overwork → Sawmill</span>
+          </div>
+          <div class="card cond">
+            <div class="hdr"><span class="badge cond">Contested — Stable</span></div>
+            <span class="line">Recruiter → Recruit → Sawmill</span>
+          </div>
+          <div class="card cond">
+            <div class="hdr"><span class="badge cond">Strong Craft — Workshop</span></div>
+            Only if you can craft Cobbler / Tax Collector / Command Post <b>this turn</b>.
+          </div>
+        </div>
+
+        <h4>Turn 3 — Engine Online</h4>
+        <div class="mini-grid">
+          <div class="card do"><span class="badge do">Default</span> <span class="line">Recruit → Build → Build</span></div>
+          <div class="card cond"><span class="badge cond">Disrupted</span> <span class="line">Battle → Build → Recruit</span></div>
+          <div class="card do"><span class="badge do">High tempo</span> Bird card = extra action = 2–3 builds</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="tile t1" id="s7" data-keys="combat fight battle doctrine">
+      <span class="tile-badge">ESSENTIAL</span>
+      <h3><span class="num">07</span><span class="priority">PRIORITY 2</span>Combat — Don't Fight</h3>
+      <div class="body">
+        <div class="rule-big">🚫 Do NOT fight by default.</div>
+        <p class="dim">Beginners lose by fighting too much. Each wasted battle = 1 lost build = real VP.</p>
+        <h4>Fight ONLY if…</h4>
+        <div class="card do">
+          <ol>
+            <li><b>Enables a build</b> (clears a slot)</li>
+            <li><b>Restores rule</b> (reconnects wood)</li>
+            <li><b>High-value target</b> (Alliance sympathy, exposed buildings)</li>
+          </ol>
+        </div>
+        <div class="card dont">
+          <span class="badge dont">Never</span>
+          <ul>
+            <li>Just to "slow" an opponent</li>
+            <li>Without immediate gain</li>
+            <li>"Because you have warriors left"</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="tile t1" id="s6" data-keys="movement march rule connectivity don't march">
+      <span class="tile-badge">ESSENTIAL</span>
+      <h3><span class="num">06</span><span class="priority">PRIORITY 3</span>Movement — Don't March</h3>
+      <div class="body">
+        <div class="rule-big">🚫 Do NOT March by default.</div>
+        <p class="dim">Counter-intuitive: Cats maintain <b>connectivity</b>, not expansion. Marching without reason = wasted action.</p>
+        <h4>March ONLY if…</h4>
+        <div class="card do">
+          <ol>
+            <li>Secures a <b>3-slot clearing</b></li>
+            <li>Connects <b>wood supply lines</b></li>
+            <li>Prevents <b>Alliance revolts</b></li>
+            <li>Blocks <b>opponent expansion</b></li>
+          </ol>
+        </div>
+        <div class="card info">
+          <span class="badge info">Phases</span> Early: minimal · Mid: controlled · Late: only for last-build setup.
+        </div>
+      </div>
+    </section>
+
+    <section class="tile t1" id="s4" data-keys="building sawmill recruiter workshop targets">
+      <span class="tile-badge">ESSENTIAL</span>
+      <h3><span class="num">04</span><span class="priority">PRIORITY 4</span>Building Targets</h3>
+      <div class="body">
+        <p class="dim">Memorize this ratio. Imbalance = fragile economy.</p>
+        <div class="card do">
+          <div class="hdr"><span class="badge do">Sawmills</span> Economy (wood)</div>
+          <b>Target 3–4</b><br>
+          <span class="dim">Too few → stalled. Too many → fragile.</span>
+        </div>
+        <div class="card do">
+          <div class="hdr"><span class="badge do">Recruiters</span> Stability + Cards</div>
+          <b>Target 2–3 early</b><br>
+          <span class="dim">Critical for rule + card draw.</span>
+        </div>
+        <div class="card cond">
+          <div class="hdr"><span class="badge cond">Workshops</span> Skill lever</div>
+          <b>Target 1–2</b><br>
+          <span class="dim">Only build with high-impact crafts in hand.</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="tile t1" id="s12" data-keys="failure modes mistakes red flag">
+      <span class="tile-badge">ESSENTIAL</span>
+      <h3><span class="num">12</span><span class="priority">PRIORITY 5</span>5 Failure Modes</h3>
+      <div class="body">
+        <p class="dim">Avoid these 5 patterns = beginner win rate spikes.</p>
+        <div class="card dont"><div class="hdr"><span class="badge dont">1</span> Over-fighting</div>→ action waste</div>
+        <div class="card dont"><div class="hdr"><span class="badge dont">2</span> Over-expanding</div>→ loss of connectivity</div>
+        <div class="card dont"><div class="hdr"><span class="badge dont">3</span> Ignoring crafting</div>→ action starvation</div>
+        <div class="card dont"><div class="hdr"><span class="badge dont">4</span> Overbuilding sawmills</div>→ fragile economy</div>
+        <div class="card dont"><div class="hdr"><span class="badge dont">5</span> Not building every turn</div>→ guaranteed loss</div>
+      </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- TIER 2 — CORE                                -->
+    <!-- ============================================ -->
+
+    <section class="tile t2" id="s1" data-keys="core model win condition identity faction">
+      <span class="tile-badge">CORE</span>
+      <h3><span class="num">01</span>Core Model</h3>
+      <div class="body">
+        <div class="card info">
+          <span class="badge info">Win</span> Convert <b>actions → builds → VP</b> faster than opponents disrupt you.
+        </div>
+        <h4>Constraints</h4>
+        <ul>
+          <li>3 base actions/turn (bottleneck)</li>
+          <li>Wood requires <b>Rule connectivity</b></li>
+          <li>Buildings = exponential VP curve</li>
+        </ul>
+        <h4>Identity</h4>
+        <div class="mini-grid">
+          <div class="card do"><span class="badge do">1st</span> Engine</div>
+          <div class="card info"><span class="badge info">2nd</span> Tactical control</div>
+          <div class="card cond"><span class="badge cond">3rd</span> Combat (situational)</div>
+          <div class="card dont"><span class="badge dont">Rare</span> Dominance pivot</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="tile t2" id="s2" data-keys="action economy framework resource">
+      <span class="tile-badge">CORE</span>
+      <h3><span class="num">02</span>Action Economy</h3>
+      <div class="body">
+        <div class="card do">
+          <div class="hdr"><span class="badge do">Good Action</span></div>
+          <ul>
+            <li>Generates VP now (build)</li>
+            <li>Enables future builds</li>
+            <li>Prevents engine collapse</li>
+          </ul>
+        </div>
+        <div class="card dont">
+          <div class="hdr"><span class="badge dont">Bad Action</span></div>
+          <ul>
+            <li>Fighting without gain</li>
+            <li>Moving without purpose</li>
+            <li>Crafting without impact</li>
+          </ul>
+        </div>
+        <div class="card info"><span class="badge info">Truth</span> Real resource = <b>ACTIONS</b>, not wood.</div>
+      </div>
+    </section>
+
+    <section class="tile t2" id="s5" data-keys="craft cobbler tax collector command post workshop">
+      <span class="tile-badge">CORE</span>
+      <h3><span class="num">05</span>Crafting</h3>
+      <div class="body">
+        <div class="card dont"><span class="badge dont">Not for</span> VP.</div>
+        <div class="card do"><span class="badge do">For</span> <b>Action economy</b>.</div>
+        <h4>S-Tier</h4>
+        <ul>
+          <li><b>Cobbler</b> — fixes mobility</li>
+          <li><b>Tax Collector</b> — units → cards</li>
+          <li><b>Command Post</b> — combat spike</li>
+        </ul>
+        <h4>Build Workshop when</h4>
+        <ul>
+          <li>Can immediately craft value</li>
+          <li>Matching suits in hand</li>
+          <li>Not under pressure</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="tile t2" id="s11" data-keys="defense keep field hospitals resilience">
+      <span class="tile-badge">CORE</span>
+      <h3><span class="num">11</span>Defense</h3>
+      <div class="body">
+        <div class="card dont">
+          <div class="hdr"><span class="badge dont">Protect Keep</span></div>
+          Losing Keep = no Field Hospitals · permanent fragility.
+        </div>
+        <h4>Field Hospitals (correct)</h4>
+        <ul>
+          <li>Ability always exists</li>
+          <li>BUT requires <b>Keep</b> as placement location</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="tile t2" id="s14" data-keys="mental model reframe mindset">
+      <span class="tile-badge">CORE</span>
+      <h3><span class="num">14</span>Mental Model</h3>
+      <div class="body">
+        <div class="card dont">
+          <div class="hdr"><span class="badge dont">Stop thinking</span></div>
+          "Should I fight or build?"
+        </div>
+        <div class="card do">
+          <div class="hdr"><span class="badge do">Start thinking</span></div>
+          "How do I <b>maximize builds</b> this turn?"
+        </div>
+        <p class="dim" style="margin-top:8px;">Cats = tempo-engine faction constrained by actions.</p>
+      </div>
+    </section>
+
+    <section class="tile t2" id="s13" data-keys="decision tree turn step full">
+      <span class="tile-badge">CORE</span>
+      <h3><span class="num">13</span>Decision Tree (Full)</h3>
+      <div class="body">
+        <div class="card info"><span class="badge info">1</span> Can I build? <div class="dim">NO → fix · YES → continue</div></div>
+        <div class="card info"><span class="badge info">2</span> Connectivity? <div class="dim">NO → restore (move/fight)</div></div>
+        <div class="card info"><span class="badge info">3</span> Craft? <div class="dim">Only immediate impact</div></div>
+        <div class="card info"><span class="badge info">4</span> Fight? <div class="dim">Only: build / rule / high-value</div></div>
+        <div class="card do"><span class="badge do">5</span> Optimize → <b>Build → Build → else</b></div>
+      </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- TIER 3 — ADVANCED                            -->
+    <!-- ============================================ -->
+
+    <section class="tile t3" id="s9" data-keys="midgame mid turns 4 5 6 7 momentum">
+      <span class="tile-badge">ADVANCED</span>
+      <h3><span class="num">09</span>Midgame (T4–7)</h3>
+      <div class="body">
+        <p><b>Goal:</b> engine → scoring momentum.</p>
+        <div class="card do"><span class="badge do">Loop</span> <span class="line">Rule → Wood → Build every turn</span></div>
+        <h4>Add</h4>
+        <ul>
+          <li>Recruit scaling</li>
+          <li>Selective crafting</li>
+          <li>Tactical movement</li>
+        </ul>
+        <div class="card info"><span class="badge info">Key</span> Set up <b>multi-build turns</b>.</div>
+      </div>
+    </section>
+
+    <section class="tile t3" id="s10" data-keys="late game win dominance bird scoring">
+      <span class="tile-badge">ADVANCED</span>
+      <h3><span class="num">10</span>Late Game</h3>
+      <div class="body">
+        <p><b>Goal:</b> explosive scoring before collapse.</p>
+        <h4>Tools</h4>
+        <ul>
+          <li>Stored wood</li>
+          <li>Bird cards (extra actions)</li>
+          <li>Pre-cleared building slots</li>
+        </ul>
+        <div class="card do"><span class="line">2–3 builds in a single turn</span></div>
+        <h4>Dominance Pivot</h4>
+        <div class="card cond">
+          If you already control:
+          <ul><li>3 corners OR</li><li>Clearings of one suit</li><li>Opponents immobile</li></ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="tile t3" id="s8" data-keys="board geometry shape supply lines overextension">
+      <span class="tile-badge">ADVANCED</span>
+      <h3><span class="num">08</span>Board Geometry</h3>
+      <div class="body">
+        <div class="card do">
+          <span class="badge do">Ideal</span>
+          <ul><li>Dense core</li><li>Short supply lines</li><li>Controlled lanes</li></ul>
+        </div>
+        <div class="card dont">
+          <span class="badge dont">Avoid</span>
+          <ul><li>Thin stretched lines</li><li>Isolated sawmills</li><li>Overextension</li></ul>
+        </div>
+        <div class="card info"><span class="badge info">Insight</span> Losing a clearing is sometimes <b>GOOD</b>.</div>
+      </div>
+    </section>
+
+    <section class="tile t3 span3" id="s15" data-keys="matchup eyrie alliance vagabond lizards riverfolk corvids duchy keepers">
+      <span class="tile-badge">ADVANCED</span>
+      <h3><span class="num">15</span>Matchups (All 8 Factions)</h3>
+      <div class="body">
+        <div class="mini-grid" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));">
+          <div class="card dont">
+            <div class="hdr"><span class="badge dont">Eyrie</span></div>
+            <b>Threat:</b> decree, turmoil inevitable.<br>
+            <b>Counter:</b> race before decree explodes · build dense · let turmoil work.<br>
+            <b>Fight:</b> roost blocking wood path.
+          </div>
+          <div class="card dont">
+            <div class="hdr"><span class="badge dont">Woodland Alliance</span></div>
+            <b>Threat:</b> sympathy → revolts destroy buildings.<br>
+            <b>Counter:</b> kill sympathy immediately · ≤1 building per sympathized clearing · don't discard birds to them.<br>
+            <b>Fight:</b> before 3+ supporters.
+          </div>
+          <div class="card cond">
+            <div class="hdr"><span class="badge cond">Vagabond</span></div>
+            <b>Threat:</b> mobile, crafts, quests, late ally.<br>
+            <b>Counter:</b> don't aid · no 1-warrior stacks · protect Keep.<br>
+            <b>Fight:</b> Hostile + cheap kill.
+          </div>
+          <div class="card dont">
+            <div class="hdr"><span class="badge dont">Lizard Cult</span></div>
+            <b>Threat:</b> gardens snowball · outlasts rulers.<br>
+            <b>Counter:</b> kill gardens early · deny outcast suit · don't let snowball past T5.<br>
+            <b>Fight:</b> every reachable garden.
+          </div>
+          <div class="card cond">
+            <div class="hdr"><span class="badge cond">Riverfolk</span></div>
+            <b>Threat:</b> services + funds · trade posts lock clearings.<br>
+            <b>Counter:</b> don't buy unless build-enabling · kill trade posts in wood zones · starve funds.<br>
+            <b>Fight:</b> trade post on sawmill clearing.
+          </div>
+          <div class="card dont">
+            <div class="hdr"><span class="badge dont">Corvid Conspiracy</span></div>
+            <b>Threat:</b> plots disrupt · bombs wipe stacks.<br>
+            <b>Counter:</b> expose plots near buildings · no stacks on plots · accept exposure cost.<br>
+            <b>Fight:</b> plot adjacent to 2+ buildings.
+          </div>
+          <div class="card cond">
+            <div class="hdr"><span class="badge cond">Underground Duchy</span></div>
+            <b>Threat:</b> burrows · crown scoring · ministers snowball.<br>
+            <b>Counter:</b> race crown · deny ministerial suit · keep ministers swayable.<br>
+            <b>Fight:</b> tunnels in your core.
+          </div>
+          <div class="card cond">
+            <div class="hdr"><span class="badge cond">Keepers in Iron</span></div>
+            <b>Threat:</b> relic recovery · waystation VP chains.<br>
+            <b>Counter:</b> block relic corridors · recover relics yourself · deny waystation chain.<br>
+            <b>Fight:</b> waystation in a 3-slot you need.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="tile t3 span2" id="s16" data-keys="map autumn winter lake mountain opening">
+      <span class="tile-badge">ADVANCED</span>
+      <h3><span class="num">16</span>Map Openings</h3>
+      <div class="body">
+        <div class="mini-grid" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));">
+          <div class="card info">
+            <div class="hdr"><span class="badge info">Autumn</span></div>
+            Standard · defaults apply · Keep in SW corner · Sawmill in adjacent 2-slot rabbit · Recruiter in fox chokepoint · center most contested.
+          </div>
+          <div class="card cond">
+            <div class="hdr"><span class="badge cond">Winter</span></div>
+            No suits on clearings · craft/Overwork from cards alone · <b>hoard cards</b> before workshop · bias Recruiter · delay workshop to T3.
+          </div>
+          <div class="card cond">
+            <div class="hdr"><span class="badge cond">Lake</span></div>
+            Rivers + ferry skip lanes · harder to defend · sawmills <b>not</b> adjacent to rivers · stacks near landings.
+          </div>
+          <div class="card cond">
+            <div class="hdr"><span class="badge cond">Mountain</span></div>
+            Passes restrict movement · seize a pass early · sawmills behind passes near-invulnerable · Field Hospitals value spikes.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="tile t3 span2" id="s17" data-keys="replay diagnosis post game checklist mistakes">
+      <span class="tile-badge">ADVANCED</span>
+      <h3><span class="num">17</span>Replay Diagnosis</h3>
+      <div class="body">
+        <p class="dim">After each game — first "no" = biggest leak.</p>
+        <div class="mini-grid">
+          <div class="card info"><span class="badge info">01</span> Build every turn? <div class="dim">Target 0–1 zero-build turns.</div></div>
+          <div class="card info"><span class="badge info">02</span> Wasted actions? <div class="dim">Not build/enable/rule/craft = leak.</div></div>
+          <div class="card info"><span class="badge info">03</span> Over-marched? <div class="dim">Moves w/o 4-trigger = wasted.</div></div>
+          <div class="card info"><span class="badge info">04</span> Craft quality? <div class="dim">Each craft must improve action econ.</div></div>
+          <div class="card info"><span class="badge info">05</span> Engine collapse? <div class="dim">Which turn did rule break?</div></div>
+          <div class="card info"><span class="badge info">06</span> Combat justified? <div class="dim">Build / rule / high-value only.</div></div>
+          <div class="card info"><span class="badge info">07</span> Right opening? <div class="dim">Greedy/stable/workshop vs threat?</div></div>
+          <div class="card info"><span class="badge info">08</span> Building mix? <div class="dim">SM 3–4 · R 2–3 · WS 1–2</div></div>
+          <div class="card info"><span class="badge info">09</span> Multi-build turns? <div class="dim">2+ builds mid/late game?</div></div>
+          <div class="card info"><span class="badge info">10</span> Keep status? <div class="dim">Lost? Trace chain.</div></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+(function(){
+  const tiles = () => document.querySelectorAll('.tile');
+  const railLinks = document.querySelectorAll('.rail a');
+  const search = document.getElementById('search');
+  const denseBtn = document.getElementById('dense');
+  const resetBtn = document.getElementById('reset');
+  const modeBtns = document.querySelectorAll('.mode-btn');
+
+  // --- Mode switching ---
+  function setMode(mode) {
+    document.body.classList.remove('mode-beginner','mode-all','mode-advanced');
+    document.body.classList.add('mode-' + mode);
+    modeBtns.forEach(b => b.classList.toggle('active', b.dataset.mode === mode));
+    try { localStorage.setItem('cats-mode', mode); } catch(e){}
+  }
+  modeBtns.forEach(b => b.addEventListener('click', () => setMode(b.dataset.mode)));
+  try {
+    const saved = localStorage.getItem('cats-mode');
+    if (saved) setMode(saved);
+  } catch(e){}
+
+  // --- Dense ---
+  denseBtn.addEventListener('click', () => {
+    document.body.classList.toggle('dense');
+    denseBtn.classList.toggle('active');
+  });
+
+  // --- Reset ---
+  resetBtn.addEventListener('click', () => {
+    search.value = '';
+    applyFilter('');
+    document.body.classList.remove('dense');
+    denseBtn.classList.remove('active');
+    setMode('beginner');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // --- Search ---
+  function applyFilter(q) {
+    q = q.trim().toLowerCase();
+    tiles().forEach(t => {
+      if (!q) { t.classList.remove('dimmed'); return; }
+      const hay = (t.getAttribute('data-keys') || '') + ' ' + t.textContent.toLowerCase();
+      t.classList.toggle('dimmed', !hay.includes(q));
+    });
+  }
+  search.addEventListener('input', e => applyFilter(e.target.value));
+
+  // --- Keyboard ---
+  document.addEventListener('keydown', e => {
+    const tag = (e.target.tagName || '').toLowerCase();
+    const typing = tag === 'input' || tag === 'textarea';
+    if (e.key === '/' && !typing) { e.preventDefault(); search.focus(); return; }
+    if (e.key === 'Escape') { search.value=''; applyFilter(''); search.blur(); return; }
+    if (typing) return;
+    if (e.key.toLowerCase() === 'd') { denseBtn.click(); return; }
+    if (e.key.toLowerCase() === 'r') { resetBtn.click(); return; }
+    if (e.key.toLowerCase() === 'b') { setMode('beginner'); return; }
+    if (e.key.toLowerCase() === 'a') { setMode('all'); return; }
+    if (e.key.toLowerCase() === 'v') { setMode('advanced'); return; }
+    if (/^[1-9]$/.test(e.key)) {
+      const el = document.getElementById('s' + e.key);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+
+  // --- Rail active highlight ---
+  const idToLink = {};
+  railLinks.forEach(a => {
+    const id = a.getAttribute('href').slice(1);
+    idToLink[id] = a;
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        railLinks.forEach(a => a.classList.remove('active'));
+        const link = idToLink[entry.target.id];
+        if (link) link.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-80px 0px -60% 0px', threshold: 0 });
+  tiles().forEach(t => observer.observe(t));
+})();
+</script>
+</body>
+</html>
