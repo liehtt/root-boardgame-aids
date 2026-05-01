@@ -582,8 +582,8 @@
 
     <div class="modes" role="tablist">
       <button class="mode-btn active" data-mode="beginner">Beginner<span class="count">5 tiles</span></button>
-      <button class="mode-btn" data-mode="all">All<span class="count">17</span></button>
-      <button class="mode-btn" data-mode="advanced">Advanced<span class="count">12</span></button>
+      <button class="mode-btn" data-mode="all">All<span class="count">18</span></button>
+      <button class="mode-btn" data-mode="advanced">Advanced<span class="count">13</span></button>
     </div>
 
     <div class="controls">
@@ -597,40 +597,40 @@
   <div class="hero">
     <div class="hero-banner">
       <span class="small">THE ONE RULE</span>
-      If you are not building, you are losing.
+      Aim for dominance. Keep everyone down. You can't outscore them.
     </div>
 
     <div class="gate-big">
       <div class="gate-step">
         <span class="n">01</span>
-        <div class="q">Can I build?</div>
-        <div class="a">No → fix first. Yes → continue.</div>
+        <div class="q">Win path?</div>
+        <div class="a">Dominance (default) · Crafting (2nd) · Score (rare).</div>
       </div>
       <div class="gate-step">
         <span class="n">02</span>
         <div class="q">Connected?</div>
-        <div class="a">No → restore Rule (move/fight).</div>
+        <div class="a">No → restore Rule. Lose Keep = lose game.</div>
       </div>
       <div class="gate-step">
         <span class="n">03</span>
-        <div class="q">Should I craft?</div>
-        <div class="a">Only if immediate action-economy gain.</div>
+        <div class="q">Action efficient?</div>
+        <div class="a">3 actions/turn — every one must pay.</div>
       </div>
       <div class="gate-step">
         <span class="n">04</span>
         <div class="q">Should I fight?</div>
-        <div class="a">Only: enables build / restores rule / high-value.</div>
+        <div class="a">Yes vs Eyrie/Lizard/sympathy · NO vs Alliance bases — smother.</div>
       </div>
       <div class="gate-step">
         <span class="n">05</span>
-        <div class="q">Maximize builds</div>
-        <div class="a">Build → Build → everything else.</div>
+        <div class="q">Rabbit crafting?</div>
+        <div class="a">Cobbler · Command Warren · BBB — they ARE more actions.</div>
       </div>
     </div>
 
     <div class="first-time">
       <span class="pill">START HERE</span>
-      <div>New to Cats? The <b>5 green-bordered tiles below</b> cover 80% of winning play. Master these first — advanced topics (matchups, maps, replay) are hidden until you're ready.</div>
+      <div>New to Cats? Two-thirds of Cat wins come via <b>dominance cards</b>, not score. The <b>5 green-bordered tiles below</b> cover the core play loop — keep opponents down, secure rabbit crafting, then pivot to a dominance card you've been quietly setting up.</div>
     </div>
   </div>
 
@@ -656,7 +656,8 @@
     <a href="#s10" class="t3"><span class="n">10</span>Late Game</a>
     <a href="#s8" class="t3"><span class="n">08</span>Board Geometry</a>
     <a href="#s15" class="t3"><span class="n">15</span>Matchups</a>
-    <a href="#s16" class="t3"><span class="n">16</span>Map Openings</a>
+    <a href="#s16" class="t3"><span class="n">16</span>Starting Corner</a>
+    <a href="#s18" class="t3"><span class="n">18</span>Advanced Tactics</a>
     <a href="#s17" class="t3"><span class="n">17</span>Replay Checklist</a>
   </aside>
 
@@ -693,16 +694,17 @@
         <h4>Turn 2 — Stabilize vs Scale</h4>
         <div class="mini-grid">
           <div class="card do">
-            <div class="hdr"><span class="badge do">Safe — Greedy</span></div>
-            <span class="line">Sawmill → Overwork → Sawmill</span>
+            <div class="hdr"><span class="badge do">Default</span></div>
+            <span class="line">Recruiter → Recruit → Build</span>
+            <div class="dim">Get one recruiter per turn. Goal: 3 recruiters down → baseline 3 cards/turn.</div>
           </div>
           <div class="card cond">
-            <div class="hdr"><span class="badge cond">Contested — Stable</span></div>
-            <span class="line">Recruiter → Recruit → Sawmill</span>
+            <div class="hdr"><span class="badge cond">Rabbit Workshop</span></div>
+            Build a workshop only if you can craft <b>Cobbler / Command Warren / Better Burrow Bank</b> this turn.
           </div>
           <div class="card cond">
-            <div class="hdr"><span class="badge cond">Strong Craft — Workshop</span></div>
-            Only if you can craft Cobbler / Tax Collector / Command Post <b>this turn</b>.
+            <div class="hdr"><span class="badge cond">Alliance pressure</span></div>
+            If the Alliance is "in your business" early, propose a quiet truce — neither of you wants a Red Queen's race this early.
           </div>
         </div>
 
@@ -710,53 +712,58 @@
         <div class="mini-grid">
           <div class="card do"><span class="badge do">Default</span> <span class="line">Recruit → Build → Build</span></div>
           <div class="card cond"><span class="badge cond">Disrupted</span> <span class="line">Battle → Build → Recruit</span></div>
-          <div class="card do"><span class="badge do">High tempo</span> Bird card = extra action = 2–3 builds</div>
+          <div class="card do"><span class="badge do">Bird card</span> Extra action = 2–3 builds. Treat birds as gifts.</div>
+        </div>
+        <div class="card info">
+          <span class="badge info">Turn order</span> If you go after Alliance, the opening sympathy may force you to settle for just a sawmill turn 1. After Eyrie/Vagabond is fine — they don't disrupt your build.
         </div>
       </div>
     </section>
 
-    <section class="tile t1" id="s7" data-keys="combat fight battle doctrine">
+    <section class="tile t1" id="s7" data-keys="combat fight battle doctrine smother alliance">
       <span class="tile-badge">ESSENTIAL</span>
-      <h3><span class="num">07</span><span class="priority">PRIORITY 2</span>Combat — Don't Fight</h3>
+      <h3><span class="num">07</span><span class="priority">PRIORITY 2</span>Combat — Pick Your Battles</h3>
       <div class="body">
-        <div class="rule-big">🚫 Do NOT fight by default.</div>
-        <p class="dim">Beginners lose by fighting too much. Each wasted battle = 1 lost build = real VP.</p>
-        <h4>Fight ONLY if…</h4>
+        <div class="rule-big">🚫 Don't fight without a payoff. ✅ But don't be passive.</div>
+        <p class="dim">In 1v1s the Cats win almost every fight — but you only have 3 actions. Each wasted battle = 1 lost build.</p>
+        <h4>Fight when…</h4>
         <div class="card do">
           <ol>
-            <li><b>Enables a build</b> (clears a slot)</li>
-            <li><b>Restores rule</b> (reconnects wood)</li>
-            <li><b>High-value target</b> (Alliance sympathy, exposed buildings)</li>
+            <li><b>Removes Alliance sympathy</b> (every time, before Martial Law lapses)</li>
+            <li><b>Eyrie roost in their recruit suit</b> — kill last roost of a suit → forced turmoil</li>
+            <li><b>Lizard garden</b>, especially lightly defended</li>
+            <li><b>Enables a build</b> or <b>restores Rule</b></li>
+            <li><b>Riverfolk stack</b> of 2+ in one clearing</li>
           </ol>
         </div>
         <div class="card dont">
           <span class="badge dont">Never</span>
           <ul>
-            <li>Just to "slow" an opponent</li>
-            <li>Without immediate gain</li>
-            <li>"Because you have warriors left"</li>
+            <li><b>Attack an Alliance base head-on</b> — you'll lose the action war. Move warriors in to <b>blockade</b> instead, never fight</li>
+            <li>Pure "slow them down" with no gain</li>
+            <li>Total war on Eyrie — keep them down but not out (they help police minor factions)</li>
           </ul>
         </div>
       </div>
     </section>
 
-    <section class="tile t1" id="s6" data-keys="movement march rule connectivity don't march">
+    <section class="tile t1" id="s6" data-keys="movement march rule connectivity smother blockade">
       <span class="tile-badge">ESSENTIAL</span>
-      <h3><span class="num">06</span><span class="priority">PRIORITY 3</span>Movement — Don't March</h3>
+      <h3><span class="num">06</span><span class="priority">PRIORITY 3</span>Movement — March with Purpose</h3>
       <div class="body">
-        <div class="rule-big">🚫 Do NOT March by default.</div>
-        <p class="dim">Counter-intuitive: Cats maintain <b>connectivity</b>, not expansion. Marching without reason = wasted action.</p>
-        <h4>March ONLY if…</h4>
+        <div class="rule-big">March moves 2 — make every step count.</div>
+        <p class="dim">Cats spend the first half of the game in free fall. Every move must protect a goal, not just expand.</p>
+        <h4>March when…</h4>
         <div class="card do">
           <ol>
-            <li>Secures a <b>3-slot clearing</b></li>
-            <li>Connects <b>wood supply lines</b></li>
-            <li>Prevents <b>Alliance revolts</b></li>
-            <li>Blocks <b>opponent expansion</b></li>
+            <li><b>Smother an Alliance base</b> — move warriors in, don't fight, blockade</li>
+            <li><b>Reinforce a recruiter clearing</b> you'll dominate</li>
+            <li><b>Restore Rule</b> for next turn's wood</li>
+            <li><b>Cobbler-free move</b> to rearrange after a strike (T3+ if crafted)</li>
           </ol>
         </div>
-        <div class="card info">
-          <span class="badge info">Phases</span> Early: minimal · Mid: controlled · Late: only for last-build setup.
+        <div class="card cond">
+          <span class="badge cond">SW/NW corner</span> The 5-path fox clearing is your spine — move through it, never let it fall.
         </div>
       </div>
     </section>
@@ -767,19 +774,19 @@
       <div class="body">
         <p class="dim">Memorize this ratio. Imbalance = fragile economy.</p>
         <div class="card do">
-          <div class="hdr"><span class="badge do">Sawmills</span> Economy (wood)</div>
-          <b>Target 3–4</b><br>
-          <span class="dim">Too few → stalled. Too many → fragile.</span>
+          <div class="hdr"><span class="badge do">Recruiters</span> Cards + Stability</div>
+          <b>Target all 3 down ASAP</b><br>
+          <span class="dim">3-cost recruiter = baseline 3 card draws. Cards = actions, troops, crafts.</span>
         </div>
         <div class="card do">
-          <div class="hdr"><span class="badge do">Recruiters</span> Stability + Cards</div>
-          <b>Target 2–3 early</b><br>
-          <span class="dim">Critical for rule + card draw.</span>
+          <div class="hdr"><span class="badge do">Sawmills</span> Wood for Builds</div>
+          <b>Target 2–3</b><br>
+          <span class="dim">Don't stockpile wood — it's a tasty target, especially for despotic Eyrie.</span>
         </div>
         <div class="card cond">
-          <div class="hdr"><span class="badge cond">Workshops</span> Skill lever</div>
-          <b>Target 1–2</b><br>
-          <span class="dim">Only build with high-impact crafts in hand.</span>
+          <div class="hdr"><span class="badge cond">Workshops</span> Action Engine</div>
+          <b>Target 2 (rabbit) → 3 → 4</b><br>
+          <span class="dim">Crafting isn't an action. Rabbit crafts give actions back. 1 lone workshop ≈ wasted.</span>
         </div>
       </div>
     </section>
@@ -789,11 +796,11 @@
       <h3><span class="num">12</span><span class="priority">PRIORITY 5</span>5 Failure Modes</h3>
       <div class="body">
         <p class="dim">Avoid these 5 patterns = beginner win rate spikes.</p>
-        <div class="card dont"><div class="hdr"><span class="badge dont">1</span> Over-fighting</div>→ action waste</div>
-        <div class="card dont"><div class="hdr"><span class="badge dont">2</span> Over-expanding</div>→ loss of connectivity</div>
-        <div class="card dont"><div class="hdr"><span class="badge dont">3</span> Ignoring crafting</div>→ action starvation</div>
-        <div class="card dont"><div class="hdr"><span class="badge dont">4</span> Overbuilding sawmills</div>→ fragile economy</div>
-        <div class="card dont"><div class="hdr"><span class="badge dont">5</span> Not building every turn</div>→ guaranteed loss</div>
+        <div class="card dont"><div class="hdr"><span class="badge dont">1</span> Trying to win by score</div>→ Alliance/Lizard/Eyrie outpace you. Aim dominance.</div>
+        <div class="card dont"><div class="hdr"><span class="badge dont">2</span> Charging Alliance bases</div>→ smother with warriors, never fight head-on.</div>
+        <div class="card dont"><div class="hdr"><span class="badge dont">3</span> Ignoring rabbit crafting</div>→ action starvation. Cobbler/Command Warren = free actions.</div>
+        <div class="card dont"><div class="hdr"><span class="badge dont">4</span> Stockpiling wood</div>→ tasty target, especially for despotic Eyrie. Spend it.</div>
+        <div class="card dont"><div class="hdr"><span class="badge dont">5</span> Losing the Keep</div>→ no Field Hospitals, game effectively lost.</div>
       </div>
     </section>
 
@@ -801,25 +808,25 @@
     <!-- TIER 2 — CORE                                -->
     <!-- ============================================ -->
 
-    <section class="tile t2" id="s1" data-keys="core model win condition identity faction">
+    <section class="tile t2" id="s1" data-keys="core model win condition identity faction dominance">
       <span class="tile-badge">CORE</span>
       <h3><span class="num">01</span>Core Model</h3>
       <div class="body">
         <div class="card info">
-          <span class="badge info">Win</span> Convert <b>actions → builds → VP</b> faster than opponents disrupt you.
+          <span class="badge info">Win</span> You <b>cannot</b> out-score the Alliance/Lizards/Eyrie. Win by <b>dominance</b> (2/3 of Cat wins) or <b>crafting</b>.
         </div>
         <h4>Constraints</h4>
         <ul>
-          <li>3 base actions/turn (bottleneck)</li>
+          <li>3 actions/turn — your tightest bottleneck</li>
           <li>Wood requires <b>Rule connectivity</b></li>
-          <li>Buildings = exponential VP curve</li>
+          <li>Score race: you lose. 1v1 fights: you win almost any.</li>
         </ul>
-        <h4>Identity</h4>
+        <h4>Win Priority</h4>
         <div class="mini-grid">
-          <div class="card do"><span class="badge do">1st</span> Engine</div>
-          <div class="card info"><span class="badge info">2nd</span> Tactical control</div>
-          <div class="card cond"><span class="badge cond">3rd</span> Combat (situational)</div>
-          <div class="card dont"><span class="badge dont">Rare</span> Dominance pivot</div>
+          <div class="card do"><span class="badge do">1st</span> Dominance card</div>
+          <div class="card do"><span class="badge do">2nd</span> Crafting (rabbit-heavy)</div>
+          <div class="card cond"><span class="badge cond">3rd</span> Score from buildings</div>
+          <div class="card info"><span class="badge info">Always</span> Keep everyone else down</div>
         </div>
       </div>
     </section>
@@ -848,68 +855,79 @@
       </div>
     </section>
 
-    <section class="tile t2" id="s5" data-keys="craft cobbler tax collector command post workshop">
+    <section class="tile t2 span2" id="s5" data-keys="craft cobbler command warren better burrow bank tax collector codebreakers armorers royal claim workshop rabbit">
       <span class="tile-badge">CORE</span>
-      <h3><span class="num">05</span>Crafting</h3>
+      <h3><span class="num">05</span>Crafting — Rabbit-First</h3>
       <div class="body">
-        <div class="card dont"><span class="badge dont">Not for</span> VP.</div>
-        <div class="card do"><span class="badge do">For</span> <b>Action economy</b>.</div>
-        <h4>S-Tier</h4>
+        <div class="card do"><span class="badge do">Why</span> Crafting is <b>not an action</b>. Rabbit crafts give back the actions you don't have.</div>
+        <h4>S-Tier — Rabbit (build 2 rabbit workshops)</h4>
         <ul>
-          <li><b>Cobbler</b> — fixes mobility</li>
-          <li><b>Tax Collector</b> — units → cards</li>
-          <li><b>Command Post</b> — combat spike</li>
+          <li><b>Command Warren</b> — start a battle at start of Daylight (free sympathy removal, free counterattack)</li>
+          <li><b>Cobbler</b> — free move every turn (rearrange, pull back, maintain Martial Law)</li>
+          <li><b>Better Burrow Bank</b> — extra cards = more actions, troops, crafts</li>
         </ul>
-        <h4>Build Workshop when</h4>
+        <h4>Strong Pickups — Other Suits</h4>
         <ul>
-          <li>Can immediately craft value</li>
-          <li>Matching suits in hand</li>
-          <li>Not under pressure</li>
+          <li><b>Codebreakers</b> (mouse, 1 cost) — see opponents' hands, scout Favors/Ambush</li>
+          <li><b>Tax Collector</b> (mouse) — 1 warrior → 1 card, great trade for Cats</li>
+          <li><b>Scouting Party</b> (mouse) — safely clear sympathy/buildings with one warrior</li>
+          <li><b>Armorers</b> (fox) — only when gearing up for the dominance fight; negates a bad roll</li>
+          <li><b>Royal Claim</b> (bird) — late-game burst with the 4-workshop setup</li>
         </ul>
+        <h4>Workshop Build Order</h4>
+        <div class="mini-grid">
+          <div class="card do"><span class="badge do">Default</span> 2 rabbit, then 1 mouse <span class="dim">(or 1 mouse, then 2 rabbit)</span></div>
+          <div class="card cond"><span class="badge cond">4th workshop</span> 1 mouse · 2 rabbit · 1 fox = nearly every craft you'll want, including Royal Claim</div>
+          <div class="card dont"><span class="badge dont">Avoid</span> 1 lone rabbit workshop (not enough leverage). Skip fox crafts early — most are bird cards or feed the Vagabond.</div>
+        </div>
       </div>
     </section>
 
-    <section class="tile t2" id="s11" data-keys="defense keep field hospitals resilience">
+    <section class="tile t2" id="s11" data-keys="defense keep field hospitals resilience outcast">
       <span class="tile-badge">CORE</span>
-      <h3><span class="num">11</span>Defense</h3>
+      <h3><span class="num">11</span>Defense — Keep & Field Hospitals</h3>
       <div class="body">
         <div class="card dont">
-          <div class="hdr"><span class="badge dont">Protect Keep</span></div>
-          Losing Keep = no Field Hospitals · permanent fragility.
+          <div class="hdr"><span class="badge dont">Protect Keep at all costs</span></div>
+          Lose Keep → no Field Hospitals → game over. Watch for sneaky removals (Favor of the Mice, dominance attacks).
         </div>
-        <h4>Field Hospitals (correct)</h4>
+        <h4>Field Hospitals — soak losses</h4>
         <ul>
-          <li>Ability always exists</li>
-          <li>BUT requires <b>Keep</b> as placement location</li>
+          <li>With 5 recruiters down + Field Hospitals you can soak <b>8–10 losses in a round</b> and retake a clearing</li>
+          <li>Discard cards liberally — they're cheap and you draw lots</li>
+          <li>vs Lizards: <b>discard to manipulate the outcast suit</b> in your favor</li>
         </ul>
+        <div class="card info"><span class="badge info">Tempo</span> If a dominance push fails turn 1, you can usually retake. Don't panic.</div>
       </div>
     </section>
 
-    <section class="tile t2" id="s14" data-keys="mental model reframe mindset">
+    <section class="tile t2" id="s14" data-keys="mental model reframe mindset dominance">
       <span class="tile-badge">CORE</span>
       <h3><span class="num">14</span>Mental Model</h3>
       <div class="body">
         <div class="card dont">
           <div class="hdr"><span class="badge dont">Stop thinking</span></div>
-          "Should I fight or build?"
+          "How do I score the most points?"
         </div>
         <div class="card do">
           <div class="hdr"><span class="badge do">Start thinking</span></div>
-          "How do I <b>maximize builds</b> this turn?"
+          "How do I <b>keep everyone down</b> while quietly setting up a <b>dominance card</b>?"
         </div>
-        <p class="dim" style="margin-top:8px;">Cats = tempo-engine faction constrained by actions.</p>
+        <p class="dim" style="margin-top:8px;">Cats are the heart of Root's ebb and flow. The rest of the table reacts to <i>your</i> actions. You can't outscore them, but in 1v1s you almost never lose.</p>
+        <div class="card info"><span class="badge info">Bird cards</span> Treat every bird card like a gift — extra actions are your scarcest resource.</div>
       </div>
     </section>
 
-    <section class="tile t2" id="s13" data-keys="decision tree turn step full">
+    <section class="tile t2" id="s13" data-keys="decision tree turn step full dominance">
       <span class="tile-badge">CORE</span>
       <h3><span class="num">13</span>Decision Tree (Full)</h3>
       <div class="body">
-        <div class="card info"><span class="badge info">1</span> Can I build? <div class="dim">NO → fix · YES → continue</div></div>
-        <div class="card info"><span class="badge info">2</span> Connectivity? <div class="dim">NO → restore (move/fight)</div></div>
-        <div class="card info"><span class="badge info">3</span> Craft? <div class="dim">Only immediate impact</div></div>
-        <div class="card info"><span class="badge info">4</span> Fight? <div class="dim">Only: build / rule / high-value</div></div>
-        <div class="card do"><span class="badge do">5</span> Optimize → <b>Build → Build → else</b></div>
+        <div class="card info"><span class="badge info">1</span> What's my dominance suit? <div class="dim">Set early. Place recruiters there.</div></div>
+        <div class="card info"><span class="badge info">2</span> Who needs containing? <div class="dim">Lizard gardens · Eyrie roost-in-recruit-suit · sympathy · Riverfolk stacks</div></div>
+        <div class="card info"><span class="badge info">3</span> Connectivity? <div class="dim">Keep + Rule chain intact?</div></div>
+        <div class="card info"><span class="badge info">4</span> Free craft available? <div class="dim">Cobbler/Command Warren/BBB this turn? Use it.</div></div>
+        <div class="card info"><span class="badge info">5</span> Smother Alliance? <div class="dim">Move into base, don't fight.</div></div>
+        <div class="card do"><span class="badge do">6</span> Spend remaining → <b>Recruiter → Build → Build</b></div>
       </div>
     </section>
 
@@ -933,22 +951,30 @@
       </div>
     </section>
 
-    <section class="tile t3" id="s10" data-keys="late game win dominance bird scoring">
+    <section class="tile t3 span2" id="s10" data-keys="late game win dominance bird scoring coalition">
       <span class="tile-badge">ADVANCED</span>
-      <h3><span class="num">10</span>Late Game</h3>
+      <h3><span class="num">10</span>Late Game — Closing the Win</h3>
       <div class="body">
-        <p><b>Goal:</b> explosive scoring before collapse.</p>
-        <h4>Tools</h4>
-        <ul>
-          <li>Stored wood</li>
-          <li>Bird cards (extra actions)</li>
-          <li>Pre-cleared building slots</li>
-        </ul>
-        <div class="card do"><span class="line">2–3 builds in a single turn</span></div>
-        <h4>Dominance Pivot</h4>
+        <h4>Dominance Path (default — 2/3 of Cat wins)</h4>
+        <div class="card do">
+          <ul>
+            <li>Place <b>recruiters on the clearings you'll dominate</b> — replenish if turn-1 push fails</li>
+            <li>Soften opponents <b>before</b> activating — fight without scoring focus, take inevitable battles on your terms</li>
+            <li>Don't panic if blocked turn 1 — opponents who throw everything at one clearing leave themselves thin. With 5 recruiters + Field Hospitals you soak 8–10 losses and retake</li>
+            <li>Mouse / Fox / Bird suit are most common targets depending on starting corner</li>
+          </ul>
+        </div>
+        <h4>Coalition with Vagabond</h4>
         <div class="card cond">
-          If you already control:
-          <ul><li>3 corners OR</li><li>Clearings of one suit</li><li>Opponents immobile</li></ul>
+          If trailing on score before activating dominance: <b>coalition with Vagabond</b> to neutralize their threat. Pick whoever has the lowest score.
+        </div>
+        <h4>Score Path (fallback only)</h4>
+        <div class="card cond">
+          <ul>
+            <li>Craft well — don't let wood pile up (Eyrie/Corvids will burn it)</li>
+            <li>2–3 builds in a single turn powered by bird cards / pre-cleared slots</li>
+            <li>Tiny stockpile for final-turn burst is OK; large stockpile = target</li>
+          </ul>
         </div>
       </div>
     </section>
@@ -976,33 +1002,32 @@
         <div class="mini-grid" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));">
           <div class="card dont">
             <div class="hdr"><span class="badge dont">Eyrie</span></div>
-            <b>Threat:</b> decree, turmoil inevitable.<br>
-            <b>Counter:</b> race before decree explodes · build dense · let turmoil work.<br>
-            <b>Fight:</b> roost blocking wood path.
+            <b>Threat:</b> Decree grinds your warriors; biggest 1v1 rival.<br>
+            <b>Counter:</b> Watch the <b>Recruit</b> column — if they have only 1–2 roosts of a suit, kill those roosts to <b>force turmoil</b>. Keep front line solid; back line is hard for them to reach.<br>
+            <b>Don't:</b> Wage total war — you both need each other to police minor factions.
           </div>
           <div class="card dont">
             <div class="hdr"><span class="badge dont">Woodland Alliance</span></div>
-            <b>Threat:</b> sympathy → revolts destroy buildings.<br>
-            <b>Counter:</b> kill sympathy immediately · ≤1 building per sympathized clearing · don't discard birds to them.<br>
-            <b>Fight:</b> before 3+ supporters.
+            <b>Threat:</b> Sympathy + revolts; bog you down with their officers.<br>
+            <b>Counter:</b> <b>Smother — never attack a base head-on</b> (you only kill 1+ warrior ~25% of rolls). Move warriors in to <b>blockade</b> bases so they can't move out. Trigger Martial Law every time sympathy lands.<br>
+            <b>Goal:</b> Make your territory so unappealing they slow down someone else.
           </div>
           <div class="card cond">
             <div class="hdr"><span class="badge cond">Vagabond</span></div>
-            <b>Threat:</b> mobile, crafts, quests, late ally.<br>
-            <b>Counter:</b> don't aid · no 1-warrior stacks · protect Keep.<br>
-            <b>Fight:</b> Hostile + cheap kill.
+            <b>Threat:</b> Snowballs once geared with swords.<br>
+            <b>Counter:</b> Beat them up early before swords pile up. If <b>crafting victory</b>, only craft <b>rabbit & mouse</b> (don't feed their kit) — they're a fine card-engine ally. Hostile = your territory is molasses for them.<br>
+            <b>Coalition:</b> Before activating dominance, offer coalition if you're last in points.
           </div>
           <div class="card dont">
             <div class="hdr"><span class="badge dont">Lizard Cult</span></div>
-            <b>Threat:</b> gardens snowball · outlasts rulers.<br>
-            <b>Counter:</b> kill gardens early · deny outcast suit · don't let snowball past T5.<br>
-            <b>Fight:</b> every reachable garden.
+            <b>Threat:</b> Powerhouse since rebalance; ignores defenses, attacks soft targets.<br>
+            <b>Counter:</b> Keep them <b>stuck on one suit</b> and <b>deny that suit's dominance card</b>. Check the outcast suit before playing any dominance — and remember you can <b>look through the Lost Souls pile any time</b>. Discard cards via Field Hospitals to push the outcast suit your way.<br>
+            <b>Ally up:</b> Team with Eyrie/Alliance against them.
           </div>
           <div class="card cond">
             <div class="hdr"><span class="badge cond">Riverfolk</span></div>
-            <b>Threat:</b> services + funds · trade posts lock clearings.<br>
-            <b>Counter:</b> don't buy unless build-enabling · kill trade posts in wood zones · starve funds.<br>
-            <b>Fight:</b> trade post on sawmill clearing.
+            <b>Threat:</b> Tons of actions — they can drop a dozen warriors in one turn and erase your back line.<br>
+            <b>Counter:</b> <b>Control the table conversation</b> — between all opponents, no more than 2 services bought per turn. <b>Kill any clearing with 2+ Riverfolk warriors</b> — putting warriors on the board is their only expensive thing.
           </div>
           <div class="card dont">
             <div class="hdr"><span class="badge dont">Corvid Conspiracy</span></div>
@@ -1026,26 +1051,69 @@
       </div>
     </section>
 
-    <section class="tile t3 span2" id="s16" data-keys="map autumn winter lake mountain opening">
+    <section class="tile t3 span2" id="s16" data-keys="starting corner keep ne se sw nw autumn map placement">
       <span class="tile-badge">ADVANCED</span>
-      <h3><span class="num">16</span>Map Openings</h3>
+      <h3><span class="num">16</span>Starting Corner (Autumn)</h3>
+      <div class="body">
+        <p class="dim">Criteria: <b>rabbit crafting access</b> · <b>accessibility</b> (March efficiency) · <b>defensibility</b> of Keep.</p>
+        <div class="mini-grid" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));">
+          <div class="card do">
+            <div class="hdr"><span class="badge do">SW — Best</span></div>
+            Adjacent <b>5-path fox clearing</b> = your spine. Two rabbit clearings adjacent for crafting. Reach 3 mouse / fox / bird clearings for any dominance.<br>
+            <b>Hold the 5-path fox clearing at all costs</b> — lose it, you're split.
+          </div>
+          <div class="card cond">
+            <div class="hdr"><span class="badge cond">NW — Flexible</span></div>
+            Like SW: focus the 5-path fox clearing. Strong rabbit access. Any dominance possible. Vulnerable at higher player counts.
+          </div>
+          <div class="card cond">
+            <div class="hdr"><span class="badge cond">NE — Default but trap</span></div>
+            Decent rabbit access + concentrated recruiting on home + 3-slot mouse to the south. <b>Vulnerable to Favor of the Mice</b>; easy to be isolated.
+          </div>
+          <div class="card dont">
+            <div class="hdr"><span class="badge dont">SE — Worst for crafting</span></div>
+            Only 1 rabbit slot, no rabbit within 2 moves — Favor of the Rabbits is easy for opponents. Skip rabbit; <b>fortify 3 nearby mouse clearings</b> and aim for mouse or fox dominance.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="tile t3 span2" id="s18" data-keys="advanced tactics warrior threshold martial law recruiters trap mercenary cap">
+      <span class="tile-badge">ADVANCED</span>
+      <h3><span class="num">18</span>Advanced Tactics</h3>
       <div class="body">
         <div class="mini-grid" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));">
+          <div class="card do">
+            <div class="hdr"><span class="badge do">3-warrior threshold</span></div>
+            Garrison clearings with <b>exactly 3 warriors</b> — enacts Martial Law and absorbs one battle action without breaking. Cheaper than a stack of 5.
+          </div>
+          <div class="card do">
+            <div class="hdr"><span class="badge do">Sawmill adjacent to Keep</span></div>
+            Early sawmills next to Keep maximize wood-chain safety. Field Hospitals reinforces them instantly.
+          </div>
+          <div class="card do">
+            <div class="hdr"><span class="badge do">Recruiter as Alliance trap</span></div>
+            Move a recruiter into a sympathy-cleared clearing — opponents must spend actions to dislodge it, and you regenerate.
+          </div>
+          <div class="card cond">
+            <div class="hdr"><span class="badge cond">25-warrior cap</span></div>
+            Once at population cap, <b>stop recruiting</b> — convert those actions into builds or battles instead.
+          </div>
+          <div class="card cond">
+            <div class="hdr"><span class="badge cond">Field Hospitals = card cycle</span></div>
+            Discard <b>low-value cards</b> to revive warriors. It's a cheap card-cycle on top of resilience.
+          </div>
+          <div class="card dont">
+            <div class="hdr"><span class="badge dont">Riverfolk mercenary trap</span></div>
+            Warriors spent on blue cards can be hired by Riverfolk and dropped <b>against you</b>. Don't fund the gun pointed at your back line.
+          </div>
+          <div class="card dont">
+            <div class="hdr"><span class="badge dont">Don't telegraph alliances</span></div>
+            Subtly: don't craft Vagabond's preferred items even if "free VP." Visible favoritism stacks the table on you.
+          </div>
           <div class="card info">
-            <div class="hdr"><span class="badge info">Autumn</span></div>
-            Standard · defaults apply · Keep in SW corner · Sawmill in adjacent 2-slot rabbit · Recruiter in fox chokepoint · center most contested.
-          </div>
-          <div class="card cond">
-            <div class="hdr"><span class="badge cond">Winter</span></div>
-            No suits on clearings · craft/Overwork from cards alone · <b>hoard cards</b> before workshop · bias Recruiter · delay workshop to T3.
-          </div>
-          <div class="card cond">
-            <div class="hdr"><span class="badge cond">Lake</span></div>
-            Rivers + ferry skip lanes · harder to defend · sawmills <b>not</b> adjacent to rivers · stacks near landings.
-          </div>
-          <div class="card cond">
-            <div class="hdr"><span class="badge cond">Mountain</span></div>
-            Passes restrict movement · seize a pass early · sawmills behind passes near-invulnerable · Field Hospitals value spikes.
+            <div class="hdr"><span class="badge info">Force Eyrie collapse early</span></div>
+            Don't passively wait for turmoil — actively prune roosts when their decree is brittle and their lead is still small.
           </div>
         </div>
       </div>
@@ -1057,16 +1125,16 @@
       <div class="body">
         <p class="dim">After each game — first "no" = biggest leak.</p>
         <div class="mini-grid">
-          <div class="card info"><span class="badge info">01</span> Build every turn? <div class="dim">Target 0–1 zero-build turns.</div></div>
-          <div class="card info"><span class="badge info">02</span> Wasted actions? <div class="dim">Not build/enable/rule/craft = leak.</div></div>
-          <div class="card info"><span class="badge info">03</span> Over-marched? <div class="dim">Moves w/o 4-trigger = wasted.</div></div>
-          <div class="card info"><span class="badge info">04</span> Craft quality? <div class="dim">Each craft must improve action econ.</div></div>
-          <div class="card info"><span class="badge info">05</span> Engine collapse? <div class="dim">Which turn did rule break?</div></div>
-          <div class="card info"><span class="badge info">06</span> Combat justified? <div class="dim">Build / rule / high-value only.</div></div>
-          <div class="card info"><span class="badge info">07</span> Right opening? <div class="dim">Greedy/stable/workshop vs threat?</div></div>
-          <div class="card info"><span class="badge info">08</span> Building mix? <div class="dim">SM 3–4 · R 2–3 · WS 1–2</div></div>
-          <div class="card info"><span class="badge info">09</span> Multi-build turns? <div class="dim">2+ builds mid/late game?</div></div>
-          <div class="card info"><span class="badge info">10</span> Keep status? <div class="dim">Lost? Trace chain.</div></div>
+          <div class="card info"><span class="badge info">01</span> Did I commit to a win path? <div class="dim">Dominance suit/corner picked by T3?</div></div>
+          <div class="card info"><span class="badge info">02</span> Did I smother Alliance? <div class="dim">Or did I waste actions attacking bases?</div></div>
+          <div class="card info"><span class="badge info">03</span> Eyrie turmoil opportunities? <div class="dim">Did I track their recruit suit?</div></div>
+          <div class="card info"><span class="badge info">04</span> Rabbit crafting? <div class="dim">Cobbler / Command Warren / BBB landed?</div></div>
+          <div class="card info"><span class="badge info">05</span> Recruiters out fast? <div class="dim">3 recruiters = 3 cards baseline.</div></div>
+          <div class="card info"><span class="badge info">06</span> Wasted actions? <div class="dim">Not build/craft/contain/dominance = leak.</div></div>
+          <div class="card info"><span class="badge info">07</span> Lizard outcast control? <div class="dim">Did I check Lost Souls before dominance?</div></div>
+          <div class="card info"><span class="badge info">08</span> Building mix? <div class="dim">R 3 · SM 2–3 · WS 2 (rabbit) → 4</div></div>
+          <div class="card info"><span class="badge info">09</span> Wood stockpile? <div class="dim">Spend it — Eyrie/Corvids burn it.</div></div>
+          <div class="card info"><span class="badge info">10</span> Keep status? <div class="dim">Lost? Trace the chain — game-ender.</div></div>
         </div>
       </div>
     </section>

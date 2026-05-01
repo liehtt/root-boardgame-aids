@@ -1,0 +1,1228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Eyrie Dynasties — Play Aid</title>
+<style>
+  :root {
+    --bg: #0f1424;
+    --bg2: #161d33;
+    --bg3: #1d2540;
+    --bg4: #2a3456;
+    --fg: #e8e4d4;
+    --fg-dim: #9aa0bd;
+    --fg-dim2: #6a7596;
+    --border: #2a3456;
+    --border2: #3e4a72;
+    --accent: #f4c960;
+    --accent-deep: #c89420;
+    --accent-glow: rgba(244,201,96,0.25);
+    --green: #7fb069;
+    --red: #c93a3a;
+    --yellow: #f4c960;
+    --blue: #5b8fd4;
+    --purple: #a88fd4;
+    --essential: #5b8fd4;
+    --essential-glow: rgba(91,143,212,0.3);
+    --core: #f4c960;
+    --advanced: #6a7596;
+    --crimson: #c93a3a;
+    --crimson-glow: rgba(201,58,58,0.25);
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    color: var(--fg);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 14px;
+    line-height: 1.4;
+  }
+  body {
+    background:
+      radial-gradient(ellipse at 50% -10%, rgba(244,201,96,0.08) 0%, transparent 55%),
+      radial-gradient(ellipse at 10% 100%, rgba(91,143,212,0.06) 0%, transparent 50%),
+      var(--bg);
+    background-attachment: fixed;
+    min-height: 100vh;
+  }
+  body.dense { font-size: 12.5px; }
+  body.dense .tile .body { padding: 8px 10px; }
+  body.dense .card { padding: 6px 8px; margin: 4px 0; }
+  body.dense .tile h3 { padding: 8px 12px; }
+
+  .dim { color: var(--fg-dim); }
+
+  .app {
+    display: grid;
+    grid-template-columns: 230px 1fr;
+    grid-template-rows: auto auto 1fr;
+    grid-template-areas:
+      "header header"
+      "hero   hero"
+      "rail   main";
+    min-height: 100vh;
+  }
+
+  header {
+    grid-area: header;
+    position: sticky; top: 0; z-index: 100;
+    background: linear-gradient(180deg, rgba(22,29,51,0.98) 0%, rgba(15,20,36,0.92) 100%);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 2px 20px rgba(0,0,0,0.5), 0 1px 0 rgba(244,201,96,0.08) inset;
+    padding: 10px 14px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 14px;
+    align-items: center;
+    backdrop-filter: blur(10px);
+  }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; }
+  .brand .eagle {
+    width: 34px; height: 34px;
+    background: linear-gradient(135deg, #f4c960 0%, #c89420 100%);
+    color: #1a1004;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    box-shadow: 0 2px 8px rgba(200,148,32,0.45), inset 0 1px 0 rgba(255,255,255,0.25);
+  }
+  .brand .sub { color: var(--fg-dim); font-size: 11px; font-weight: 500; }
+
+  .modes {
+    display: flex;
+    gap: 0;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 3px;
+  }
+  .mode-btn {
+    padding: 6px 14px;
+    background: transparent;
+    border: none;
+    color: var(--fg-dim);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 4px;
+    letter-spacing: 0.02em;
+  }
+  .mode-btn:hover { color: var(--fg); }
+  .mode-btn.active {
+    background: linear-gradient(135deg, #f4c960 0%, #c89420 100%);
+    color: #1a1004;
+    box-shadow: 0 2px 6px rgba(200,148,32,0.4), inset 0 1px 0 rgba(255,255,255,0.25);
+  }
+  .mode-btn .count { font-size: 10px; opacity: 0.7; margin-left: 4px; }
+
+  .controls { display: flex; gap: 6px; align-items: center; }
+  .controls input {
+    height: 34px; width: 180px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    color: var(--fg);
+    padding: 0 10px;
+    font-size: 13px;
+  }
+  .controls input:focus { outline: 2px solid var(--accent); border-color: var(--accent); }
+  .btn {
+    height: 34px; padding: 0 10px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    color: var(--fg);
+    font-size: 12px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .btn:hover { background: var(--bg4); border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent-glow); }
+  .btn.active {
+    background: linear-gradient(135deg, #f4c960 0%, #c89420 100%);
+    color: #1a1004;
+    border-color: var(--accent);
+    box-shadow: 0 2px 6px rgba(200,148,32,0.4), inset 0 1px 0 rgba(255,255,255,0.25);
+  }
+
+  .hero {
+    grid-area: hero;
+    background:
+      radial-gradient(ellipse at 50% 0%, rgba(244,201,96,0.18) 0%, transparent 65%),
+      linear-gradient(180deg, rgba(42,52,86,0.5) 0%, rgba(22,29,51,0.3) 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 18px 20px 16px;
+    position: relative;
+  }
+  .hero::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; bottom: 0; height: 1px;
+    background: linear-gradient(90deg, transparent 0%, rgba(244,201,96,0.4) 50%, transparent 100%);
+  }
+  .hero-banner {
+    text-align: center;
+    font-size: clamp(20px, 3.2vw, 30px);
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    background: linear-gradient(180deg, #ffe29a 0%, #f4c960 60%, #c89420 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 16px;
+    text-shadow: 0 0 40px rgba(244,201,96,0.3);
+    filter: drop-shadow(0 2px 8px rgba(200,148,32,0.3));
+  }
+  .hero-banner .small {
+    display: block;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    color: var(--fg-dim);
+    font-weight: 700;
+    margin-bottom: 6px;
+    -webkit-text-fill-color: var(--fg-dim);
+  }
+
+  .gate-big {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+  @media (max-width: 900px) { .gate-big { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 500px) { .gate-big { grid-template-columns: 1fr; } }
+  .gate-step {
+    background: linear-gradient(180deg, rgba(42,52,86,0.8) 0%, rgba(22,29,51,0.6) 100%);
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    padding: 12px 14px 12px 34px;
+    position: relative;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(200,215,255,0.06);
+    transition: transform 150ms, box-shadow 150ms;
+  }
+  .gate-step:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(200,148,32,0.25), inset 0 1px 0 rgba(200,215,255,0.1);
+    border-color: var(--accent);
+  }
+  .gate-step .n {
+    position: absolute;
+    top: 50%; left: 10px;
+    transform: translateY(-50%);
+    width: 22px; height: 22px;
+    background: linear-gradient(135deg, #f4c960 0%, #c89420 100%);
+    color: #1a1004;
+    font-family: ui-monospace, monospace;
+    font-size: 10px;
+    font-weight: 800;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 2px 6px rgba(200,148,32,0.5), inset 0 1px 0 rgba(255,255,255,0.3);
+  }
+  .gate-step .q { font-weight: 700; font-size: 14px; color: var(--fg); }
+  .gate-step .a { font-size: 12px; color: var(--fg-dim); margin-top: 3px; }
+
+  .first-time {
+    margin-top: 14px;
+    background: linear-gradient(90deg, rgba(91,143,212,0.18) 0%, rgba(91,143,212,0.05) 100%);
+    border: 1px solid rgba(91,143,212,0.45);
+    border-left: 4px solid var(--essential);
+    border-radius: 8px;
+    padding: 11px 14px;
+    font-size: 13px;
+    display: flex; align-items: center; gap: 12px;
+    box-shadow: 0 2px 10px rgba(91,143,212,0.12), inset 0 1px 0 rgba(91,143,212,0.1);
+  }
+  .first-time .pill {
+    background: linear-gradient(135deg, #7aaae6 0%, #4070b8 100%);
+    color: #081221;
+    font-weight: 800;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    padding: 4px 10px;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+    white-space: nowrap;
+  }
+  body.mode-advanced .first-time { display: none; }
+  body.mode-all .first-time { display: none; }
+
+  .rail {
+    grid-area: rail;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    padding: 10px 6px;
+    overflow-y: auto;
+    position: sticky;
+    top: 64px;
+    height: calc(100vh - 64px);
+  }
+  .rail-group {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--fg-dim2);
+    text-transform: uppercase;
+    padding: 10px 10px 4px;
+    margin-top: 4px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .rail-group .dot { width: 8px; height: 8px; border-radius: 50%; }
+  .rail-group.g1 .dot { background: var(--essential); }
+  .rail-group.g2 .dot { background: var(--core); }
+  .rail-group.g3 .dot { background: var(--advanced); }
+
+  .rail a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 10px;
+    color: var(--fg-dim);
+    text-decoration: none;
+    font-size: 13px;
+    border-radius: 5px;
+    border-left: 3px solid transparent;
+    margin-bottom: 2px;
+  }
+  .rail a:hover { background: var(--bg3); color: var(--fg); }
+  .rail a.active {
+    background: linear-gradient(90deg, rgba(244,201,96,0.18) 0%, rgba(244,201,96,0.02) 100%);
+    color: var(--fg);
+    border-left-color: var(--accent);
+    box-shadow: inset 0 0 0 1px rgba(244,201,96,0.15);
+  }
+  .rail a .n {
+    font-family: ui-monospace, monospace;
+    font-size: 11px;
+    color: var(--fg-dim2);
+    min-width: 20px;
+  }
+  .rail a.active .n { color: var(--accent); }
+  .rail a.t1::before { content: "●"; color: var(--essential); margin-left: auto; font-size: 10px; }
+  .rail a.t2::before { content: "●"; color: var(--core); margin-left: auto; font-size: 10px; }
+  .rail a.t3::before { content: "●"; color: var(--advanced); margin-left: auto; font-size: 10px; }
+
+  body.mode-beginner .rail a.t3 { display: none; }
+  body.mode-beginner .rail-group.g3 { display: none; }
+  body.mode-advanced .rail a.t1 { display: none; }
+  body.mode-advanced .rail-group.g1 { display: none; }
+
+  main {
+    grid-area: main;
+    padding: 14px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-auto-rows: min-content;
+    grid-auto-flow: dense;
+    gap: 12px;
+    align-content: start;
+  }
+  body.dense main { gap: 8px; padding: 8px; }
+
+  .tile {
+    background: linear-gradient(180deg, rgba(29,37,64,0.88) 0%, rgba(22,29,51,0.88) 100%);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    scroll-margin-top: 80px;
+    position: relative;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4), inset 0 1px 0 rgba(200,215,255,0.04);
+    transition: transform 180ms, box-shadow 180ms;
+  }
+  .tile:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.5), 0 0 0 1px rgba(244,201,96,0.2), inset 0 1px 0 rgba(200,215,255,0.08);
+  }
+  .tile h3 {
+    margin: 0;
+    padding: 11px 14px;
+    background: linear-gradient(180deg, rgba(42,52,86,0.9) 0%, rgba(29,37,64,0.6) 100%);
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-left: 3px solid var(--accent);
+    letter-spacing: 0.01em;
+  }
+  .tile h3 .num {
+    font-family: ui-monospace, monospace;
+    font-size: 11px;
+    color: var(--fg-dim2);
+    background: var(--bg);
+    padding: 1px 6px;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+  }
+  .tile .body { padding: 10px 14px; flex: 1; }
+  .tile-badge {
+    position: absolute;
+    top: 8px; right: 10px;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    padding: 2px 7px;
+    border-radius: 3px;
+    z-index: 2;
+  }
+
+  /* TIER 1 — Essential (cobalt blue) */
+  .tile.t1 {
+    border: 2px solid var(--essential);
+    box-shadow: 0 0 0 1px var(--essential-glow), 0 6px 20px rgba(91,143,212,0.22), inset 0 1px 0 rgba(91,143,212,0.15);
+  }
+  .tile.t1:hover {
+    box-shadow: 0 0 0 1px var(--essential-glow), 0 10px 28px rgba(91,143,212,0.35), inset 0 1px 0 rgba(91,143,212,0.2);
+  }
+  .tile.t1 h3 {
+    background: linear-gradient(90deg, rgba(91,143,212,0.25) 0%, rgba(42,52,86,0.7) 100%);
+    border-left-color: var(--essential);
+    border-left-width: 4px;
+    font-size: 15px;
+  }
+  .tile.t1 h3 .priority {
+    background: linear-gradient(135deg, #7aaae6 0%, #4070b8 100%);
+    color: #081221;
+    font-family: ui-monospace, monospace;
+    font-size: 10px;
+    font-weight: 800;
+    padding: 3px 7px;
+    border-radius: 4px;
+    letter-spacing: 0.05em;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+  }
+  .tile.t1 .tile-badge {
+    background: linear-gradient(135deg, #7aaae6 0%, #4070b8 100%);
+    color: #081221;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  }
+
+  /* TIER 2 — Core (gold) */
+  .tile.t2 h3 { border-left-color: var(--core); }
+  .tile.t2 .tile-badge {
+    background: rgba(244,201,96,0.18);
+    color: var(--core);
+    border: 1px solid rgba(244,201,96,0.45);
+  }
+
+  /* TIER 3 — Advanced (muted) */
+  .tile.t3 { opacity: 0.92; }
+  .tile.t3 h3 {
+    border-left-color: var(--advanced);
+    background: rgba(29,37,64,0.6);
+    font-size: 12px;
+    color: var(--fg-dim);
+  }
+  .tile.t3 .tile-badge {
+    background: var(--bg3);
+    color: var(--fg-dim);
+    border: 1px solid var(--border2);
+  }
+  .tile.t3 .body { font-size: 13px; color: var(--fg-dim); }
+  .tile.t3 .body b { color: var(--fg); }
+
+  body.mode-beginner .tile.t3 { display: none; }
+  body.mode-advanced .tile.t1 { display: none; }
+
+  .tile.t1 { order: 1; }
+  .tile.t2 { order: 2; }
+  .tile.t3 { order: 3; }
+
+  .tile.span2 { grid-column: span 2; }
+  .tile.span3 { grid-column: span 3; }
+  @media (max-width: 1200px) { .tile.span3 { grid-column: span 2; } }
+  @media (max-width: 900px) { .tile.span2, .tile.span3 { grid-column: span 1; } }
+
+  .tile h4 {
+    margin: 8px 0 4px;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .tile ul, .tile ol { margin: 4px 0; padding-left: 20px; }
+  .tile li { margin: 2px 0; }
+  .tile p { margin: 4px 0; }
+
+  .card {
+    background: linear-gradient(180deg, rgba(42,52,86,0.75) 0%, rgba(29,37,64,0.75) 100%);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 11px;
+    margin: 6px 0;
+    box-shadow: inset 0 1px 0 rgba(200,215,255,0.05), 0 1px 2px rgba(0,0,0,0.25);
+  }
+  .card.do    { border-left-color: var(--green); }
+  .card.dont  { border-left-color: var(--red); }
+  .card.cond  { border-left-color: var(--yellow); }
+  .card.info  { border-left-color: var(--blue); }
+  .card.gold  { border-left-color: var(--accent); }
+  .card .hdr { display: flex; align-items: center; gap: 6px; margin-bottom: 3px; font-size: 12px; font-weight: 600; }
+  .card ul, .card ol { margin: 2px 0; padding-left: 18px; }
+  .card li { font-size: 12px; }
+
+  .badge {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    padding: 1px 5px;
+    border-radius: 2px;
+    text-transform: uppercase;
+  }
+  .badge.do   { background: rgba(127,176,105,0.15); color: var(--green);  border: 1px solid rgba(127,176,105,0.45); }
+  .badge.dont { background: rgba(201,58,58,0.15);  color: var(--red);    border: 1px solid rgba(201,58,58,0.5); }
+  .badge.cond { background: rgba(244,201,96,0.15); color: var(--yellow); border: 1px solid rgba(244,201,96,0.45); }
+  .badge.info { background: rgba(91,143,212,0.18); color: var(--blue);   border: 1px solid rgba(91,143,212,0.5); }
+  .badge.gold { background: rgba(244,201,96,0.2);  color: var(--accent); border: 1px solid rgba(244,201,96,0.5); }
+  .badge.extreme {
+    background: linear-gradient(135deg, #d64545 0%, #8f2020 100%);
+    color: #fff;
+    border: 1px solid #8f2020;
+    box-shadow: 0 0 8px rgba(201,58,58,0.4);
+  }
+
+  .line {
+    font-family: ui-monospace, monospace;
+    background: var(--bg);
+    padding: 4px 8px;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+    display: inline-block;
+    margin: 3px 3px 3px 0;
+    font-size: 12px;
+  }
+
+  .mini-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 6px;
+    margin: 6px 0;
+  }
+
+  .rule-big {
+    font-size: 15px;
+    text-align: center;
+    padding: 12px;
+    background: linear-gradient(180deg, rgba(201,58,58,0.2) 0%, rgba(201,58,58,0.08) 100%);
+    border: 2px solid rgba(201,58,58,0.55);
+    border-radius: 8px;
+    margin: 8px 0 10px;
+    font-weight: 700;
+    color: #ffd1c4;
+    box-shadow: 0 0 20px var(--crimson-glow), inset 0 1px 0 rgba(255,180,165,0.12);
+    letter-spacing: 0.01em;
+  }
+
+  .rule-gold {
+    font-size: 14px;
+    text-align: center;
+    padding: 10px 12px;
+    background: linear-gradient(180deg, rgba(244,201,96,0.15) 0%, rgba(244,201,96,0.05) 100%);
+    border: 1px solid rgba(244,201,96,0.5);
+    border-radius: 8px;
+    margin: 8px 0;
+    font-weight: 700;
+    color: var(--accent);
+    box-shadow: inset 0 1px 0 rgba(255,225,160,0.12);
+    font-style: italic;
+  }
+
+  .formula {
+    font-family: ui-monospace, monospace;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 6px 10px;
+    margin: 6px 0;
+    font-size: 13px;
+    color: var(--accent);
+    text-align: center;
+  }
+
+  .leader-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 8px;
+    margin: 6px 0;
+  }
+  .leader {
+    background: linear-gradient(180deg, rgba(42,52,86,0.8) 0%, rgba(29,37,64,0.8) 100%);
+    border: 1px solid var(--border2);
+    border-top: 3px solid var(--accent);
+    border-radius: 6px;
+    padding: 10px 11px;
+  }
+  .leader .name {
+    font-weight: 800;
+    color: var(--accent);
+    font-size: 14px;
+    letter-spacing: 0.02em;
+  }
+  .leader .role {
+    font-size: 11px;
+    color: var(--fg-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 6px;
+  }
+  .leader .fn { font-size: 12px; margin: 4px 0; }
+  .leader .when {
+    font-size: 11px;
+    color: var(--fg-dim);
+    border-top: 1px dashed var(--border);
+    padding-top: 6px;
+    margin-top: 6px;
+  }
+  .leader .when b { color: var(--blue); }
+
+  .hidden { display: none !important; }
+  .dimmed { opacity: 0.15; pointer-events: none; }
+
+  .kbd {
+    display: inline-block;
+    font-family: ui-monospace, monospace;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-bottom-width: 2px;
+    border-radius: 3px;
+    padding: 0 5px;
+    font-size: 11px;
+  }
+
+  @media (max-width: 900px) {
+    .app { grid-template-columns: 1fr; grid-template-areas: "header" "hero" "main"; }
+    .rail { display: none; }
+    header { grid-template-columns: 1fr; gap: 8px; }
+    .controls input { width: 100%; }
+    .controls { flex-wrap: wrap; }
+  }
+
+  @media print {
+    body { background: #fff; color: #000; font-size: 9pt; }
+    header, .rail, .controls, .modes, .first-time { display: none; }
+    .app { display: block; }
+    .hero { background: #eee; color: #000; padding: 8px; }
+    .hero-banner { color: #000; -webkit-text-fill-color: #000; }
+    .gate-step { background: #fff; color: #000; border: 1px solid #666; }
+    main { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; padding: 0; }
+    .tile { border: 1px solid #666; page-break-inside: avoid; background: #fff; opacity: 1 !important; display: flex !important; box-shadow: none !important; }
+    .tile h3 { background: #eee; color: #000; font-size: 11pt !important; }
+    .tile.span2, .tile.span3 { grid-column: span 2; }
+    .card { background: #f6f6f6; color: #000; border: 1px solid #999; }
+    .badge, .tile-badge { border: 1px solid #000; color: #000; background: #eee; }
+    .leader { background: #fff; border: 1px solid #666; }
+  }
+</style>
+</head>
+<body class="mode-beginner">
+
+<div class="app">
+
+  <header>
+    <div class="brand">
+      <div class="eagle">🦅</div>
+      <div>
+        <div>Eyrie Dynasties</div>
+        <div class="sub">Ultimate Strategy Compiler · v3.0</div>
+      </div>
+    </div>
+
+    <div class="modes" role="tablist">
+      <button class="mode-btn active" data-mode="beginner">Beginner<span class="count">5 tiles</span></button>
+      <button class="mode-btn" data-mode="all">All<span class="count">15</span></button>
+      <button class="mode-btn" data-mode="advanced">Advanced<span class="count">10</span></button>
+    </div>
+
+    <div class="controls">
+      <input id="search" type="search" placeholder="🔍 Filter… /" aria-label="Filter">
+      <button class="btn" id="dense" title="Dense (D)">Dense</button>
+      <button class="btn" id="reset" title="Reset (R)">Reset</button>
+    </div>
+  </header>
+
+  <div class="hero">
+    <div class="hero-banner">
+      <span class="small">THE ONE RULE</span>
+      Plan for Turmoil. Hoard your Birds. Push 2 cards into the Decree every turn.
+    </div>
+
+    <div class="gate-big" aria-label="Pre-Birdsong Audit">
+      <div class="gate-step">
+        <span class="n">01</span>
+        <div class="q">Recruit safe?</div>
+        <div class="a">≥2 roosts of that suit? Never recruit on a 1-roost suit.</div>
+      </div>
+      <div class="gate-step">
+        <span class="n">02</span>
+        <div class="q">Targeting</div>
+        <div class="a">Legal Battle &amp; Build targets for every suit in the Decree?</div>
+      </div>
+      <div class="gate-step">
+        <span class="n">03</span>
+        <div class="q">Supply</div>
+        <div class="a">Enough warriors? Default = dump into Move (it's nearly always safe).</div>
+      </div>
+      <div class="gate-step">
+        <span class="n">04</span>
+        <div class="q">Turmoil exit</div>
+        <div class="a">Bird card in hand to restart the new Decree?</div>
+      </div>
+    </div>
+
+    <div class="first-time">
+      <span class="pill">START HERE</span>
+      <div>New to Eyrie? The <b>5 blue-bordered tiles below</b> cover Decree maintenance, leader sequencing (Charismatic → Commander/Despot), and the recruit-vs-move safety asymmetry. Get these right and Turmoil becomes a planned reset, not a crash.</div>
+    </div>
+  </div>
+
+  <aside class="rail" aria-label="Section navigation">
+    <div class="rail-group g1"><span class="dot"></span> Essential</div>
+    <a href="#s3" class="t1"><span class="n">03</span>Decree Logic (TRT/SFC)</a>
+    <a href="#s2" class="t1"><span class="n">02</span>Leader Matrix</a>
+    <a href="#s9" class="t1"><span class="n">09</span>Pre-Turn Audit</a>
+    <a href="#s5" class="t1"><span class="n">05</span>Rule of 1 vs Rule of 3</a>
+    <a href="#sC" class="t1"><span class="n">★</span>Crash Patterns</a>
+
+    <div class="rail-group g2"><span class="dot"></span> Core</div>
+    <a href="#s1" class="t2"><span class="n">01</span>Core Philosophy</a>
+    <a href="#s4" class="t2"><span class="n">04</span>Triangle Strategy</a>
+    <a href="#s6" class="t2"><span class="n">06</span>Card Economy</a>
+    <a href="#s7" class="t2"><span class="n">07</span>Controlled Turmoil</a>
+    <a href="#sCR" class="t2"><span class="n">★</span>Crafting</a>
+    <a href="#sMA" class="t2"><span class="n">★</span>Matchups</a>
+    <a href="#sM" class="t2"><span class="n">★</span>Mental Model</a>
+
+    <div class="rail-group g3"><span class="dot"></span> Advanced</div>
+    <a href="#sAT" class="t3"><span class="n">★</span>Advanced Tactics</a>
+    <a href="#s8" class="t3"><span class="n">08</span>Map Adaptations</a>
+    <a href="#sP" class="t3"><span class="n">★</span>Probability &amp; Variance</a>
+  </aside>
+
+  <main>
+
+    <!-- ===================== TIER 1 ===================== -->
+
+    <section class="tile t1 span2" id="s3" data-keys="decree programming logic trt sfc targeting supply feasibility reliability recruit move build battle">
+      <span class="tile-badge">ESSENTIAL</span>
+      <h3><span class="num">03</span><span class="priority">PRIORITY 1</span>Decree — The 5 Maintenance Rules</h3>
+      <div class="body">
+        <p><b>Every card added is a dependency.</b> The Decree's safety differs sharply by column. Treat columns asymmetrically.</p>
+
+        <h4>BGG Decree Rules</h4>
+        <div class="card dont">
+          <div class="hdr"><span class="badge dont">1. Recruit is a trap</span></div>
+          Two failure modes: run out of warriors <i>or</i> get turmoiled because opponents kill your only roost in that suit (you can't prevent it on your turn).<br>
+          <b>Never put Recruit into a suit where you have only 1 roost.</b>
+        </div>
+        <div class="card do">
+          <div class="hdr"><span class="badge do">2. Move is nearly always safe</span></div>
+          Eyrie almost <b>never</b> turmoils on Move. When in doubt, dump cards there.
+        </div>
+        <div class="card do">
+          <div class="hdr"><span class="badge do">3. Push 2 cards/turn into the Decree</span></div>
+          More actions = more momentum. Even just 2× Move is fine. Ambition pays.
+        </div>
+        <div class="card cond">
+          <div class="hdr"><span class="badge cond">4. Don't lean on Bird cards</span></div>
+          The fewer Birds in the Decree, the cheaper Turmoil is. Hoard them for emergencies (suit-locks, crafting saves, post-Turmoil restarts).
+        </div>
+        <div class="card info">
+          <div class="hdr"><span class="badge info">5. Turmoil is OK if planned</span></div>
+          Turmoil on Build with few Birds = small loss. With all roosts down you snap most VP back instantly.
+        </div>
+
+        <h4>Targeting &amp; Supply Checks</h4>
+        <div class="mini-grid">
+          <div class="card info">
+            <div class="hdr"><span class="badge info">Battle-suit</span></div>
+            Add only with a guaranteed target: stationary Sawmill, Sympathy, defenseless Vagabond, or a clearing you reliably reach.
+          </div>
+          <div class="card info">
+            <div class="hdr"><span class="badge info">Build-suit</span></div>
+            Sequence a Move <b>before</b> it if no current empty slot.
+          </div>
+        </div>
+        <div class="formula">If&nbsp; Units<sub>Supply</sub> &lt; Units<sub>Decree-Recruit</sub> &nbsp;→ CRASH</div>
+      </div>
+    </section>
+
+    <section class="tile t1 span2" id="s2" data-keys="leader matrix builder despot charismatic commander failure mode opening sequence turn order">
+      <span class="tile-badge">ESSENTIAL</span>
+      <h3><span class="num">02</span><span class="priority">PRIORITY 2</span>Leader Sequencing</h3>
+      <div class="body">
+        <p>Leaders aren't picked in isolation — they form a <b>sequence</b>. Default arc: <b>Charismatic (open) → Commander or Despot (close)</b>.</p>
+
+        <div class="leader-grid">
+          <div class="leader">
+            <div class="name">Charismatic <span class="badge gold">1st choice</span></div>
+            <div class="role">The Engine — Open With This</div>
+            <div class="fn">+1 recruit per Recruit action. Get all your roosts &amp; warriors out fast, then turmoil early to swap leader.</div>
+            <div class="when"><b>2-card opening:</b> 1 card matching home suit (→ Move) + 1 card matching the suit shared by 2 adjacent clearings (→ Build). Won't turmoil until end of T4.<br><b>Falls off:</b> late-game, too many warriors → recruit-turmoil risk.</div>
+          </div>
+          <div class="leader">
+            <div class="name">Builder <span class="badge cond">Backup open</span></div>
+            <div class="role">The Stabilizer</div>
+            <div class="fn">Bird-in-recruit and bird-in-move are safe defaults. Score VP via crafted items.</div>
+            <div class="when"><b>Use when:</b> cards don't enable Charismatic (no home-suit / no shared-suit pair). Slow down, recruit more, lean on crafts.<br><b>Don't:</b> use Builder late unless sitting on unbuilt high-VP crafts.</div>
+          </div>
+          <div class="leader">
+            <div class="name">Commander <span class="badge info">1st follow-up</span></div>
+            <div class="role">The Enforcer — Classic Charismatic Follow-up</div>
+            <div class="fn">+1 Hit in attack. Eyrie is the only faction that can land <b>5 hits in one combat</b>.</div>
+            <div class="when"><b>Use when:</b> roosts already down → you've won, just protect the board. Or open with it to dent a stubborn faction. <b>Synergy:</b> Brutal Tactics + Commander = 2 free hits, applied <i>after</i> rolls.</div>
+          </div>
+          <div class="leader">
+            <div class="name">Despot <span class="badge info">Late swap</span></div>
+            <div class="role">The Scaler — VP From Cardboard</div>
+            <div class="fn">+1 VP per building/token you remove in battle.</div>
+            <div class="when"><b>Open with Despot only for:</b> a no-turmoil game vs token-heavy factions (Alliance — sympathy = "VP biscuits"). <b>Don't</b> open with Despot just for the bird-in-build then swap — not enough warriors out.<br><b>Best swap target:</b> after Charismatic if you didn't get all roosts down.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="tile t1" id="s9" data-keys="failure mode checklist audit birdsong internal">
+      <span class="tile-badge">ESSENTIAL</span>
+      <h3><span class="num">09</span><span class="priority">PRIORITY 3</span>Pre-Turn Audit</h3>
+      <div class="body">
+        <p class="dim">Run at start of every Birdsong. Any "no" = fix before adding to Decree.</p>
+        <div class="card info">
+          <div class="hdr"><span class="badge info">1</span> Recruit safety</div>
+          ≥2 roosts in that suit? Buffer warriors in supply (2–3)?
+        </div>
+        <div class="card info">
+          <div class="hdr"><span class="badge info">2</span> Targeting</div>
+          Battle/Build has a real target? Or sequence Move first.
+        </div>
+        <div class="card info">
+          <div class="hdr"><span class="badge info">3</span> Bird discipline</div>
+          Holding ≥1 Bird for emergencies? Don't dump them all into Decree.
+        </div>
+        <div class="card info">
+          <div class="hdr"><span class="badge info">4</span> External Threat</div>
+          Can WA Revolt, Vagabond Strike, or Otter hit-squad pop a critical roost?
+        </div>
+        <div class="card info">
+          <div class="hdr"><span class="badge info">5</span> Turmoil exit</div>
+          If I turmoil now, do I have a Bird to relaunch and a roost to score from?
+        </div>
+      </div>
+    </section>
+
+    <section class="tile t1" id="s5" data-keys="combat rule of 1 rule of 3 threshold durability lords forest brutal tactics 5 hits gardens">
+      <span class="tile-badge">ESSENTIAL</span>
+      <h3><span class="num">05</span><span class="priority">PRIORITY 4</span>Combat — You Hit Hardest</h3>
+      <div class="body">
+        <div class="card gold">
+          <span class="badge gold">5-hit ceiling</span>
+          Eyrie is the <b>only faction</b> that can land <b>5 hits in one combat</b> (Commander +1 + Brutal Tactics +1 + dice). Use it on stubborn defenders.
+        </div>
+        <div class="card do">
+          <div class="hdr"><span class="badge do">Rule of 1</span> Control</div>
+          Single warrior rules on ties (Lords of the Forest). Spread thin to maximize action coverage.
+        </div>
+        <div class="card cond">
+          <div class="hdr"><span class="badge cond">Rule of 3</span> Durability</div>
+          Vs <b>Marquise / Duchy / Otter hit-squads</b>: upgrade key roosts to 2–3 warriors.
+        </div>
+        <h4>Killer Synergies</h4>
+        <ul>
+          <li><b>Brutal Tactics + Commander</b> = 2 free hits, applied <i>after</i> the rolls. Insane vs Alliance.</li>
+          <li><b>Armorers / Sappers</b> = defend roosts without burning Recruit actions.</li>
+        </ul>
+        <h4>Mandatory Battle Rule</h4>
+        <div class="card dont">
+          <span class="badge dont">Never</span>
+          Take a mandatory battle unless success is near-certain. A failed mandatory = forced Turmoil.
+        </div>
+        <div class="card dont">
+          <span class="badge dont">Vs Lizards</span>
+          Always kill the <b>Garden</b>, not just warriors. Killing only their warriors helps them.
+        </div>
+      </div>
+    </section>
+
+    <section class="tile t1" id="sC" data-keys="crash patterns failure modes beginner mistakes common">
+      <span class="tile-badge">ESSENTIAL</span>
+      <h3><span class="num">★</span><span class="priority">PRIORITY 5</span>Common Crash Patterns</h3>
+      <div class="body">
+        <p class="dim">Avoid these = Turmoil spirals stop.</p>
+        <div class="card dont"><div class="hdr"><span class="badge dont">1</span> Recruit on a 1-roost suit</div>One opponent strike → guaranteed Turmoil.</div>
+        <div class="card dont"><div class="hdr"><span class="badge dont">2</span> Bird-heavy Decree</div>Turmoil cost balloons; you also lose your emergency currency.</div>
+        <div class="card dont"><div class="hdr"><span class="badge dont">3</span> Crafting Birds for 1 VP</div>Save them for suit-locks &amp; post-Turmoil restarts.</div>
+        <div class="card dont"><div class="hdr"><span class="badge dont">4</span> Despot-first &amp; swap</div>Not enough warriors out — pick Charismatic or Builder to open.</div>
+        <div class="card dont"><div class="hdr"><span class="badge dont">5</span> Turmoil with empty hand</div>No Bird = dead rounds. Hold one before pulling the trigger.</div>
+      </div>
+    </section>
+
+    <!-- ===================== TIER 2 ===================== -->
+
+    <section class="tile t2" id="s1" data-keys="core philosophy constraint satisfaction decree overclock sprint">
+      <span class="tile-badge">CORE</span>
+      <h3><span class="num">01</span>Core Philosophy</h3>
+      <div class="body">
+        <div class="card gold">
+          <div class="hdr"><span class="badge gold">Reframe</span></div>
+          Eyrie is <b>NOT</b> a maximization problem ("how many actions?"). It is a <b>Constraint Satisfaction Problem</b>.
+        </div>
+        <h4>Target</h4>
+        <ul>
+          <li>Maintain <b>4–5 actions</b> (stable, minimally sufficient)</li>
+          <li>Convert board presence → consistent VP</li>
+        </ul>
+        <h4>Overclock (6+ actions)</h4>
+        <div class="card cond">
+          Only in the <b>Sprint Phase</b> — last 2 turns, when victory is mathematically guaranteed.
+        </div>
+      </div>
+    </section>
+
+    <section class="tile t2 span2" id="s4" data-keys="triangle positional strategy multi suit fox rabbit mouse radial redundancy">
+      <span class="tile-badge">CORE</span>
+      <h3><span class="num">04</span>Triangle Strategy</h3>
+      <div class="body">
+        <p><b>Abandon linear expansion.</b> Aim for <b>Triangle Control</b> — rule 3 adjacent clearings of different suits (Fox / Rabbit / Mouse).</p>
+        <div class="mini-grid">
+          <div class="card do">
+            <span class="badge do">Redundancy</span>
+            If one node is blocked, the other two provide valid Move/Battle targets.
+          </div>
+          <div class="card do">
+            <span class="badge do">Radial Mobility</span>
+            Reach more of the map with fewer Move actions.
+          </div>
+          <div class="card do">
+            <span class="badge do">Stability</span>
+            Resists suit-locking by opponents.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="tile t2" id="s6" data-keys="card economy error correction bird valuation hand filtering throughput roost draw">
+      <span class="tile-badge">CORE</span>
+      <h3><span class="num">06</span>Card Economy</h3>
+      <div class="body">
+        <div class="card gold">
+          <span class="badge gold">Principle</span>
+          Hand = <b>Error Correction Bandwidth</b>.
+        </div>
+        <h4>Bird Valuation</h4>
+        <div class="card info">
+          Treat Birds as <b>gold</b>. Never craft them for 1 VP.<br>
+          Save to: fix a suit-locked Decree · recover post-Turmoil.
+        </div>
+        <h4>Hand Filtering</h4>
+        <ul>
+          <li><b>Hold:</b> high-value crafts (Builder) · Birds</li>
+          <li><b>Dump:</b> suits that don't match your Triangle</li>
+        </ul>
+        <h4>Throughput</h4>
+        <div class="card do">
+          Build <b>Roosts early</b> → more cards/turn → more options to pivot Decree.
+        </div>
+      </div>
+    </section>
+
+    <section class="tile t2" id="s7" data-keys="turmoil controlled reset pivot leader swap sprint window">
+      <span class="tile-badge">CORE</span>
+      <h3><span class="num">07</span>Controlled Turmoil</h3>
+      <div class="body">
+        <div class="rule-big">Turmoil is a strategic RESET, not a failure.</div>
+        <h4>Cheap Turmoils</h4>
+        <div class="card do">
+          <ul>
+            <li><b>Build column, few Birds</b> — minimal VP loss; roosts already on board snap most VP back</li>
+            <li>Charismatic → Commander or Despot (after roosts down)</li>
+          </ul>
+        </div>
+        <h4>Expensive Turmoils — avoid</h4>
+        <div class="card dont">
+          <ul>
+            <li><b>Recruit-suit Turmoil</b> — usually means you ran out of warriors or lost your roosts. Often unrecoverable.</li>
+            <li><b>Bird-heavy Decree</b> — every Bird discarded = a planned action you'll never do.</li>
+          </ul>
+        </div>
+        <h4>Requirements before pulling the trigger</h4>
+        <div class="card cond">
+          <ul>
+            <li>≥1 Bird in hand to relaunch</li>
+            <li>Roosts already mostly down (so VP recovery is fast)</li>
+            <li>Next leader chosen, fits the board state</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="tile t2" id="sM" data-keys="mental model one line rule reframe mindset lean decree">
+      <span class="tile-badge">CORE</span>
+      <h3><span class="num">★</span>Mental Model</h3>
+      <div class="body">
+        <div class="card dont">
+          <div class="hdr"><span class="badge dont">Stop thinking</span></div>
+          "How many actions can I get?"
+        </div>
+        <div class="card do">
+          <div class="hdr"><span class="badge do">Start thinking</span></div>
+          "Can I reliably <b>execute</b> every action in my Decree?"
+        </div>
+        <div class="rule-gold">
+          "A lean Decree is a resilient program; only Overclock when the victory is mathematically guaranteed."
+        </div>
+      </div>
+    </section>
+
+    <section class="tile t2 span2" id="sCR" data-keys="crafting brutal tactics tax collectors armorers sappers items birds upgrades">
+      <span class="tile-badge">CORE</span>
+      <h3><span class="num">★</span>Crafting — Upgrades Beat Items</h3>
+      <div class="body">
+        <p>Item crafting is opportunistic — most plays are 1-VP filler. <b>Upgrade crafting</b> is where Eyrie gets real leverage. Don't conflate the two.</p>
+        <div class="leader-grid">
+          <div class="leader">
+            <div class="name">Brutal Tactics</div>
+            <div class="role">S-Tier Synergy</div>
+            <div class="fn">+1 Hit per battle, opponent gets +1 VP. Stack with <b>Commander</b> for 2 free hits, applied <i>after</i> the rolls.</div>
+            <div class="when"><b>Devastating vs Alliance bases</b> (≤2 warriors).</div>
+          </div>
+          <div class="leader">
+            <div class="name">Tax Collectors</div>
+            <div class="role">Decree Pressure-Valve</div>
+            <div class="fn">Trim 1 excess warrior/turn → delays Recruit-Turmoil. Bonus card draw.</div>
+            <div class="when"><b>Use when:</b> Charismatic late game, supply tightening.</div>
+          </div>
+          <div class="leader">
+            <div class="name">Armorers / Sappers</div>
+            <div class="role">Defensive Plates</div>
+            <div class="fn">Negate enemy hits → defend roosts without burning Recruit. Wasteful for Cats — fine for you.</div>
+            <div class="when"><b>Use when:</b> facing repeated Marquise / Duchy assaults.</div>
+          </div>
+          <div class="leader">
+            <div class="name">Royal Claim / Stand &amp; Deliver</div>
+            <div class="role">Bird-Card Misc</div>
+            <div class="fn">Situational; only craft if a Bird is otherwise dead weight in hand.</div>
+            <div class="when"><b>Don't</b> craft Birds for 1 VP items — your error currency.</div>
+          </div>
+        </div>
+        <div class="card dont"><span class="badge dont">Vagabond watch</span> Don't feed their crafting kit. If you're ahead on items, slow-roll the next item-craft.</div>
+      </div>
+    </section>
+
+    <section class="tile t2 span2" id="sMA" data-keys="matchups marquise alliance lizard vagabond riverfolk otter cats gardens sympathy">
+      <span class="tile-badge">CORE</span>
+      <h3><span class="num">★</span>Matchups</h3>
+      <div class="body">
+        <div class="mini-grid" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));">
+          <div class="card cond">
+            <div class="hdr"><span class="badge cond">Marquise (Cats)</span></div>
+            <b>Frenemy.</b> Mid-game, you both benefit from suppressing minor factions — quietly cooperate. End-game, your roosts make you a target. <b>Brutal Tactics + Commander</b> can shred their recruiters or even the Keep.
+          </div>
+          <div class="card dont">
+            <div class="hdr"><span class="badge dont">Woodland Alliance</span></div>
+            Sympathy = "VP biscuits" for Despot. Eat 1–2/turn, but <b>don't get greedy</b> — Alliance scoring on Outrage/Mobilize bursts hard if they're flush with cards.<br>
+            <b>Hit bases of ≤2 warriors</b> with Commander/Brutal Tactics. ≥3 warriors = they've already won the fight.
+          </div>
+          <div class="card dont">
+            <div class="hdr"><span class="badge dont">Lizard Cult</span></div>
+            <b>Always kill the Garden, not just warriors.</b> Killing only warriors helps them recycle the outcast suit. Plan attacks so the building dies in the same battle.
+          </div>
+          <div class="card dont">
+            <div class="hdr"><span class="badge dont">Riverfolk (Otter)</span></div>
+            Otter <b>hit-squads</b> ferry warriors deep to pop undefended roosts in one action. Always 2+ warriors on isolated roosts that border rivers.
+          </div>
+          <div class="card cond">
+            <div class="hdr"><span class="badge cond">Vagabond</span></div>
+            Same threat model as Otter — strikes undefended roosts. Hostile = your territory becomes molasses for them. Don't craft items that fuel their kit.
+          </div>
+          <div class="card cond">
+            <div class="hdr"><span class="badge cond">Corvid / Duchy / Keepers</span></div>
+            Generic playbook: protect roosts with Rule of 3, watch for plot bombs, race their unique scoring path. Brutal Tactics + Commander handles tunnels &amp; waystations.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== TIER 3 ===================== -->
+
+    <section class="tile t3 span2" id="s8" data-keys="map adaptations autumn winter lake mountain threat level">
+      <span class="tile-badge">ADVANCED</span>
+      <h3><span class="num">08</span>Map-Specific Adaptations</h3>
+      <div class="body">
+        <p class="dim">The map dictates the "shape" of your script.</p>
+        <div class="mini-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
+          <div class="card do">
+            <div class="hdr"><span class="badge do">Autumn</span> LOW</div>
+            Ideal for Triangle Strategy. <b>Maximum flexibility.</b>
+          </div>
+          <div class="card cond">
+            <div class="hdr"><span class="badge cond">Winter</span> MEDIUM</div>
+            Higher variance — suits are randomized per card. <b>Prioritize Birds.</b>
+          </div>
+          <div class="card cond">
+            <div class="hdr"><span class="badge cond">Lake</span> MEDIUM</div>
+            Use the Ferry for mobility redundancy and <b>surprise Triangle shifts</b>.
+          </div>
+          <div class="card dont">
+            <div class="hdr"><span class="badge extreme">Mountain</span> EXTREME</div>
+            <b>Anti-Eyrie map.</b> Choke points + forced linear pathing make TRT much harder.
+          </div>
+        </div>
+        <div class="card dont">
+          <div class="hdr"><span class="badge dont">Mountain Survival</span></div>
+          <ul>
+            <li>Do <b>NOT</b> attempt a large Triangle</li>
+            <li>Focus on <b>holding the Pass</b></li>
+            <li>Prioritize <b>Commander</b> to force through blocked nodes</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="tile t3 span2" id="sAT" data-keys="advanced tactics opening hand pick leader shedding warriors table talk royal claim ruling clearing tournament data">
+      <span class="tile-badge">ADVANCED</span>
+      <h3><span class="num">★</span>Advanced Tactics</h3>
+      <div class="body">
+        <div class="mini-grid" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));">
+          <div class="card do">
+            <div class="hdr"><span class="badge do">Hand-first leader pick</span></div>
+            Before flipping a leader, simulate turn 1's Decree: do you have movement out of your start? If not, <b>don't pick Charismatic</b> — you'll turmoil immediately.
+          </div>
+          <div class="card do">
+            <div class="hdr"><span class="badge do">Battle = warrior-shedder</span></div>
+            Use Battle actions to <b>burn excess warriors</b> and prevent Recruit-Turmoil from a swelling supply (similar to Tax Collectors but on demand).
+          </div>
+          <div class="card do">
+            <div class="hdr"><span class="badge do">Move = uncertainty buffer</span></div>
+            When unsure of next-turn legality, <b>route the card into Move</b>. It almost never causes Turmoil and rarely costs tempo.
+          </div>
+          <div class="card cond">
+            <div class="hdr"><span class="badge cond">Rule, don't eliminate</span></div>
+            You only need to <b>rule</b> a clearing to place a roost — eliminating all enemy warriors isn't required. Cheaper than it looks.
+          </div>
+          <div class="card cond">
+            <div class="hdr"><span class="badge cond">Decree as table-talk shield</span></div>
+            "Nothing personal — fox clearing was on my Decree." Use mandatory framing to deflect heat from aggressive plays.
+          </div>
+          <div class="card info">
+            <div class="hdr"><span class="badge info">Royal Claim = discard scoring</span></div>
+            Royal Claim scores on <b>discard</b>, not on play. Pairs cleanly with any leader's workflow.
+          </div>
+          <div class="card cond">
+            <div class="hdr"><span class="badge cond">Tournament data</span></div>
+            Tracked-game data: <b>Charismatic 71% / Despot 29%</b> opening picks. Turmoil correlated with <b>0 wins</b> in one dataset — even a "controlled" Turmoil is high-risk. Plan it, don't romanticize it.
+          </div>
+          <div class="card dont">
+            <div class="hdr"><span class="badge dont">Don't telegraph weak roosts</span></div>
+            Lone roosts on river/forest edges advertise to Otters/Vagabond. Either fortify (Rule of 3) or accept the loss in advance.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="tile t3" id="sP" data-keys="probability variance commander despot dice math risk assessment">
+      <span class="tile-badge">ADVANCED</span>
+      <h3><span class="num">★</span>Probability &amp; Variance</h3>
+      <div class="body">
+        <h4>Risk Assessment</h4>
+        <div class="card dont">
+          Never take a <b>mandatory battle</b> unless success is near-certain. A failed mandatory battle forces Turmoil.
+        </div>
+        <h4>Variance Reduction</h4>
+        <ul>
+          <li>Dice rolls 0-0 and 1-0 cause <b>failure cascades</b></li>
+          <li>Commander's <b>+1 Hit</b> eliminates the 0-hit outcome entirely</li>
+          <li>Despot + Commander pairing = best variance profile for mid-game sweep</li>
+        </ul>
+        <div class="formula">P(kill | Commander) ≫ P(kill | Builder)</div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+(function(){
+  const tiles = () => document.querySelectorAll('.tile');
+  const railLinks = document.querySelectorAll('.rail a');
+  const search = document.getElementById('search');
+  const denseBtn = document.getElementById('dense');
+  const resetBtn = document.getElementById('reset');
+  const modeBtns = document.querySelectorAll('.mode-btn');
+
+  function setMode(mode) {
+    document.body.classList.remove('mode-beginner','mode-all','mode-advanced');
+    document.body.classList.add('mode-' + mode);
+    modeBtns.forEach(b => b.classList.toggle('active', b.dataset.mode === mode));
+    try { localStorage.setItem('eyrie-mode', mode); } catch(e){}
+  }
+  modeBtns.forEach(b => b.addEventListener('click', () => setMode(b.dataset.mode)));
+  try { const s = localStorage.getItem('eyrie-mode'); if (s) setMode(s); } catch(e){}
+
+  denseBtn.addEventListener('click', () => {
+    document.body.classList.toggle('dense');
+    denseBtn.classList.toggle('active');
+  });
+
+  resetBtn.addEventListener('click', () => {
+    search.value = '';
+    applyFilter('');
+    document.body.classList.remove('dense');
+    denseBtn.classList.remove('active');
+    setMode('beginner');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  function applyFilter(q) {
+    q = q.trim().toLowerCase();
+    tiles().forEach(t => {
+      if (!q) { t.classList.remove('dimmed'); return; }
+      const hay = (t.getAttribute('data-keys') || '') + ' ' + t.textContent.toLowerCase();
+      t.classList.toggle('dimmed', !hay.includes(q));
+    });
+  }
+  search.addEventListener('input', e => applyFilter(e.target.value));
+
+  document.addEventListener('keydown', e => {
+    const tag = (e.target.tagName || '').toLowerCase();
+    const typing = tag === 'input' || tag === 'textarea';
+    if (e.key === '/' && !typing) { e.preventDefault(); search.focus(); return; }
+    if (e.key === 'Escape') { search.value=''; applyFilter(''); search.blur(); return; }
+    if (typing) return;
+    if (e.key.toLowerCase() === 'd') { denseBtn.click(); return; }
+    if (e.key.toLowerCase() === 'r') { resetBtn.click(); return; }
+    if (e.key.toLowerCase() === 'b') { setMode('beginner'); return; }
+    if (e.key.toLowerCase() === 'a') { setMode('all'); return; }
+    if (e.key.toLowerCase() === 'v') { setMode('advanced'); return; }
+    if (/^[1-9]$/.test(e.key)) {
+      const el = document.getElementById('s' + e.key);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+
+  const idToLink = {};
+  railLinks.forEach(a => {
+    const id = a.getAttribute('href').slice(1);
+    idToLink[id] = a;
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        railLinks.forEach(a => a.classList.remove('active'));
+        const link = idToLink[entry.target.id];
+        if (link) link.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-80px 0px -60% 0px', threshold: 0 });
+  tiles().forEach(t => observer.observe(t));
+})();
+</script>
+</body>
+</html>
