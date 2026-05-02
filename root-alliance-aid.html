@@ -530,6 +530,126 @@
   }
   .math-row .lbl { font-size: 11px; color: var(--fg-dim); margin-top: 2px; }
 
+  /* Plain-English callouts */
+  .scenario {
+    background: linear-gradient(180deg, rgba(107,163,196,0.14) 0%, rgba(107,163,196,0.04) 100%);
+    border: 1px solid rgba(107,163,196,0.4);
+    border-left: 4px solid var(--blue);
+    border-radius: 6px;
+    padding: 9px 12px;
+    margin: 8px 0;
+    font-size: 13px;
+  }
+  .scenario .label {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 4px;
+  }
+  .tldr {
+    background: linear-gradient(90deg, rgba(127,176,105,0.13) 0%, transparent 100%);
+    border-left: 3px solid var(--green);
+    padding: 6px 10px;
+    margin: 6px 0;
+    font-size: 13px;
+    border-radius: 0 4px 4px 0;
+  }
+  .tldr b { color: var(--green); }
+  .why {
+    background: linear-gradient(90deg, rgba(227,179,65,0.10) 0%, transparent 100%);
+    border-left: 3px solid var(--yellow);
+    padding: 6px 10px;
+    margin: 6px 0;
+    font-size: 13px;
+    border-radius: 0 4px 4px 0;
+  }
+  .why b { color: var(--yellow); }
+
+  /* Glossary entries */
+  .glossary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 8px;
+    margin: 6px 0;
+  }
+  .term {
+    background: linear-gradient(180deg, rgba(36,55,44,0.7) 0%, rgba(26,42,31,0.7) 100%);
+    border: 1px solid var(--border2);
+    border-radius: 6px;
+    padding: 9px 11px;
+  }
+  .term .word {
+    font-weight: 800;
+    color: var(--accent);
+    font-size: 13px;
+    letter-spacing: 0.01em;
+  }
+  .term .defn {
+    font-size: 12px;
+    color: var(--fg);
+    margin-top: 3px;
+    line-height: 1.45;
+  }
+
+  /* Turn-phase visualization */
+  .phases {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin: 8px 0;
+  }
+  @media (max-width: 600px) { .phases { grid-template-columns: 1fr; } }
+  .phase {
+    background: linear-gradient(180deg, rgba(36,55,44,0.85) 0%, rgba(26,42,31,0.85) 100%);
+    border: 1px solid var(--border2);
+    border-top: 3px solid var(--accent);
+    border-radius: 6px;
+    padding: 10px 11px;
+  }
+  .phase .ph-name {
+    font-weight: 800;
+    color: var(--accent);
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .phase .ph-when {
+    font-size: 11px;
+    color: var(--fg-dim);
+    margin-bottom: 6px;
+  }
+  .phase ul { padding-left: 16px; margin: 4px 0; }
+  .phase li { font-size: 12px; }
+
+  /* Worked-example block */
+  .example {
+    background: linear-gradient(180deg, rgba(176,124,196,0.12) 0%, rgba(176,124,196,0.04) 100%);
+    border: 1px solid rgba(176,124,196,0.4);
+    border-left: 4px solid var(--purple);
+    border-radius: 6px;
+    padding: 10px 12px;
+    margin: 8px 0;
+    font-size: 13px;
+  }
+  .example .label {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--purple);
+    margin-bottom: 4px;
+  }
+  .example .turn {
+    font-family: ui-monospace, monospace;
+    font-weight: 800;
+    color: var(--purple);
+    margin-right: 4px;
+  }
+
   .hidden { display: none !important; }
   .dimmed { opacity: 0.15; pointer-events: none; }
 
@@ -582,9 +702,9 @@
     </div>
 
     <div class="modes" role="tablist">
-      <button class="mode-btn active" data-mode="beginner">Beginner<span class="count">5 tiles</span></button>
-      <button class="mode-btn" data-mode="all">All<span class="count">15</span></button>
-      <button class="mode-btn" data-mode="advanced">Advanced<span class="count">10</span></button>
+      <button class="mode-btn active" data-mode="beginner">Beginner<span class="count">6 tiles</span></button>
+      <button class="mode-btn" data-mode="all">All<span class="count">17</span></button>
+      <button class="mode-btn" data-mode="advanced">Advanced<span class="count">11</span></button>
     </div>
 
     <div class="controls">
@@ -604,57 +724,59 @@
       <div class="gate-step">
         <span class="n">01</span>
         <div class="q">Under the radar?</div>
-        <div class="a">Stay just behind in score. Don't telegraph your potential.</div>
+        <div class="a">Stay 2nd or 3rd in score. If you're 1st, you've drawn aggro and the table will gang up on you.</div>
       </div>
       <div class="gate-step">
         <span class="n">02</span>
         <div class="q">Base safe?</div>
-        <div class="a">2 warriors + Armorers = ~94% surviving an attack.</div>
+        <div class="a">2 warriors + Armorers crafted = roughly 94% chance the base survives a single attack.</div>
       </div>
       <div class="gate-step">
         <span class="n">03</span>
         <div class="q">Card hoard?</div>
-        <div class="a">Banked supporters = banked VP. Don't waste on Martial Law.</div>
+        <div class="a">Cards in supporters convert to VP later. Don't burn them on Martial Law unless you must.</div>
       </div>
       <div class="gate-step">
         <span class="n">04</span>
-        <div class="q">Sympathy 1st</div>
-        <div class="a">Place sympathy in Birdsong before crafting/favor in Daylight.</div>
+        <div class="q">Sympathy first?</div>
+        <div class="a">Place sympathy in Birdsong; that lets you craft using its suit in the same turn (Daylight).</div>
       </div>
       <div class="gate-step">
         <span class="n">05</span>
         <div class="q">Big turn ready?</div>
-        <div class="a">15 → 30 in one turn is the win shape.</div>
+        <div class="a">The win shape is 15→30 VP in a single turn. Hover at 15, set up, then unload.</div>
       </div>
     </div>
 
     <div class="first-time">
       <span class="pill">START HERE</span>
-      <div>New to Alliance? You're an insurgency, not an army. The <b>5 red-bordered tiles below</b> cover the four pillars: stay invisible, get one safe base down, weaponize Guerrilla War + Armorers, and bank cards for one giant scoring turn at the end.</div>
+      <div>New to Alliance? You're an <b>insurgency</b>, not an army — small force, big tricks, and a delayed-fuse scoring style. The <b>6 red-bordered tiles below</b> walk you through what the faction is, how each turn flows, where to place your first base, the Armorers + Guerrilla War combo that makes you nearly invincible, the "Big Turn" win shape, and the 5 mistakes that lose more games than anything else. Once those click, the green and grey tiles drill into specifics.</div>
     </div>
   </div>
 
   <aside class="rail" aria-label="Section navigation">
     <div class="rail-group g1"><span class="dot"></span> Essential</div>
     <a href="#s1" class="t1"><span class="n">01</span>Be Invisible</a>
-    <a href="#s2" class="t1"><span class="n">02</span>First Base</a>
-    <a href="#s3" class="t1"><span class="n">03</span>Armorers + GW</a>
-    <a href="#s4" class="t1"><span class="n">04</span>The Big Turn</a>
-    <a href="#s5" class="t1"><span class="n">05</span>5 Failure Modes</a>
+    <a href="#s16" class="t1"><span class="n">02</span>Anatomy of a Turn</a>
+    <a href="#s2" class="t1"><span class="n">03</span>First Base</a>
+    <a href="#s3" class="t1"><span class="n">04</span>Armorers + GW</a>
+    <a href="#s4" class="t1"><span class="n">05</span>The Big Turn</a>
+    <a href="#s5" class="t1"><span class="n">06</span>5 Failure Modes</a>
 
     <div class="rail-group g2"><span class="dot"></span> Core</div>
-    <a href="#s6" class="t2"><span class="n">06</span>Crafting Priorities</a>
-    <a href="#s7" class="t2"><span class="n">07</span>Sympathy Math</a>
-    <a href="#s8" class="t2"><span class="n">08</span>Officers &amp; Bases</a>
-    <a href="#s9" class="t2"><span class="n">09</span>Time-Bomb Revolt</a>
-    <a href="#s10" class="t2"><span class="n">10</span>Pre-Turn Audit</a>
+    <a href="#s6" class="t2"><span class="n">07</span>Crafting Priorities</a>
+    <a href="#s7" class="t2"><span class="n">08</span>Sympathy Math</a>
+    <a href="#s8" class="t2"><span class="n">09</span>Officers &amp; Bases</a>
+    <a href="#s9" class="t2"><span class="n">10</span>Time-Bomb Revolt</a>
+    <a href="#s10" class="t2"><span class="n">11</span>Pre-Turn Audit</a>
 
     <div class="rail-group g3"><span class="dot"></span> Advanced</div>
-    <a href="#s11" class="t3"><span class="n">11</span>Matchups</a>
-    <a href="#s12" class="t3"><span class="n">12</span>Lizard Counter</a>
-    <a href="#s13" class="t3"><span class="n">13</span>Mental Model</a>
-    <a href="#s14" class="t3"><span class="n">14</span>Advanced Tactics</a>
-    <a href="#s15" class="t3"><span class="n">15</span>Replay Checklist</a>
+    <a href="#s11" class="t3"><span class="n">12</span>Matchups</a>
+    <a href="#s12" class="t3"><span class="n">13</span>Lizard Counter</a>
+    <a href="#s13" class="t3"><span class="n">14</span>Mental Model</a>
+    <a href="#s14" class="t3"><span class="n">15</span>Advanced Tactics</a>
+    <a href="#s15" class="t3"><span class="n">16</span>Replay Checklist</a>
+    <a href="#s17" class="t3"><span class="n">17</span>Glossary</a>
   </aside>
 
   <main>
@@ -665,124 +787,273 @@
       <span class="tile-badge">ESSENTIAL</span>
       <h3><span class="num">01</span><span class="priority">PRIORITY 1</span>Be Invisible</h3>
       <div class="body">
-        <div class="rule-big">If anyone says "stop the Alliance," you've already lost.</div>
-        <p>Alliance scores by efficiently spending cards — a path that's <b>obvious</b> once visible. Your job is to look harmless until the win is locked in. The right Alliance game ends with one player suddenly going from 15 → 30 VP.</p>
-        <h4>Three threats to manage</h4>
+        <div class="rule-big">If anyone at the table says "we need to stop the Alliance," you've already lost.</div>
+
+        <p><b>The big idea:</b> The Alliance scores points by spending cards. Each card you spend on placing sympathy is worth a bit less than 1 VP. So the more cards you accumulate, the more VP you can dump out in a single turn later. The catch: that path is <b>obvious to opponents</b> once they notice you doing it. So your job is to <b>look harmless</b> while quietly stockpiling cards, then unload everything in one turn near the end.</p>
+
+        <div class="tldr"><b>TL;DR.</b> Stay quietly in 2nd or 3rd place. Hoard your supporter cards. Then in a single turn, place a flurry of sympathy and watch your score jump 10–15 VP at once.</div>
+
+        <h4>What's actually different about Alliance</h4>
+        <p>Other factions score steadily — Cats from buildings, Eyrie from roosts, Lizards from gardens. Alliance scores in <b>bursts</b>. A Cat at 22 VP looks dangerous. An Alliance at 22 VP with 7 cards in supporters is also at 22 VP — but is one good turn away from 32. Other players don't always see this, and that's your edge.</p>
+
+        <h4>Three things that get you killed</h4>
         <div class="mini-grid">
-          <div class="card cond"><span class="badge cond">Threat</span> Looking like the leader → coalition forms.</div>
-          <div class="card cond"><span class="badge cond">Threat</span> Visible card hoard → "she's holding 8 cards, kill her base."</div>
-          <div class="card cond"><span class="badge cond">Threat</span> Provoking the Cats early → choke-out blockades.</div>
+          <div class="card cond"><span class="badge cond">Threat 1</span> <b>Score lead.</b> Once you hit 1st, the table coalitions against you. You're now the boss enemy.</div>
+          <div class="card cond"><span class="badge cond">Threat 2</span> <b>Visible card hoard.</b> "Wait, she has 9 cards in supporters? That's like 9 free VP. Kill her base."</div>
+          <div class="card cond"><span class="badge cond">Threat 3</span> <b>Provoking the Cats early.</b> They have 5x your warriors and can park 4 of them in your base clearing for free, choking you off completely.</div>
         </div>
-        <h4>How to disappear</h4>
+
+        <h4>How to actually be invisible</h4>
         <ul>
-          <li>Stay <b>just behind in score</b>; let Eyrie/Cats trade leadership</li>
-          <li>Show only <b>1–2 bases</b>, modest officers — not your card stash</li>
-          <li>Play up "I only have 4 cards, I'm fine" table-talk</li>
-          <li>Frame your sympathy placement as <b>"someone else's problem"</b> — sympathy on Eyrie's path? "I'm just hassling them, not you"</li>
+          <li><b>Score-pace:</b> stay just behind whoever's leading. If you're about to pass them, hold off and place a low-VP sympathy or just don't spread that turn</li>
+          <li><b>Visible footprint:</b> 1–2 bases and a thin spread of warriors. Doesn't <i>look</i> threatening even when it is</li>
+          <li><b>Table talk:</b> "I'm fine, I'm last in score, you guys handle the Cats" — players will believe you because the math agrees with them</li>
+          <li><b>Direct opponents elsewhere:</b> when you place sympathy on the Eyrie's path, frame it as "I'm just messing with the bird, not picking on you"</li>
+        </ul>
+
+        <div class="scenario">
+          <div class="label">Picture this</div>
+          Turn 6: Cats are at 18 VP, Eyrie at 16, you're at 14 with 6 cards in supporters and Armorers crafted. The table is arguing about whether to focus on the Cats or the Eyrie. <b>Nobody is looking at you.</b> Two turns later you place 4 sympathy in one Birdsong, score 9 VP off them, and craft a 2-VP item — and you're at 25 with the table scrambling. That's the Alliance game.
+        </div>
+      </div>
+    </section>
+
+    <!-- New tile: Anatomy of a Turn -->
+    <section class="tile t1 span2" id="s16" data-keys="anatomy turn birdsong daylight evening phase walk through actions">
+      <span class="tile-badge">ESSENTIAL</span>
+      <h3><span class="num">02</span><span class="priority">PRIORITY 2</span>Anatomy of a Turn</h3>
+      <div class="body">
+        <p>Every Alliance turn has three phases. Each phase has specific actions you can take. Knowing what fits where unlocks combos like "place sympathy now, craft using its suit later this same turn."</p>
+
+        <div class="phases">
+          <div class="phase">
+            <div class="ph-name">Birdsong</div>
+            <div class="ph-when">Start of turn</div>
+            <ul>
+              <li><b>Revolt</b> in any clearing with sympathy + 2 supporters of that suit (places a base + recruits warriors + scores VP)</li>
+              <li><b>Spread sympathy</b> to one new clearing per supporter card spent (matching suit, OR bird card)</li>
+              <li>(Craft Royal Claim if you have it)</li>
+            </ul>
+          </div>
+          <div class="phase">
+            <div class="ph-name">Daylight</div>
+            <div class="ph-when">Middle of turn</div>
+            <ul>
+              <li><b>Craft</b> using sympathy clearings (1 craft per matching-suit sympathy)</li>
+              <li>Make any number of allowed actions: <b>Move</b>, <b>Battle</b>, <b>Recruit</b>, <b>Organize</b> (turn warrior into officer / sympathy)</li>
+              <li>Each non-Move action costs 1 officer to perform</li>
+            </ul>
+          </div>
+          <div class="phase">
+            <div class="ph-name">Evening</div>
+            <div class="ph-when">End of turn</div>
+            <ul>
+              <li><b>Draw cards</b> (1 + 1 per sympathized clearing of a craftable suit, with the Draw Bonus)</li>
+              <li>Add cards from hand to your <b>supporters stack</b> if you want to bank them for later VP</li>
+            </ul>
+          </div>
+        </div>
+
+        <h4>The killer combo</h4>
+        <div class="card do">
+          <span class="badge do">Sympathy → Craft</span>
+          Place sympathy in a rabbit clearing during <b>Birdsong</b>. Then in <b>Daylight</b>, craft a rabbit-suit card using that same clearing. You've used the new sympathy <i>before</i> opponents can remove it.
+        </div>
+
+        <h4>Things to remember</h4>
+        <ul>
+          <li><b>Outrage trigger:</b> any time an opponent removes one of your sympathies <i>or</i> battles in a clearing with your sympathy, they hand you a matching card. Free cards = free VP later.</li>
+          <li><b>Martial Law:</b> if a clearing has 3+ enemy warriors, you can't spread sympathy there (unless you spend an extra card). This is your main constraint when targeting Cat clearings.</li>
+          <li><b>Order matters:</b> Birdsong actions happen <i>before</i> opponents in Daylight, so a fresh sympathy token can survive the turn if you craft off it immediately.</li>
         </ul>
       </div>
     </section>
 
     <section class="tile t1 span2" id="s2" data-keys="opening first base placement turn 1 2 supporters revolt safe central">
       <span class="tile-badge">ESSENTIAL</span>
-      <h3><span class="num">02</span><span class="priority">PRIORITY 2</span>First Base — Land It Safely</h3>
+      <h3><span class="num">03</span><span class="priority">PRIORITY 3</span>First Base — Land It Safely</h3>
       <div class="body">
-        <p>Goal of turns 1–2: <b>1 base on the board, alive</b>. Everything else flows from this.</p>
+        <p><b>Goal of turns 1–2:</b> get one base onto the board, alive. <b>Why it's everything:</b> until you have a base, you're not really a faction yet — you can't recruit warriors, you can't replace lost ones, and your scoring engine is tiny. Once a base exists, all the other stuff (officers, organize chains, sympathy spread) becomes possible.</p>
 
-        <h4>Pre-Turn-1 evaluation (6 cards: 3 hand + 3 supporters)</h4>
+        <div class="tldr"><b>TL;DR.</b> Look at all 6 of your cards (3 hand + 3 supporters), pick a suit you have 2+ of, find a safe-ish clearing of that suit, drop sympathy turn 1, revolt turn 2.</div>
+
+        <h4>Step 1 — Evaluate your cards</h4>
+        <p>You start with 3 cards in hand and 3 cards in your supporters stack (face-down pile of "future actions"). Look at <b>all 6</b> together.</p>
         <div class="card do">
           <ol>
-            <li>Group all 6 cards by suit</li>
-            <li>Identify which suits have <b>2+ revolt opportunities</b></li>
-            <li>Pick a target suit that gives you <b>at least 2 backup revolts</b> if turn 2 is contested</li>
+            <li><b>Group by suit:</b> count how many fox / rabbit / mouse / bird cards you have</li>
+            <li><b>Find your "revolt suit":</b> a suit where you hold <b>2+ matching cards</b> (revolt costs 2 supporters of the matching suit)</li>
+            <li><b>Bonus points:</b> if you have a <b>3rd</b> card of that suit OR a bird card, you have a <b>backup revolt</b> in case the first clearing gets stomped</li>
           </ol>
         </div>
+        <div class="why"><b>Why two opportunities?</b> Opponents can pre-empt you turn 1 by clearing the sympathy or putting warriors there. If you only have one revolt option and they neutralize it, you're stuck without a base for an entire round — the Alliance equivalent of falling off a cliff.</div>
 
-        <h4>Clearing Selection</h4>
+        <h4>Step 2 — Pick the clearing</h4>
+        <p>You want a clearing that's <b>safe enough to survive turn 1</b> with sympathy on it, then strong enough to host your base going forward.</p>
         <div class="mini-grid">
           <div class="card do">
             <span class="badge do">Look for</span>
-            <ul><li>Central, well-connected (3+ paths)</li><li>Few enemy buildings/warriors</li><li>Far from Cat Keep / Eyrie home</li></ul>
+            <ul>
+              <li>Central, well-connected (3+ paths) — gives you outflow routes for spreading sympathy later</li>
+              <li>No or few enemy warriors / buildings already there</li>
+              <li>Far from the Cat Keep and the Eyrie home roost</li>
+              <li>Matches your "revolt suit" (so the cards you've banked actually work there)</li>
+            </ul>
           </div>
           <div class="card dont">
             <span class="badge dont">Avoid</span>
-            <ul><li>2-path corner clearings (bottleneck)</li><li>Adjacent to enemy stronghold</li><li>Clearings Vagabond/Riverfolk view as free VP</li></ul>
+            <ul>
+              <li><b>2-path corner clearings</b> — easy to bottleneck you in. You have nowhere to spread.</li>
+              <li>Clearings adjacent to enemy strongholds (Cat home, Eyrie roost) — they can park warriors there for free</li>
+              <li>Clearings Vagabond/Riverfolk view as easy VP targets</li>
+            </ul>
           </div>
         </div>
+        <div class="why"><b>Why central not corner?</b> Some online guides recommend corners "because they're isolated and hard to reach." The BGG strategy guide disagrees: corners with only 2 paths give the Cats a perfect choke point. Central clearings give you the freedom to spread sympathy outward in any direction. Yes you're more visible — but visibility you can manage; bottlenecking you can't.</div>
 
-        <h4>Turn 1 Default Pattern</h4>
-        <div class="card info">
-          <span class="badge info">Birdsong</span> Place sympathy in target clearing<br>
-          <span class="badge info">Daylight</span> Craft if possible (mouse/rabbit only)<br>
-          <span class="badge info">Evening</span> Move officers, dump remaining cards into supporters
+        <h4>Step 3 — Execute the opening</h4>
+        <div class="example">
+          <div class="label">Example turn 1</div>
+          <span class="turn">Birdsong:</span> Place 1 sympathy in a rabbit clearing (your revolt suit).<br>
+          <span class="turn">Daylight:</span> Craft a rabbit-suit card if you can — Armorers if it's there. Otherwise skip.<br>
+          <span class="turn">Evening:</span> No moves needed yet; put any remaining hand cards into your supporters stack.<br>
+          <br>
+          <span class="turn">Turn 2 Birdsong:</span> Spend 2 rabbit supporters → revolt. Base placed, warriors recruited (1 + 1 per other Alliance clearing), 1 VP scored. Now you're a real faction.
         </div>
+
         <div class="card cond">
-          <span class="badge cond">Hold revolt for T2</span> unless you have a <b>favor card</b>, <b>Ambush</b>, or <b>S-tier craft</b> (Armorers, BBB) requiring it sooner.
+          <span class="badge cond">Hold revolt for T2 unless...</span>
+          <ul>
+            <li>You have a <b>favor card</b> in hand (game-changing when triggered with full sympathy setup)</li>
+            <li>You have <b>Ambush</b> matching the clearing's suit (defensive surprise)</li>
+            <li>You can craft <b>S-tier upgrades</b> (Armorers, Better Burrow Bank) only by revolting now</li>
+          </ul>
         </div>
       </div>
     </section>
 
-    <section class="tile t1" id="s3" data-keys="armorers guerrilla war combo invincible defense math">
+    <section class="tile t1 span2" id="s3" data-keys="armorers guerrilla war combo invincible defense math">
       <span class="tile-badge">ESSENTIAL</span>
-      <h3><span class="num">03</span><span class="priority">PRIORITY 3</span>Armorers + Guerrilla War</h3>
+      <h3><span class="num">04</span><span class="priority">PRIORITY 4</span>Armorers + Guerrilla War — The Engine</h3>
       <div class="body">
-        <div class="rule-big">Guerrilla War is the strongest ability in Root.</div>
-        <p>You take the <b>higher</b> of the two dice when defending. Combined with Armorers (negate enemy hits) you become functionally <b>untouchable</b>.</p>
-        <h4>Defending with 1 warrior — opponent attack outcomes</h4>
+        <div class="rule-big">Guerrilla War is the single strongest faction ability in Root.</div>
+
+        <h4>What Guerrilla War actually does</h4>
+        <p>In Root, combat works like this: both sides roll two dice, getting numbers from 0 to 3. The attacker normally takes the <b>higher</b> roll as their hits, and the defender takes the <b>lower</b> roll. So if you roll 3 and 1: attacker scores 3 hits, defender scores 1 hit.</p>
+        <p>Guerrilla War flips this for the Alliance. <b>You always take the higher number when defending</b> — even though you're the defender. So opponents who attack you take the bigger of the two dice as hits to themselves, and you take the smaller. Attacking you is suddenly very, very expensive.</p>
+
+        <div class="why"><b>Why this is huge.</b> Other factions need to commit big stacks of warriors and good rolls to clear opposing units. Against the Alliance, opponents need <i>even bigger</i> stacks to absorb the higher-die return fire — and your rolls don't even need to be lucky. You just need to be there.</div>
+
+        <h4>The probability table — defender losses when attacked</h4>
+        <p>Assume opponent attacks you in a clearing where you have at least 1 warrior. Of the 16 possible (die1, die2) combinations:</p>
         <div class="math-grid">
-          <div class="math-row"><div class="pct">44%</div><div class="lbl">0 losses to you</div></div>
-          <div class="math-row"><div class="pct">31%</div><div class="lbl">1 loss</div></div>
-          <div class="math-row"><div class="pct">19%</div><div class="lbl">2 losses</div></div>
-          <div class="math-row"><div class="pct">6%</div><div class="lbl">3 losses</div></div>
+          <div class="math-row"><div class="pct">44%</div><div class="lbl">0 losses to you (7 of 16)</div></div>
+          <div class="math-row"><div class="pct">31%</div><div class="lbl">1 loss (5 of 16)</div></div>
+          <div class="math-row"><div class="pct">19%</div><div class="lbl">2 losses (3 of 16)</div></div>
+          <div class="math-row"><div class="pct">6%</div><div class="lbl">3 losses (1 of 16)</div></div>
         </div>
-        <div class="card do"><span class="badge do">Translation</span> Sympathy with <b>1 defender</b> → opponent has only ~25% chance to clear it in one battle action.</div>
-        <div class="card do"><span class="badge do">2 defenders</span> → ~6% chance. With Armorers, even less.</div>
-        <h4>Craft Armorers ASAP</h4>
+
+        <h4>What this means for your bases and sympathy</h4>
+        <div class="card do"><span class="badge do">Sympathy + 1 warrior</span> Opponent has only a <b>~25% chance</b> to fully clear it in a single battle. 75% of the time, sympathy survives.</div>
+        <div class="card do"><span class="badge do">Sympathy / Base + 2 warriors</span> Drops to <b>~6%</b> chance of losing both. Opponents need multiple battle actions to break through.</div>
+        <div class="card do"><span class="badge do">+ Armorers</span> Armorers lets you discard a card to <b>cancel all enemy hits</b> in one battle. Suddenly even guaranteed-bad rolls don't kill your stuff.</div>
+
+        <h4>Why Armorers is mandatory</h4>
+        <p>Armorers is a fox-suit upgrade that, when crafted, lets the Alliance ignore an entire batch of incoming hits in exchange for one discard from hand. Combined with Guerrilla War, opponents have to pay <b>both</b> in dice odds <i>and</i> in extra commitment to even attempt a kill. The math just stops working for them.</p>
         <ul>
-          <li>If any other faction had GW + Armorers, they'd never lose</li>
-          <li>Once Armorers is on the table, opponents start dismissing your bases as "not worth it"</li>
+          <li>If any other faction had Guerrilla War + Armorers, they'd never lose a game</li>
+          <li>Once Armorers is on the table, opponents look at your base and say "ugh, not worth the trouble" and pick on someone else</li>
+          <li>Even better: stack with <b>Sappers</b> (negate one hit during combat), and bases become genuinely untouchable</li>
         </ul>
+
+        <div class="scenario">
+          <div class="label">Picture this</div>
+          Cats player commits 5 warriors and 2 actions to wipe your base of 2 warriors + Armorers. Best case for them: ~50% they roll well enough to deal 2+ hits, and you cancel one with Armorers. Even if they break through, they've spent a turn doing nothing else — meanwhile you've gained a card from Outrage when they battled you, and you'll just rebuild next turn. The trade is great for you.
+        </div>
       </div>
     </section>
 
-    <section class="tile t1" id="s4" data-keys="big turn 30 points win condition burst scoring final 3 cost sympathy track milestones">
+    <section class="tile t1 span2" id="s4" data-keys="big turn 30 points win condition burst scoring final 3 cost sympathy track milestones">
       <span class="tile-badge">ESSENTIAL</span>
-      <h3><span class="num">04</span><span class="priority">PRIORITY 4</span>The Big Turn</h3>
+      <h3><span class="num">05</span><span class="priority">PRIORITY 5</span>The Big Turn — How You Actually Win</h3>
       <div class="body">
         <div class="rule-big">15 → 30 VP in one turn is the Alliance win shape.</div>
-        <p>You don't grind to 30. You hover at ~15, enter the endgame around <b>~20 VP</b>, then burst into the <b>3-cost sympathy track</b> where most of your VP lives.</p>
-        <h4>The Sequence</h4>
+        <p>Other factions grind out 1–3 VP per turn for ten turns. You don't. Instead, you hover at around 15 VP for most of the game, slowly accumulating cards in your supporters stack. Then in <b>one explosive turn</b> near the end, you spend 6–8 cards on sympathy and craft, scoring 10–15 VP at once.</p>
+
+        <div class="tldr"><b>TL;DR.</b> Don't try to score steadily. Bank cards, set up clearings, then in one turn: spread a wave of sympathy, craft off it, and organize warriors into more sympathy. Score 10+ VP in a single Birdsong→Evening sequence.</div>
+
+        <h4>The sympathy VP track</h4>
+        <p>The Alliance sympathy track is non-linear: the first sympathy of a suit scores 1 VP, the second scores 1, then it ramps up. <b>The 8th, 9th, and 10th sympathy of a suit each score 3 VP</b>. This is "the 3-cost sympathy track" — most of your win condition lives here. Setting up the early/cheap sympathies first, then dumping the late ones in one turn, is what gives you the burst.</p>
+
+        <h4>The sequence (one specific turn)</h4>
         <div class="card info">
-          <span class="badge info">Birdsong</span> Spread 2–3 sympathy from your supporters
+          <span class="badge info">Birdsong</span> Spend 3–4 cards from supporters to spread sympathy across multiple clearings (revolt 1 if possible to add a base + score VP)
         </div>
         <div class="card info">
-          <span class="badge info">Daylight</span> Craft off the new sympathy clearings (favor / VP items)
+          <span class="badge info">Daylight</span> Craft using the freshly-sympathized clearings — pull favor cards or VP items
         </div>
         <div class="card info">
-          <span class="badge info">Evening</span> Move base defenders out, organize them into more sympathy
+          <span class="badge info">Evening</span> Move base defenders out, organize warriors → fresh sympathy on more clearings
         </div>
-        <h4>Setup requirements</h4>
+
+        <h4>Setup requirements (must all be true before you "fire")</h4>
         <ul>
-          <li>1–2 bases secure (Armorers ideally crafted)</li>
-          <li>5+ supporter cards stockpiled, mixed suits</li>
-          <li>Clearings of 2–3 different suits within reach</li>
-          <li>Officers staged for organize chains (2 minimum for Move+Organize chain)</li>
+          <li><b>1–2 bases secure</b>, ideally with Armorers crafted (so the burst doesn't lose your bases mid-explosion)</li>
+          <li><b>5+ supporter cards stockpiled</b>, mixed across 2–3 suits (gives you flexibility to spread to multiple suit types)</li>
+          <li><b>Clearings of 2–3 different suits</b> within your reach (so you can spread broadly, not just into one suit)</li>
+          <li><b>2+ officers</b> ready (so you can chain Move + Organize in Daylight)</li>
         </ul>
-        <div class="card cond"><span class="badge cond">Don't telegraph</span> Don't let your supporter pile cross 8–9 cards visibly. People notice.</div>
-        <div class="card info"><span class="badge info">Score milestones</span> 0–10: invisible · 10–20: building · 20+: load the cannon · 25+: fire it.</div>
+
+        <h4>Score milestones — when to do what</h4>
+        <ul>
+          <li><b>0–10 VP:</b> Invisible. Just place sympathy cheaply, hoard cards, get Armorers down.</li>
+          <li><b>10–20 VP:</b> Building. Drop a 2nd base if you have a great spot. Keep stocking supporters.</li>
+          <li><b>20–25 VP:</b> Load the cannon. Don't push score yet — set up clearings and stockpile a final 5–6 cards.</li>
+          <li><b>25+ VP:</b> Fire it. Big-turn execution; race to 30 in one turn before the table can react.</li>
+        </ul>
+
+        <div class="example">
+          <div class="label">Worked example: 17 VP → 30 VP in one turn</div>
+          You're at 17 VP with 7 cards in supporters (3 rabbit, 2 mouse, 2 bird). You have sympathy on 5 rabbit and 4 mouse clearings already.<br><br>
+          <span class="turn">Birdsong:</span> Spread sympathy to 6th, 7th, 8th rabbit clearings using 3 supporters. The 8th rabbit scores <b>2 VP</b>. Spread to 5th mouse clearing → 1 VP.<br>
+          <span class="turn">Daylight:</span> Craft a Favor of the Mice (2 mouse + bird) → wipes 4 enemy warriors and scores. Tax Collector if up. <b>+3 VP</b> from craft.<br>
+          <span class="turn">Evening:</span> Organize 2 warriors into 9th + 10th rabbit clearings → both score <b>3 VP each = 6 VP</b>. Total: ~13 VP. <b>You're at 30, you win.</b>
+        </div>
+
+        <div class="card cond"><span class="badge cond">Don't telegraph</span> Don't let your supporter pile cross ~8–9 cards visibly. The card count is in front of you and observant opponents <i>will</i> count it. ~6 cards is "no big deal." 9+ rings alarm bells.</div>
       </div>
     </section>
 
-    <section class="tile t1" id="s5" data-keys="failure modes mistakes pitfalls beginner">
+    <section class="tile t1 span2" id="s5" data-keys="failure modes mistakes pitfalls beginner">
       <span class="tile-badge">ESSENTIAL</span>
-      <h3><span class="num">05</span><span class="priority">PRIORITY 5</span>5 Failure Modes</h3>
+      <h3><span class="num">06</span><span class="priority">PRIORITY 6</span>5 Failure Modes (and What to Do Instead)</h3>
       <div class="body">
-        <p class="dim">Avoid these = win rate spikes hard.</p>
-        <div class="card dont"><div class="hdr"><span class="badge dont">1</span> Visible threat</div>Surging to 1st in score → entire table aims at you.</div>
-        <div class="card dont"><div class="hdr"><span class="badge dont">2</span> Burning all cards on Martial Law</div>Cards are your VP currency — bank them.</div>
-        <div class="card dont"><div class="hdr"><span class="badge dont">3</span> Spreading thin</div>Officer-heavy with weak base defense → easy to topple.</div>
-        <div class="card dont"><div class="hdr"><span class="badge dont">4</span> Buying from Riverfolk</div>They keep your warriors. Your army shrinks for nothing.</div>
-        <div class="card dont"><div class="hdr"><span class="badge dont">5</span> Letting Lizards sanctify you</div>Match the outcast suit at all costs. See §12.</div>
+        <p class="dim">If you've lost a game as Alliance, it was almost certainly one of these. Fix them and your win rate jumps.</p>
+        <div class="card dont">
+          <div class="hdr"><span class="badge dont">1</span> Visible threat — taking the score lead</div>
+          The moment you cross into 1st, the entire table coalitions against you. Cats blockade your bases, Eyrie battles your sympathy, Vagabond goes Hostile.<br>
+          <b>Instead:</b> If you're about to take the lead, place a low-VP sympathy or skip the spread that turn. Park at 2nd or 3rd until your big-turn setup is ready.
+        </div>
+        <div class="card dont">
+          <div class="hdr"><span class="badge dont">2</span> Burning every card on Martial Law</div>
+          Martial Law (sympathy in 3+ enemy warrior clearings) costs an extra card. Many beginners burn through their supporters trying to spread sympathy through Cat-occupied clearings, leaving themselves with no late-game burst.<br>
+          <b>Instead:</b> Bank cards. Spread to easier clearings. Only fight Martial Law when the target clearing is unusually valuable (favor card setup, wood stockpile, etc.).
+        </div>
+        <div class="card dont">
+          <div class="hdr"><span class="badge dont">3</span> Spreading thin — too many officers, too few defenders</div>
+          Every warrior you "promote" to officer is one less defender at your base. Lose the base, lose Field Hospitals — er, you don't have Field Hospitals, lose the base period. Game over.<br>
+          <b>Instead:</b> Floor of 2 warriors per base, always. Cap officers around 5 (more brings diminishing returns).
+        </div>
+        <div class="card dont">
+          <div class="hdr"><span class="badge dont">4</span> Buying from Riverfolk</div>
+          Riverfolk services let them keep your warrior on their score sheet. Your army size shrinks. You lose Guerrilla War's "we have warriors everywhere" advantage for a one-time card or service.<br>
+          <b>Instead:</b> Never. Buy. Anything. From. Riverfolk. There is essentially no exception.
+        </div>
+        <div class="card dont">
+          <div class="hdr"><span class="badge dont">5</span> Letting Lizards sanctify your base</div>
+          When the Lizards' "outcast suit" matches your base's clearing suit, they get a massive discount on attacking you. Lose your base to a sanctify chain and your engine is dead.<br>
+          <b>Instead:</b> Stay on ONE base. Burn cards aggressively to manipulate the outcast suit (you cycle more cards than them). See <a href="#s12">Lizard Counter</a>.
+        </div>
       </div>
     </section>
 
@@ -790,129 +1061,240 @@
 
     <section class="tile t2 span2" id="s6" data-keys="crafting armorers better burrow bank tax collectors codebreakers scouting party favor">
       <span class="tile-badge">CORE</span>
-      <h3><span class="num">06</span>Crafting Priorities</h3>
+      <h3><span class="num">07</span>Crafting Priorities</h3>
       <div class="body">
-        <p>Alliance crafting is suit-flexible — you don't need workshops, just sympathy. Lean <b>mouse / rabbit</b> for VP cards. <b>Avoid fox VP cards</b> (best Vagabond items).</p>
+        <p><b>Why crafting matters for Alliance:</b> unlike the Cats (who need workshops on specific suits), the Alliance can craft using <b>any</b> sympathy clearing. You only need a card matching the suit of one of your sympathy clearings. This makes you the most flexible crafter in the game — and certain crafts are <b>so good for the Alliance specifically</b> that they redefine the matchup.</p>
 
-        <h4>S-Tier Upgrades</h4>
+        <div class="tldr"><b>TL;DR.</b> Lean mouse and rabbit for VP cards (avoid fox — those are the Vagabond's gear). Prioritize Armorers > Better Burrow Bank > Tax Collectors > Sappers. Use the Birdsong → Daylight trick to craft using fresh sympathy.</div>
+
+        <h4>S-Tier Upgrades — craft these if you can</h4>
         <div class="mini-grid">
           <div class="card do">
             <span class="badge do">Armorers</span>
-            Negate enemy hits. With Guerrilla War: invincible base defense.
+            <b>What it does:</b> Discard a card to negate all hits in one battle.<br>
+            <b>Why it's mandatory:</b> Already explained in §04. Combined with Guerrilla War, opponents stop attacking you because the math doesn't justify the cost.
           </div>
           <div class="card do">
             <span class="badge do">Better Burrow Bank</span>
-            More cards = more VP for Alliance. You convert cards to points faster than anyone.
+            <b>What it does:</b> Once per turn, draw a matching-suit card.<br>
+            <b>Why for Alliance:</b> You convert cards into VP faster than any other faction. Each free card BBB gives you ≈ a free 1 VP.
           </div>
           <div class="card do">
             <span class="badge do">Tax Collectors</span>
-            1 warrior → 1 card. Yes you're low on warriors — but you'll just recruit one back, and the card is worth it.
+            <b>What it does:</b> Spend a warrior + take an action → draw a card.<br>
+            <b>Why it's good even though you're low-warrior:</b> The card is more valuable to you than the warrior. Plus you can recruit a replacement at your base in Evening for free.
           </div>
           <div class="card do">
             <span class="badge do">Sappers</span>
-            Stack with Armorers + Guerrilla War. Bases become untouchable.
+            <b>What it does:</b> Negate one hit per battle when defending.<br>
+            <b>Why:</b> Stacks with Armorers and Guerrilla War. Three layers of defensive math = practically unkillable bases.
           </div>
         </div>
 
         <h4>Anti-Ambush Tools</h4>
+        <p>Ambush cards let opponents deal hits before you roll. Bad news for Alliance — your Guerrilla War advantage doesn't help against pre-roll hits.</p>
         <div class="card cond">
-          <span class="badge cond">Scouting Party</span> Negates Ambush — important since you'll occasionally have to attack
+          <span class="badge cond">Scouting Party (mouse)</span> Lets you ignore Ambushes entirely. Important when you're forced to attack (occasionally you'll need to clear a sympathy-removing piece).
         </div>
         <div class="card cond">
-          <span class="badge cond">Codebreakers</span> See opponents' hands; spot Ambush threats before committing
+          <span class="badge cond">Codebreakers (mouse)</span> See an opponent's hand. Now you know whether they have an Ambush before you commit — invaluable scouting.
         </div>
 
-        <h4>Sympathy-Before-Craft Trick</h4>
+        <h4>The Sympathy-Before-Craft Trick</h4>
         <div class="card info">
-          <span class="badge info">Order</span> Birdsong (place sympathy) → Daylight (craft using <i>that</i> clearing's suit) lets you set up a favor card requirement <b>and use it</b> in one turn. Plan multi-turn favor setups.
+          <span class="badge info">Order of operations</span>
+          <ol>
+            <li><b>Birdsong:</b> place sympathy in a rabbit clearing</li>
+            <li><b>Daylight:</b> craft a rabbit-suit card using that clearing's sympathy as the resource</li>
+            <li>Opponents can't remove the sympathy first because Daylight comes after Birdsong on your turn</li>
+          </ol>
         </div>
+        <div class="why"><b>Why this is powerful:</b> You can plan a craft for a specific suit, place a sympathy of that suit on this exact turn, and craft the card before anyone interferes. This lets you set up <b>favor cards</b> (which require multiple sympathy of one suit) and <b>use them the same turn you place the last token</b>. Multi-turn setup, single-turn execution.</div>
+
+        <h4>VP Cards — Mouse and Rabbit Only</h4>
+        <ul>
+          <li>Mouse VP cards (Mouse-in-a-Sack, Codebreakers, Scouting Party) — safe, fits Alliance synergy</li>
+          <li>Rabbit VP cards (Cobbler, Smuggler) — also safe</li>
+          <li><b>Avoid fox VP cards</b> — those are the best Vagabond gear (Crossbow, Sword), and you don't want to craft them onto the table where the Vagabond can grab them and use them against you</li>
+        </ul>
       </div>
     </section>
 
-    <section class="tile t2" id="s7" data-keys="sympathy placement card economy supporters efficient">
+    <section class="tile t2 span2" id="s7" data-keys="sympathy placement card economy supporters efficient">
       <span class="tile-badge">CORE</span>
-      <h3><span class="num">07</span>Sympathy Math &amp; Placement</h3>
+      <h3><span class="num">08</span>Sympathy Math &amp; Placement</h3>
       <div class="body">
-        <p>Each card spent on sympathy ≈ 1 VP. If an opponent destroys it, they paid in actions; you paid almost nothing.</p>
-        <h4>Maximize VP/card</h4>
+        <p><b>The core trade.</b> Every supporter card you spend to place sympathy is roughly worth 1 VP (sometimes more thanks to the 3-cost track). If an opponent destroys that sympathy, you get a card from <b>Outrage</b>. So your VP is largely guaranteed: either the sympathy stays and scores VP, or it gets removed and you replace the card you spent. Heads you win, tails you also win.</p>
+
+        <div class="tldr"><b>TL;DR.</b> Sympathy is cheap for you (1 card) but expensive for opponents (whole battle action) to remove. Place sympathy where opponents have to go anyway — Outrage gives you free cards every time they pass through.</div>
+
+        <h4>Maximizing VP per card spent</h4>
         <ul>
-          <li>Spread to clearings <b>matching your supporter suits</b> — you organize with the suit you have, not what's on the board</li>
-          <li>Bird cards: save for matching <b>same-suit-as-base</b> spreads (vs Lizards) or rescues</li>
-          <li>Look for "free card" opportunities — sympathy on a clearing the Eyrie <b>must</b> battle through (Outrage trigger)</li>
+          <li><b>Match supporter suits.</b> You spread sympathy by spending a supporter card matching that clearing's suit. So spread to clearings of suits you actually have in your stack — don't try to force a rabbit spread when you have only mouse supporters.</li>
+          <li><b>Bird cards are wildcards.</b> They count as any suit when spending. Save them for: same-suit-as-base spreads (the Lizard counter), forcing a spread when no matching cards exist, or filling a favor card requirement.</li>
+          <li><b>Hunt "free card" placements.</b> Sympathy on a clearing the Eyrie's Decree forces them to battle/move through = guaranteed Outrage trigger = guaranteed free card. Best ROI in the game.</li>
         </ul>
+
         <h4>Provocation patterns</h4>
         <div class="card do">
           <span class="badge do">Sympathy as bait</span>
-          Place on clearings opponents are forced through. Outrage gives you a card every time they remove or move-attack it. Sympathy that survives 1 attack already paid 2x.
+          Place sympathy on clearings opponents have a strong reason to enter (Eyrie's forced-decree path, Cat's wood corridor, Vagabond's quest target). They either avoid it (paying tempo cost) or trigger it (paying you a card).
+        </div>
+
+        <div class="why"><b>Why "destroyed" sympathy is still a win:</b> You spent 1 supporter card to place it (~1 VP loss). Outrage gives you a matching-suit card back when destroyed (~1 VP earned). Plus the opponent spent an entire battle action to do it (~2 VP of opportunity cost). Net trade: <b>opponent loses ~2 VP, you net ~0</b>. Free damage on your enemies.</div>
+
+        <h4>Special targets — places worth being aggressive</h4>
+        <div class="card cond">
+          <span class="badge cond">Cat wood stockpile</span>
+          When the Cats stockpile wood for a building burst, that wood is sitting in a clearing. Revolt there → wood is destroyed (massive Cat tempo loss) and you score base VP. Devastating swing.
         </div>
         <div class="card cond">
-          <span class="badge cond">Wood-stockpile signal</span> A Cat clearing with stockpiled wood is a juicy revolt target — destroying that wood is a heavy points swing for you and a major loss for them.
+          <span class="badge cond">Eyrie forced-Decree clearing</span>
+          The Eyrie's Decree forces them to battle/move/build in specific suits each turn. If you can plant sympathy where their Decree forces them, they hand you a card every turn until turmoil.
         </div>
+        <div class="card cond">
+          <span class="badge cond">Lizard outcast-mismatch clearing</span>
+          Place sympathy in a clearing whose suit is NOT the Lizards' outcast suit. They can still attack it, but at full price (no sanctify discount).
+        </div>
+
+        <h4>How NOT to place sympathy</h4>
+        <ul>
+          <li>In a clearing with 3+ enemy warriors (Martial Law: costs +1 card to place, often not worth it)</li>
+          <li>Adjacent to your only base if it's not for a planned revolt — clusters all your tokens in one spot, creating a single point of failure</li>
+          <li>In Riverfolk clearings — they have nothing worth destroying and won't trigger Outrage usefully</li>
+        </ul>
       </div>
     </section>
 
-    <section class="tile t2" id="s8" data-keys="officers bases warriors recruit limit pile">
+    <section class="tile t2 span2" id="s8" data-keys="officers bases warriors recruit limit pile">
       <span class="tile-badge">CORE</span>
-      <h3><span class="num">08</span>Officers &amp; Bases</h3>
+      <h3><span class="num">09</span>Officers &amp; Bases</h3>
       <div class="body">
-        <h4>Officer Targets</h4>
+        <h4>What an officer is, and why it matters</h4>
+        <p>An <b>officer</b> is an Alliance warrior that you've promoted (by using the "Train" action with a matching-suit card at a base). Officers are <b>not warriors</b> — they don't defend, but each officer gives you <b>+1 action in Daylight</b>. Each non-Move action (Battle, Recruit, Organize) costs 1 officer-action.</p>
+        <p>So the tradeoff is sharp: every officer = +1 Daylight action but −1 base defender. Lean too hard either direction and you collapse.</p>
+
+        <div class="tldr"><b>TL;DR.</b> Get to 2 officers fast (unlocks Move+Organize chains). Cap around 5 (more brings diminishing returns). Always keep at least 2 warriors at every base.</div>
+
+        <h4>Officer Targets by Phase</h4>
         <ul>
-          <li><b>2 officers minimum</b> ASAP — unlocks Move + Organize chain in Evening, accelerating sympathy spread and 2nd-base deployment</li>
-          <li><b>~5 officers</b> by mid-game — enough actions to chain spread/organize</li>
-          <li>Beyond 5: diminishing returns; each officer = 1 less defender</li>
+          <li><b>Turns 1–3:</b> rush to <b>2 officers</b>. With 2 officers + Move you can move a warrior and organize it into sympathy in one Evening — the foundation of the time-bomb revolt.</li>
+          <li><b>Turns 4–6:</b> climb to <b>~5 officers</b>. Now you can chain spread, organize, and move multiple times in one turn — setting up the big turn.</li>
+          <li><b>Beyond 5:</b> diminishing returns. Each additional officer = 1 less warrior defending. The 6th officer is rarely worth it.</li>
         </ul>
+
         <h4>Base Defense Floor</h4>
         <div class="card do">
-          <span class="badge do">2 warriors + Armorers</span> Most opponents won't bother. The ROI for them is awful.
+          <span class="badge do">2 warriors + Armorers crafted</span>
+          The standard. Most opponents won't bother attacking — the math is awful for them (see §04). They'd need 4–5 warriors and 2 actions to maybe break through, while you replace whatever they killed in 1 Recruit action.
         </div>
         <div class="card cond">
-          <span class="badge cond">1 warrior + Armorers</span> Tempting target. Acceptable for short windows.
+          <span class="badge cond">1 warrior + Armorers</span>
+          Tempting target. Acceptable for 1 turn while you reposition. Don't sustain this.
         </div>
         <div class="card dont">
-          <span class="badge dont">0 warriors</span> Free destruction. Don't.
+          <span class="badge dont">0 warriors at the base</span>
+          Free destruction — anyone can walk in and remove the base for 0 hits. Game over for you most of the time. Never let this happen.
         </div>
-        <h4>Reserve a Base for Adjacency</h4>
+
+        <div class="why"><b>Why 2 warriors specifically:</b> Guerrilla War's defender-takes-higher-die means with 2 warriors, opponents need to <b>inflict 2 hits in one battle</b> to clear them. The probability of that is roughly 19% (vs ~25% to clear 1 warrior). Adding Armorers drops it further. From the opponent's perspective: ~80% chance they spent an action and got nothing.</div>
+
+        <h4>Reserve a base spot for adjacency</h4>
         <div class="card info">
-          <span class="badge info">Trick</span> Hold off building your second base until you can place it <b>adjacent to a future revolt clearing</b>. Now organization can flow outward through that adjacency.
+          <span class="badge info">Pro tip</span>
+          Don't rush placing your 2nd base. Wait until you find a clearing that's <b>adjacent</b> to one or two future revolt targets. Once that base is down, you can organize warriors directly from it into adjacent clearings, multiplying your action range.
+        </div>
+        <div class="example">
+          <div class="label">Why adjacency matters</div>
+          Say you want to place sympathy in 3 different mouse clearings on your big turn. If your base is adjacent to 2 of them, you can: <span class="turn">1)</span> spread into adjacent clearing A, <span class="turn">2)</span> Move warrior from base into A, <span class="turn">3)</span> Organize warrior in A into more sympathy in clearing B. One base, three sympathies. Without adjacency, you're stuck with just direct spreads, half the throughput.
         </div>
       </div>
     </section>
 
-    <section class="tile t2" id="s9" data-keys="time bomb revolt aggressive sympathy escort payload">
+    <section class="tile t2 span2" id="s9" data-keys="time bomb revolt aggressive sympathy escort payload">
       <span class="tile-badge">CORE</span>
-      <h3><span class="num">09</span>Time-Bomb Revolt</h3>
+      <h3><span class="num">10</span>Time-Bomb Revolt</h3>
       <div class="body">
-        <p>After base 1 lands, switch from <b>safe</b> sympathy to <b>aggressive</b> sympathy in important enemy clearings.</p>
-        <h4>The Pattern (4 officers minimum)</h4>
+        <p><b>The shift.</b> Once your first base is down, your strategy pivots. Phase 1 was about <b>safe</b> sympathy in clearings nobody cares about. Phase 2 is about <b>aggressive</b> sympathy in clearings opponents actually want to hold — turning Guerrilla War + Armorers into a weapon, not just a shield.</p>
+        <p>The "time-bomb" pattern lets you plant a defended sympathy/base inside enemy territory in a single turn. Once it's there, opponents have a choice: ignore it (and watch you score off it), or attack it (and feed their warriors into your Guerrilla War meat grinder).</p>
+
+        <div class="tldr"><b>TL;DR.</b> Birdsong: spread sympathy into an important enemy clearing. Daylight: move warriors there. Evening: recruit one back at base so home stays safe. Result: a tank-defended thorn opponents can't easily remove.</div>
+
+        <h4>The Pattern — Step by Step (needs 4+ officers)</h4>
         <div class="card do">
           <ol>
-            <li>Birdsong: spread sympathy into a key enemy clearing</li>
-            <li>Daylight: move 2 warriors there (officer chain), organize for a base if possible</li>
-            <li>Evening: recruit a warrior back at base to keep it safe</li>
+            <li><b>Birdsong:</b> spend a supporter card to spread sympathy into a key enemy clearing</li>
+            <li><b>Daylight (action 1):</b> Move 2 warriors from your base into that clearing</li>
+            <li><b>Daylight (action 2):</b> if you also have 2 supporter cards of that suit, Revolt — converts the sympathy into a base, kills enemy buildings/warriors, scores VP, recruits warriors</li>
+            <li><b>Evening:</b> spend 1 officer-action to Recruit a warrior back at your home base to maintain its 2-warrior floor</li>
           </ol>
         </div>
+
+        <h4>Why this works against the math</h4>
+        <p>From the opponent's perspective: they now have an Alliance base/sympathy in their territory with 2+ warriors and Guerrilla War. To remove it, they'd need to commit several warriors and 1+ actions, and the dice math says they'll lose more than they gain. From your perspective: you got a forward operating base for cheap.</p>
+
         <div class="card info">
-          <span class="badge info">Result</span> A defended sympathy/base in their face. They can pour warriors at it — Guerrilla War means their warriors die more than yours. Add Ambush + Armorers and it's a dagger they can't pull out.
+          <span class="badge info">Stack the math</span>
+          Add <b>Ambush</b> + <b>Armorers</b> + <b>Sappers</b> on top, and that 2-warrior base might literally be unkillable in one turn. Opponents end up wasting 2–3 turns trying to break through, scoring nothing — and feeding you Outrage cards every time.
         </div>
-        <h4>Where to plant</h4>
+
+        <h4>Where to plant the time bomb</h4>
         <ul>
-          <li>Eyrie's forced battle/move/build clearing (Outrage card stream)</li>
-          <li>Cat wood stockpile clearing (huge VP swing)</li>
-          <li>Lizard's outcast-mismatch clearing (denies sanctify)</li>
+          <li><b>Eyrie's forced battle/move/build clearing</b> — guaranteed Outrage card stream every turn until they turmoil</li>
+          <li><b>Cat wood stockpile clearing</b> — revolt destroys the wood (massive Cat VP swing) and gives you a forward base</li>
+          <li><b>Lizard outcast-mismatch clearing</b> — denies them sanctify discounts on your tokens</li>
+          <li><b>Vagabond quest clearing</b> — slows their gear progression while you score</li>
         </ul>
+
+        <h4>How to read whether to commit</h4>
+        <div class="card cond">
+          <span class="badge cond">Green light</span>
+          You have 2+ supporter cards matching the target suit, your home base has 2 warriors after the move, and opponents lack a single-action way to clear it (no Brutal Tactics + Commander combo on the Eyrie, no Vagabond at full sword count).
+        </div>
+        <div class="card dont">
+          <span class="badge dont">Red light</span>
+          Opponent has Brutal Tactics + Commander (Eyrie can rip through it), or you'd be left with 1 warrior at your home base, or you don't have a follow-up plan if it survives 2 turns.
+        </div>
       </div>
     </section>
 
-    <section class="tile t2" id="s10" data-keys="pre turn audit checklist birdsong">
+    <section class="tile t2 span2" id="s10" data-keys="pre turn audit checklist birdsong">
       <span class="tile-badge">CORE</span>
-      <h3><span class="num">10</span>Pre-Turn Audit</h3>
+      <h3><span class="num">11</span>Pre-Turn Audit</h3>
       <div class="body">
-        <p class="dim">Run at start of every Birdsong.</p>
-        <div class="card info"><span class="badge info">1</span> What's my visible score rank? <div class="dim">Aim 2nd–3rd. If 1st, slow down.</div></div>
-        <div class="card info"><span class="badge info">2</span> Base defense floor met? <div class="dim">≥2 warriors per base, Armorers if up.</div></div>
-        <div class="card info"><span class="badge info">3</span> Outrage opportunities? <div class="dim">Sympathy in opponents' forced paths?</div></div>
-        <div class="card info"><span class="badge info">4</span> Vs Lizards: outcast match? <div class="dim">Spread to NON-matching suits using bird cards strategically.</div></div>
-        <div class="card info"><span class="badge info">5</span> Big-turn distance? <div class="dim">Cards in supporters × ~1 VP = your potential burst.</div></div>
+        <p class="dim">Run this 30-second checklist at the start of every Birdsong, before you spend any cards. Catches most mistakes before they happen.</p>
+
+        <div class="card info">
+          <div class="hdr"><span class="badge info">1</span> What's my visible score rank?</div>
+          <b>If 1st:</b> slow down. Place low-VP sympathy or skip the spread. Stay invisible.<br>
+          <b>If 2nd–3rd:</b> proceed normally.<br>
+          <b>If last:</b> you're invisible — push harder. Spread aggressively, set up the big turn.
+        </div>
+
+        <div class="card info">
+          <div class="hdr"><span class="badge info">2</span> Base defense floor met?</div>
+          ≥2 warriors at every base. Armorers crafted if possible. If a base is at 1 warrior, prioritize a Recruit action this turn before everything else.
+        </div>
+
+        <div class="card info">
+          <div class="hdr"><span class="badge info">3</span> Outrage card opportunities?</div>
+          Look at the Eyrie's Decree. Are they forced into a clearing where you could plant sympathy? If yes, that's a free card every turn — high priority spread.
+        </div>
+
+        <div class="card info">
+          <div class="hdr"><span class="badge info">4</span> Lizard outcast suit check (if Lizards in game)</div>
+          What's the current outcast suit? Does it match your base clearing's suit? If yes, defend hard and use bird cards to spread elsewhere this turn.
+        </div>
+
+        <div class="card info">
+          <div class="hdr"><span class="badge info">5</span> Big-turn distance?</div>
+          Count cards in supporters × ~1 VP each. That's your ceiling for the next 2 turns. <b>If you're at 25 VP and have 6 supporters → fire the big turn now.</b>
+        </div>
+
+        <div class="card info">
+          <div class="hdr"><span class="badge info">6</span> Threat scan</div>
+          Anyone at the table loud about "stopping the Alliance"? Anyone holding 5+ cards (likely planning to attack you)? If yes: protect your most valuable base, decline obvious VP this turn.
+        </div>
       </div>
     </section>
 
@@ -920,8 +1302,9 @@
 
     <section class="tile t3 span3" id="s11" data-keys="matchups cats eyrie vagabond riverfolk corvid duchy keepers">
       <span class="tile-badge">ADVANCED</span>
-      <h3><span class="num">11</span>Matchups</h3>
+      <h3><span class="num">12</span>Matchups</h3>
       <div class="body">
+        <p class="dim">Each matchup card lists: <b>their threat to you</b>, <b>your counter</b>, and (when relevant) the specific danger card or play to watch for.</p>
         <div class="mini-grid" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));">
           <div class="card dont">
             <div class="hdr"><span class="badge dont">Marquise (Cats)</span></div>
@@ -955,41 +1338,61 @@
       </div>
     </section>
 
-    <section class="tile t3 span2" id="s12" data-keys="lizard cult outcast suit sanctify counter manipulation">
+    <section class="tile t3 span2" id="s12" data-keys="lizard cult outcast suit sanctify counter manipulation acolyte sanctify garden">
       <span class="tile-badge">ADVANCED</span>
-      <h3><span class="num">12</span>Lizard Counter (Key Matchup)</h3>
+      <h3><span class="num">13</span>Lizard Counter (Key Matchup)</h3>
       <div class="body">
-        <p>Lizards vs Alliance is a high-stakes mirror — both can wreck the other. The ball is in <b>your</b> court if you play it right.</p>
+        <p>Lizards vs Alliance is the most consequential matchup in the game. Both factions can wreck the other if mismanaged. The good news: <b>you have the initiative</b> if you play it right, because you cycle more cards than them and can manipulate the suits.</p>
+
+        <h4>The Lizard mechanics you need to know</h4>
+        <div class="card info">
+          <div class="hdr"><span class="badge info">Outcast suit</span></div>
+          The Lizards designate one of the four suits as "outcast" each round. While that suit is outcast, the Lizards get bonuses on those clearings — cheaper attacks, more recruits, etc.
+        </div>
+        <div class="card info">
+          <div class="hdr"><span class="badge info">Sanctify</span></div>
+          Lizards can spend acolytes to "sanctify" a clearing of the outcast suit, which lets them <b>replace an enemy building with their garden</b>. If your <b>base</b> is in an outcast-suit clearing, sanctify can convert it directly into a Lizard garden. <b>Game-ending for you.</b>
+        </div>
+        <div class="card info">
+          <div class="hdr"><span class="badge info">Acolyte</span></div>
+          A Lizard "currency" piece. They get acolytes from killing enemy warriors. Acolytes pay for sanctify and other Lizard plays. Killing Lizards yourself doesn't give them acolytes.
+        </div>
 
         <h4>Core Rule</h4>
-        <div class="rule-big">Never let them sanctify you. Stay on ONE base. Manage the outcast suit.</div>
+        <div class="rule-big">Never let them sanctify your base. Stay on ONE base. Manipulate the outcast suit so it never matches your base's suit.</div>
 
-        <h4>Outcast Suit Manipulation</h4>
+        <h4>Why one base, not two</h4>
+        <p>Each base you have is a sanctify target. If you have two bases of different suits, the Lizards can wait for either suit to become outcast and pounce. With one base, you only need to keep one suit out of the outcast slot — much easier to manage.</p>
+
+        <h4>How to manipulate the outcast suit (your edge)</h4>
         <div class="card do">
+          <p>The outcast suit cycles based on cards being discarded. <b>You discard more cards than anyone</b> — every Outrage trigger feeds you cards, and you cycle supporters constantly. So you have unmatched leverage.</p>
           <ul>
-            <li>You burn more cards than anyone — <b>you control the outcast suit</b> better than they do</li>
-            <li>Spread sympathy to clearings of <b>different suit</b> from your base</li>
-            <li>Use <b>bird cards</b> to spread to clearings <b>matching</b> your base suit</li>
-            <li>Train with bird cards when possible</li>
-            <li><b>Craft liberally</b> — denies them items and shifts outcast cycling</li>
+            <li><b>Spread sympathy to suits OTHER than your base's suit.</b> This pumps non-base-suit cards through the discard, biasing the outcast cycle <i>away</i> from your base.</li>
+            <li><b>Save bird cards for spreads matching your base's suit.</b> This lets you place same-suit sympathy without burning a same-suit supporter — preserving suit-balance.</li>
+            <li><b>Craft liberally.</b> Each craft cycles cards. The more you craft, the more you push the discard pile in directions that benefit you.</li>
+            <li><b>Train with bird cards.</b> Train (recruit officer) costs a matching-suit card; bird cards work for any suit. Saving same-suit cards for emergency spreads.</li>
           </ul>
         </div>
 
-        <h4>Why You Hurt Them So Badly</h4>
+        <h4>Why you devastate the Lizards in return</h4>
         <ul>
-          <li><b>Revolt kills don't become acolytes.</b> You vaporize their warriors AND their gardens with no compensation</li>
-          <li>Each sympathy of yours costs them <b>1–2 acolytes</b> to even attack — and they still lose warriors in combat</li>
-          <li>Forcing them to move warriors from adjacent clearings = several cards spent to do something you do for nothing</li>
-          <li>They run out of acolytes faster than you run out of sympathy</li>
+          <li><b>Revolt kills don't give them acolytes.</b> When you revolt, you remove enemy buildings AND warriors at no acolyte cost to them. You can wipe entire stacks of Lizard warriors and gardens with zero compensation.</li>
+          <li><b>Sympathy costs them acolytes to even attempt.</b> They need to spend 1–2 acolytes to start a battle on your sympathy clearing — and Guerrilla War means they lose warriors in the fight, with no acolytes returned for those losses.</li>
+          <li><b>Forced relocations.</b> If they bring warriors from adjacent clearings to attack your sympathy, those clearings now have fewer warriors — opening more opportunities for your sympathy or for other factions to hit them.</li>
+          <li><b>Bottom line:</b> Lizards run out of acolytes faster than you run out of sympathy.</li>
         </ul>
 
-        <div class="card cond"><span class="badge cond">Risk</span> Other players can collude on the outcast suit. But removing your single base while you keep cycling cards is a tall order.</div>
+        <div class="card cond">
+          <span class="badge cond">Risk</span>
+          Other players might try to collude on the outcast suit (e.g., everyone discards a particular suit to force outcast onto your base). But removing your single base while you keep cycling cards is a tall order — and your bird cards give you escape options.
+        </div>
       </div>
     </section>
 
     <section class="tile t3" id="s13" data-keys="mental model mindset reframe insurgency">
       <span class="tile-badge">ADVANCED</span>
-      <h3><span class="num">13</span>Mental Model</h3>
+      <h3><span class="num">14</span>Mental Model</h3>
       <div class="body">
         <div class="card dont">
           <div class="hdr"><span class="badge dont">Stop thinking</span></div>
@@ -1006,7 +1409,7 @@
 
     <section class="tile t3 span2" id="s14" data-keys="advanced tactics provocation outrage cycling base placement">
       <span class="tile-badge">ADVANCED</span>
-      <h3><span class="num">14</span>Advanced Tactics</h3>
+      <h3><span class="num">15</span>Advanced Tactics</h3>
       <div class="body">
         <div class="mini-grid" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));">
           <div class="card do">
@@ -1063,7 +1466,7 @@
 
     <section class="tile t3 span2" id="s15" data-keys="replay diagnosis post game checklist mistakes">
       <span class="tile-badge">ADVANCED</span>
-      <h3><span class="num">15</span>Replay Diagnosis</h3>
+      <h3><span class="num">16</span>Replay Diagnosis</h3>
       <div class="body">
         <p class="dim">After each game — first "no" = biggest leak.</p>
         <div class="mini-grid">
@@ -1077,6 +1480,150 @@
           <div class="card info"><span class="badge info">08</span> Vagabond relationship? <div class="dim">Befriended or Hostile? Hostile = leak.</div></div>
           <div class="card info"><span class="badge info">09</span> Bought from Riverfolk? <div class="dim">Should be 0. Always.</div></div>
           <div class="card info"><span class="badge info">10</span> Bird cards used well? <div class="dim">Or wasted as filler?</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="tile t3 span3" id="s17" data-keys="glossary terms definitions sympathy base officer revolt outrage organize spread martial law guerrilla war favor">
+      <span class="tile-badge">ADVANCED</span>
+      <h3><span class="num">17</span>Glossary</h3>
+      <div class="body">
+        <p class="dim">Every term in this aid, defined. Use as a quick reference if any tile uses jargon you don't recognize.</p>
+
+        <h4>Alliance Pieces &amp; Concepts</h4>
+        <div class="glossary">
+          <div class="term">
+            <div class="word">Sympathy (token)</div>
+            <div class="defn">A small Alliance token placed in a clearing showing local support for the rebellion. Scores VP based on the sympathy track. Triggers Outrage when removed or battled.</div>
+          </div>
+          <div class="term">
+            <div class="word">Base</div>
+            <div class="defn">A bigger Alliance building placed via Revolt. Allows you to recruit warriors, train officers, and is required to even play the faction at full strength. You only have 3 (one per non-bird suit). Lose all bases = effectively lose game.</div>
+          </div>
+          <div class="term">
+            <div class="word">Warrior</div>
+            <div class="defn">Standard Alliance unit. Defends bases and sympathy. Triggers Guerrilla War in combat (you take the higher die when defending).</div>
+          </div>
+          <div class="term">
+            <div class="word">Officer</div>
+            <div class="defn">A promoted warrior (via Train action). Each officer gives +1 action in Daylight (Battle/Recruit/Organize). Cannot defend like warriors do.</div>
+          </div>
+          <div class="term">
+            <div class="word">Supporter</div>
+            <div class="defn">A face-down card stored in your supporters stack. Spent to spread sympathy or revolt. Effectively a delayed VP — banking supporters = banking VP for the big turn.</div>
+          </div>
+        </div>
+
+        <h4>Alliance Actions</h4>
+        <div class="glossary">
+          <div class="term">
+            <div class="word">Spread</div>
+            <div class="defn">Birdsong action. Pay 1 supporter card matching a clearing's suit (or a bird card) to place sympathy in an adjacent clearing.</div>
+          </div>
+          <div class="term">
+            <div class="word">Revolt</div>
+            <div class="defn">Birdsong action. Pay 2 supporter cards of a clearing's suit to place a base there. Removes all enemy pieces, recruits warriors (1 + 1 per other Alliance clearing), and scores VP.</div>
+          </div>
+          <div class="term">
+            <div class="word">Train</div>
+            <div class="defn">Daylight action. Discard a card matching a base's clearing suit to promote 1 warrior at that base into an officer (+1 future Daylight action).</div>
+          </div>
+          <div class="term">
+            <div class="word">Organize</div>
+            <div class="defn">Daylight action (1 officer-action). Convert one warrior in a clearing into a sympathy token there. Lets you spread without spending supporter cards.</div>
+          </div>
+          <div class="term">
+            <div class="word">Recruit</div>
+            <div class="defn">Daylight action. Place 1 warrior at each of your bases (no card cost). Replenishes lost defenders.</div>
+          </div>
+        </div>
+
+        <h4>Special Mechanics</h4>
+        <div class="glossary">
+          <div class="term">
+            <div class="word">Guerrilla War</div>
+            <div class="defn">Alliance permanent ability. When defending a clearing, you take the HIGHER of the two dice rolled (instead of the lower). Makes attacking you very expensive.</div>
+          </div>
+          <div class="term">
+            <div class="word">Outrage</div>
+            <div class="defn">Triggered whenever an opponent removes one of your sympathies OR battles in a clearing with your sympathy. They give you a card matching the clearing's suit (or you draw one if it's a bird clearing). Free cards = free future VP.</div>
+          </div>
+          <div class="term">
+            <div class="word">Martial Law</div>
+            <div class="defn">When a clearing has 3+ enemy warriors, placing sympathy there costs you 1 EXTRA card (so 2 cards total instead of 1). Mostly a Cat-blocker effect.</div>
+          </div>
+          <div class="term">
+            <div class="word">Favor card</div>
+            <div class="defn">A "Favor of the [suit]" card lets you wipe all enemy warriors and buildings from clearings of a specific suit, scoring big VP. Requires sympathy on multiple clearings of that suit. End-game finishers.</div>
+          </div>
+        </div>
+
+        <h4>Game Phases</h4>
+        <div class="glossary">
+          <div class="term">
+            <div class="word">Birdsong</div>
+            <div class="defn">First phase of your turn. Spread sympathy, revolt, and play any bird-cost crafts (e.g. Royal Claim).</div>
+          </div>
+          <div class="term">
+            <div class="word">Daylight</div>
+            <div class="defn">Middle phase. Craft using sympathy, then take any number of Move/Battle/Recruit/Organize/Train actions (most cost 1 officer).</div>
+          </div>
+          <div class="term">
+            <div class="word">Evening</div>
+            <div class="defn">Final phase. Draw cards (1 + 1 per craftable-suit sympathized clearing, with the Draw Bonus). Move banked cards into supporters.</div>
+          </div>
+        </div>
+
+        <h4>Lizard-Specific Terms</h4>
+        <div class="glossary">
+          <div class="term">
+            <div class="word">Outcast suit</div>
+            <div class="defn">One of the four suits designated each round as "outcast." Lizards get bonuses on outcast-suit clearings (cheaper attacks, better recruits).</div>
+          </div>
+          <div class="term">
+            <div class="word">Sanctify</div>
+            <div class="defn">Lizard action that replaces an enemy building with a Lizard garden in an outcast-suit clearing. If your base is outcast-suit, sanctify can DELETE your base. Game-ending for you.</div>
+          </div>
+          <div class="term">
+            <div class="word">Acolyte</div>
+            <div class="defn">Lizard currency piece earned from killing enemy warriors in combat. Spent on sanctify and Lizard powers. Killing Lizards yourself does NOT give them acolytes — Alliance revolt explicitly destroys them without compensation.</div>
+          </div>
+          <div class="term">
+            <div class="word">Garden</div>
+            <div class="defn">Lizard building (their version of "score a VP each turn"). Built via sanctify. Targetable by your revolts.</div>
+          </div>
+        </div>
+
+        <h4>Crafting Terms</h4>
+        <div class="glossary">
+          <div class="term">
+            <div class="word">Item</div>
+            <div class="defn">A face-up token earned from crafting. Some have ongoing effects, some are 1-VP fluff. Vagabond can pick these up — be careful what you craft.</div>
+          </div>
+          <div class="term">
+            <div class="word">Upgrade (persistent effect)</div>
+            <div class="defn">A crafted card that stays in front of you with an ongoing rules change (Armorers, BBB, Cobbler, etc.). Best Alliance crafts.</div>
+          </div>
+          <div class="term">
+            <div class="word">Aid</div>
+            <div class="defn">Vagabond action where you give them an item from your crafted stash in exchange for a card. Lets you avoid Hostile relations and gain a card. Use sparingly with weak items.</div>
+          </div>
+        </div>
+
+        <h4>Common Strategy Terms</h4>
+        <div class="glossary">
+          <div class="term">
+            <div class="word">"Big turn"</div>
+            <div class="defn">The Alliance's signature win condition: a single explosive turn where you score 10+ VP via spreads, crafts, and organizes. See §05.</div>
+          </div>
+          <div class="term">
+            <div class="word">Time-bomb revolt</div>
+            <div class="defn">Aggressive sympathy/base placement deep in enemy territory after your first base is secure. See §10.</div>
+          </div>
+          <div class="term">
+            <div class="word">Coalition</div>
+            <div class="defn">When two or more opponents informally team up against the perceived leader. Your goal: never trigger this by appearing to lead.</div>
+          </div>
         </div>
       </div>
     </section>
