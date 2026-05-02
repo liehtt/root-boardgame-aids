@@ -579,6 +579,154 @@
   }
   .leader .when b { color: var(--blue); }
 
+  /* Plain-English callouts */
+  .scenario {
+    background: linear-gradient(180deg, rgba(91,143,212,0.16) 0%, rgba(91,143,212,0.04) 100%);
+    border: 1px solid rgba(91,143,212,0.45);
+    border-left: 4px solid var(--blue);
+    border-radius: 6px;
+    padding: 9px 12px;
+    margin: 8px 0;
+    font-size: 13px;
+  }
+  .scenario .label {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 4px;
+  }
+  .tldr {
+    background: linear-gradient(90deg, rgba(127,176,105,0.15) 0%, transparent 100%);
+    border-left: 3px solid var(--green);
+    padding: 6px 10px;
+    margin: 6px 0;
+    font-size: 13px;
+    border-radius: 0 4px 4px 0;
+  }
+  .tldr b { color: var(--green); }
+  .why {
+    background: linear-gradient(90deg, rgba(244,201,96,0.13) 0%, transparent 100%);
+    border-left: 3px solid var(--core);
+    padding: 6px 10px;
+    margin: 6px 0;
+    font-size: 13px;
+    border-radius: 0 4px 4px 0;
+  }
+  .why b { color: var(--core); }
+
+  .glossary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 8px;
+    margin: 6px 0;
+  }
+  .term {
+    background: linear-gradient(180deg, rgba(42,52,86,0.7) 0%, rgba(29,37,64,0.7) 100%);
+    border: 1px solid var(--border2);
+    border-radius: 6px;
+    padding: 9px 11px;
+  }
+  .term .word {
+    font-weight: 800;
+    color: var(--accent);
+    font-size: 13px;
+    letter-spacing: 0.01em;
+  }
+  .term .defn {
+    font-size: 12px;
+    color: var(--fg);
+    margin-top: 3px;
+    line-height: 1.45;
+  }
+
+  .phases {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin: 8px 0;
+  }
+  @media (max-width: 600px) { .phases { grid-template-columns: 1fr; } }
+  .phase {
+    background: linear-gradient(180deg, rgba(42,52,86,0.85) 0%, rgba(29,37,64,0.85) 100%);
+    border: 1px solid var(--border2);
+    border-top: 3px solid var(--accent);
+    border-radius: 6px;
+    padding: 10px 11px;
+  }
+  .phase .ph-name {
+    font-weight: 800;
+    color: var(--accent);
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .phase .ph-when {
+    font-size: 11px;
+    color: var(--fg-dim);
+    margin-bottom: 6px;
+  }
+  .phase ul { padding-left: 16px; margin: 4px 0; }
+  .phase li { font-size: 12px; }
+
+  .example {
+    background: linear-gradient(180deg, rgba(168,143,212,0.14) 0%, rgba(168,143,212,0.04) 100%);
+    border: 1px solid rgba(168,143,212,0.4);
+    border-left: 4px solid var(--purple);
+    border-radius: 6px;
+    padding: 10px 12px;
+    margin: 8px 0;
+    font-size: 13px;
+  }
+  .example .label {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--purple);
+    margin-bottom: 4px;
+  }
+  .example .turn {
+    font-family: ui-monospace, monospace;
+    font-weight: 800;
+    color: var(--purple);
+    margin-right: 4px;
+  }
+
+  /* Decree column visualization */
+  .decree {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+    margin: 8px 0;
+  }
+  @media (max-width: 700px) { .decree { grid-template-columns: repeat(2, 1fr); } }
+  .col {
+    background: linear-gradient(180deg, rgba(42,52,86,0.85) 0%, rgba(29,37,64,0.85) 100%);
+    border: 1px solid var(--border2);
+    border-top: 3px solid var(--accent);
+    border-radius: 6px;
+    padding: 9px 10px;
+  }
+  .col .col-name {
+    font-weight: 800;
+    color: var(--accent);
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .col .col-risk { font-size: 10px; color: var(--fg-dim); margin-bottom: 4px; }
+  .col .col-text { font-size: 12px; }
+  .col.safe { border-top-color: var(--green); }
+  .col.safe .col-name { color: var(--green); }
+  .col.warn { border-top-color: var(--yellow); }
+  .col.warn .col-name { color: var(--yellow); }
+  .col.danger { border-top-color: var(--red); }
+  .col.danger .col-name { color: var(--red); }
+
   .hidden { display: none !important; }
   .dimmed { opacity: 0.15; pointer-events: none; }
 
@@ -632,9 +780,9 @@
     </div>
 
     <div class="modes" role="tablist">
-      <button class="mode-btn active" data-mode="beginner">Beginner<span class="count">5 tiles</span></button>
-      <button class="mode-btn" data-mode="all">All<span class="count">15</span></button>
-      <button class="mode-btn" data-mode="advanced">Advanced<span class="count">10</span></button>
+      <button class="mode-btn active" data-mode="beginner">Beginner<span class="count">6 tiles</span></button>
+      <button class="mode-btn" data-mode="all">All<span class="count">17</span></button>
+      <button class="mode-btn" data-mode="advanced">Advanced<span class="count">11</span></button>
     </div>
 
     <div class="controls">
@@ -654,37 +802,38 @@
       <div class="gate-step">
         <span class="n">01</span>
         <div class="q">Recruit safe?</div>
-        <div class="a">≥2 roosts of that suit? Never recruit on a 1-roost suit.</div>
+        <div class="a">Have ≥2 roosts of that suit? Adding Recruit to a 1-roost suit invites Turmoil — opponents can kill the lone roost on their turn.</div>
       </div>
       <div class="gate-step">
         <span class="n">02</span>
         <div class="q">Targeting</div>
-        <div class="a">Legal Battle &amp; Build targets for every suit in the Decree?</div>
+        <div class="a">Every Battle/Build card in the Decree has a real target you can reach this turn? Otherwise: forced Turmoil.</div>
       </div>
       <div class="gate-step">
         <span class="n">03</span>
         <div class="q">Supply</div>
-        <div class="a">Enough warriors? Default = dump into Move (it's nearly always safe).</div>
+        <div class="a">Warriors in supply ≥ Recruits in Decree? When in doubt, dump cards into Move — it's nearly always safe.</div>
       </div>
       <div class="gate-step">
         <span class="n">04</span>
         <div class="q">Turmoil exit</div>
-        <div class="a">Bird card in hand to restart the new Decree?</div>
+        <div class="a">If you DO turmoil, do you have ≥1 Bird card in hand to relaunch the new Decree next turn?</div>
       </div>
     </div>
 
     <div class="first-time">
       <span class="pill">START HERE</span>
-      <div>New to Eyrie? The <b>5 blue-bordered tiles below</b> cover Decree maintenance, leader sequencing (Charismatic → Commander/Despot), and the recruit-vs-move safety asymmetry. Get these right and Turmoil becomes a planned reset, not a crash.</div>
+      <div>New to Eyrie? You're the most <b>mechanically complex</b> faction in the game — the Decree forces you to take all promised actions every turn or fall into Turmoil (lose VP, demote leader). The <b>6 blue-bordered tiles below</b> cover how each turn flows, what the Decree actually does, the asymmetric safety of each column (Recruit = trap, Move = safe), how to sequence leaders (Charismatic → Commander/Despot), and the 5 crash patterns that wipe more Eyrie games than anything else. Master these and Turmoil becomes a planned reset, not a faction-ending crash.</div>
     </div>
   </div>
 
   <aside class="rail" aria-label="Section navigation">
     <div class="rail-group g1"><span class="dot"></span> Essential</div>
-    <a href="#s3" class="t1"><span class="n">03</span>Decree Logic (TRT/SFC)</a>
-    <a href="#s2" class="t1"><span class="n">02</span>Leader Matrix</a>
+    <a href="#sAN" class="t1"><span class="n">★</span>Anatomy of a Turn</a>
+    <a href="#s3" class="t1"><span class="n">03</span>Decree Logic</a>
+    <a href="#s2" class="t1"><span class="n">02</span>Leader Sequencing</a>
     <a href="#s9" class="t1"><span class="n">09</span>Pre-Turn Audit</a>
-    <a href="#s5" class="t1"><span class="n">05</span>Rule of 1 vs Rule of 3</a>
+    <a href="#s5" class="t1"><span class="n">05</span>Combat (5-Hit Ceiling)</a>
     <a href="#sC" class="t1"><span class="n">★</span>Crash Patterns</a>
 
     <div class="rail-group g2"><span class="dot"></span> Core</div>
@@ -700,11 +849,97 @@
     <a href="#sAT" class="t3"><span class="n">★</span>Advanced Tactics</a>
     <a href="#s8" class="t3"><span class="n">08</span>Map Adaptations</a>
     <a href="#sP" class="t3"><span class="n">★</span>Probability &amp; Variance</a>
+    <a href="#sGL" class="t3"><span class="n">★</span>Glossary</a>
   </aside>
 
   <main>
 
     <!-- ===================== TIER 1 ===================== -->
+
+    <section class="tile t1 span2" id="sAN" data-keys="anatomy turn birdsong daylight evening phase walk through actions decree turmoil emergency orders craft">
+      <span class="tile-badge">ESSENTIAL</span>
+      <h3><span class="num">★</span><span class="priority">START HERE</span>Anatomy of a Turn</h3>
+      <div class="body">
+        <p>The Eyrie turn is unique because of the Decree — a stack of mandatory actions you've promised. Unlike other factions, you don't choose what to do each turn; you <i>must</i> do whatever the Decree says, in column order. This makes the Eyrie powerful (potentially 4–6 actions per turn) but fragile (failure = Turmoil).</p>
+
+        <div class="phases">
+          <div class="phase">
+            <div class="ph-name">Birdsong</div>
+            <div class="ph-when">Start of turn</div>
+            <ul>
+              <li><b>Emergency Orders:</b> if you have no cards in hand, draw 1</li>
+              <li><b>A New Roost:</b> if you have no Roosts on the board, place one in the clearing with the fewest pieces, plus 3 warriors</li>
+              <li>(Activate Royal Claim if crafted)</li>
+            </ul>
+          </div>
+          <div class="phase">
+            <div class="ph-name">Daylight</div>
+            <div class="ph-when">Middle of turn</div>
+            <ul>
+              <li><b>Craft</b> using Roosts as resources (free)</li>
+              <li><b>Resolve the Decree:</b> take all actions in column order (Recruit → Move → Battle → Build). Failure to fulfill any = Turmoil.</li>
+              <li><b>Add to Decree:</b> add 1–2 cards from hand into Decree columns. Forces more action next turn.</li>
+              <li>(Activate dominance card if you have one)</li>
+            </ul>
+          </div>
+          <div class="phase">
+            <div class="ph-name">Evening</div>
+            <div class="ph-when">End of turn</div>
+            <ul>
+              <li><b>Score VP</b> based on Roosts on score row (1, 2, 2, 3, 4, 4 — escalates)</li>
+              <li><b>Draw cards:</b> 1 + bonus per uncovered Roost slot</li>
+              <li>Discard hand to 5 if over</li>
+            </ul>
+          </div>
+        </div>
+
+        <h4>The Decree — Eyrie's defining mechanic</h4>
+        <p>The Decree is a stack of cards in 4 columns. Each column corresponds to one Daylight action. Each card in a column requires you to take that action in a clearing matching the card's suit:</p>
+        <div class="decree">
+          <div class="col safe">
+            <div class="col-name">Recruit</div>
+            <div class="col-risk">Risky</div>
+            <div class="col-text">Place 1 warrior at a Roost in a clearing matching this card's suit. Need at least 1 Roost of that suit AND warriors in supply.</div>
+          </div>
+          <div class="col safe">
+            <div class="col-name">Move</div>
+            <div class="col-risk">Safest</div>
+            <div class="col-text">Move warriors from one clearing to an adjacent one. Almost always succeeds — there's nearly always somewhere to move.</div>
+          </div>
+          <div class="col warn">
+            <div class="col-name">Battle</div>
+            <div class="col-risk">Medium</div>
+            <div class="col-text">Battle in a clearing matching this card's suit. Need a clearing where you have warriors and an enemy is present. Can fail if enemies retreat.</div>
+          </div>
+          <div class="col warn">
+            <div class="col-name">Build</div>
+            <div class="col-risk">Medium</div>
+            <div class="col-text">Place a new Roost in a Ruled clearing matching this card's suit, in an empty slot. Can fail if no slot or you don't Rule one.</div>
+          </div>
+        </div>
+
+        <h4>What is Turmoil?</h4>
+        <div class="why"><b>Turmoil = the Eyrie's catastrophic failure state.</b> If you can't fulfill all Decree actions in Daylight, you fall into Turmoil: discard your entire Decree, lose VP equal to the number of bird cards in the Decree (each bird = 1 VP loss!), demote your current leader, and pick a new leader. You can't add to Decree this turn either — your engine resets to the start.</div>
+
+        <h4>The Daylight loop</h4>
+        <div class="card info">
+          <ol>
+            <li>Craft what you can (free, from Roost suits)</li>
+            <li>Resolve Decree column 1 (Recruit), then column 2 (Move), then column 3 (Battle), then column 4 (Build)</li>
+            <li>If at any point you can't fulfill a card → Turmoil immediately</li>
+            <li>If you completed everything → add 1–2 cards from hand into Decree columns of your choice</li>
+          </ol>
+        </div>
+
+        <h4>Why this is hard</h4>
+        <p>The more cards in your Decree, the more actions you take per turn (good!) but the more ways you can fail to fulfill them (bad). Skilled Eyrie play is about adding cards to columns where you're <i>certain</i> to be able to execute next turn — not just dumping cards greedily.</p>
+
+        <div class="scenario">
+          <div class="label">Picture this — a Turmoil cascade</div>
+          You started with Charismatic and added 4 cards over 3 turns: 2 in Recruit (rabbit suit), 1 in Move (mouse), 1 in Build (rabbit). On turn 4 you have 2 rabbit Roosts. Opponents kill both rabbit Roosts on their turn. Now you can't fulfill Recruit-rabbit (no Roost) or Build-rabbit (no Ruled rabbit clearing for an empty slot). You enter Turmoil: lose ~2 VP from bird cards, scrap the Decree, swap leader. Painful but recoverable — if you'd put those Recruits in Move instead, none of this happens.
+        </div>
+      </div>
+    </section>
 
     <section class="tile t1 span2" id="s3" data-keys="decree programming logic trt sfc targeting supply feasibility reliability recruit move build battle">
       <span class="tile-badge">ESSENTIAL</span>
@@ -861,23 +1096,35 @@
 
     <!-- ===================== TIER 2 ===================== -->
 
-    <section class="tile t2" id="s1" data-keys="core philosophy constraint satisfaction decree overclock sprint">
+    <section class="tile t2 span2" id="s1" data-keys="core philosophy constraint satisfaction decree overclock sprint">
       <span class="tile-badge">CORE</span>
       <h3><span class="num">01</span>Core Philosophy</h3>
       <div class="body">
+        <p><b>The trap most new Eyrie players fall into:</b> "More actions = more power. I'll add cards to the Decree every turn to maximize my action budget." This thinking is wrong because it ignores the <b>execution risk</b>. Each card you add is a promise — and if any single promise can't be kept on a future turn, you Turmoil.</p>
+
         <div class="card gold">
           <div class="hdr"><span class="badge gold">Reframe</span></div>
-          Eyrie is <b>NOT</b> a maximization problem ("how many actions?"). It is a <b>Constraint Satisfaction Problem</b>.
+          Eyrie isn't a maximization problem ("how many actions?"). It's a <b>Constraint Satisfaction Problem</b>: how many actions can I <i>reliably</i> execute every turn given board state, opponent moves, and supply?
         </div>
-        <h4>Target</h4>
+
+        <div class="tldr"><b>TL;DR.</b> Aim for a stable 4–5 actions per turn that you can definitely execute. Overclock to 6+ only in the final 1–2 turns when the game is already won.</div>
+
+        <h4>Target — the sustainable Decree size</h4>
         <ul>
-          <li>Maintain <b>4–5 actions</b> (stable, minimally sufficient)</li>
-          <li>Convert board presence → consistent VP</li>
+          <li><b>4–5 actions per turn</b> is the sweet spot — meaningful tempo, executes reliably</li>
+          <li>This usually means 1–2 cards in each non-empty column</li>
+          <li>Convert board presence (Roosts on score track) into VP every Evening — that's where most Eyrie VP comes from</li>
         </ul>
+
         <h4>Overclock (6+ actions)</h4>
         <div class="card cond">
-          Only in the <b>Sprint Phase</b> — last 2 turns, when victory is mathematically guaranteed.
+          Push to 6+ actions <b>only in the Sprint Phase</b> — last 1–2 turns when victory is mathematically guaranteed and you don't care about Turmoil-loss VP. Until then, restraint pays.
         </div>
+
+        <h4>Score model — how Eyrie actually wins</h4>
+        <p>Roost VP scales with each Roost on the board. Your scoring track (printed on your faction board) goes <b>1, 2, 2, 3, 4, 4</b> — so the more Roosts, the more VP per turn. With 4–5 Roosts down you're scoring 3–4 VP every Evening just for existing. Combined with crafting and dominance options, you can grind to 30 VP without needing big bursts.</p>
+
+        <div class="why"><b>Why the constraint matters more than throughput.</b> A Decree with 6 actions sounds amazing. But if 1 of those 6 fails (lost Roost, blocked Build slot, no warriors in supply), you Turmoil and lose all that progress. A 4-action Decree that fires every turn for 5 turns delivers way more total throughput than a 6-action Decree that Turmoils on turn 3.</div>
       </div>
     </section>
 
@@ -885,46 +1132,69 @@
       <span class="tile-badge">CORE</span>
       <h3><span class="num">04</span>Triangle Strategy</h3>
       <div class="body">
-        <p><b>Abandon linear expansion.</b> Aim for <b>Triangle Control</b> — rule 3 adjacent clearings of different suits (Fox / Rabbit / Mouse).</p>
+        <p><b>The instinct:</b> expand outward in a line from your starting clearing — push along a path you can defend. <b>Why it fails for Eyrie:</b> a linear chain of Roosts is suit-locked. If your chain is mostly fox clearings, opponents can target your fox Roosts and your Decree's fox-suit columns Turmoil immediately.</p>
+
+        <div class="tldr"><b>TL;DR.</b> Instead of a line of Roosts, aim for a <b>triangle</b> — 3 clearings of <i>different</i> suits, ideally adjacent or near-adjacent. This gives you redundancy: lose any one suit, the other two still work.</div>
+
+        <h4>What "triangle" means here</h4>
+        <p>Pick 3 clearings within easy reach of each other, each a <b>different suit</b> (one fox, one rabbit, one mouse). Place Roosts in all three. Now your Decree can hold cards of all 3 suits, and you have flexibility to fulfill any color of action.</p>
+
         <div class="mini-grid">
           <div class="card do">
             <span class="badge do">Redundancy</span>
-            If one node is blocked, the other two provide valid Move/Battle targets.
+            If opponents kill your fox Roost, your Decree's fox cards become unfulfillable — but if you ALSO have rabbit and mouse Roosts, you can still execute the rest. One suit-loss isn't game-ending.
           </div>
           <div class="card do">
-            <span class="badge do">Radial Mobility</span>
-            Reach more of the map with fewer Move actions.
+            <span class="badge do">Radial mobility</span>
+            From a triangle of 3 adjacent clearings you can reach 6–9 surrounding clearings in 1 Move. Linear expansion gives you 2–3.
           </div>
           <div class="card do">
-            <span class="badge do">Stability</span>
-            Resists suit-locking by opponents.
+            <span class="badge do">Stability against suit-locking</span>
+            Opponents can target a single suit (Cats can flood mouse clearings, Lizards target outcast suit). Triangle distributes risk.
           </div>
+        </div>
+
+        <div class="why"><b>The deeper reason:</b> The Decree is suit-coded. Every action you commit needs a matching-suit Roost or Ruled clearing to execute. A triangle gives you all 3 non-bird suits covered — meaning any card you draw is potentially playable into the Decree.</div>
+
+        <div class="scenario">
+          <div class="label">Picture this — triangle vs line</div>
+          <b>Linear setup:</b> 4 Roosts in a row, all rabbit suit. Your Decree has 3 rabbit Recruits and 1 mouse Move. The Cats park 3 warriors in your middle Roost clearing → you lose Rule there → you can't Recruit at that Roost → Decree fails → Turmoil.<br><br>
+          <b>Triangle setup:</b> 3 Roosts in fox, rabbit, and mouse adjacent clearings. Even if Cats take your rabbit Roost, you still execute Recruit/Move/Battle/Build using fox and mouse columns. No Turmoil.
         </div>
       </div>
     </section>
 
-    <section class="tile t2" id="s6" data-keys="card economy error correction bird valuation hand filtering throughput roost draw">
+    <section class="tile t2 span2" id="s6" data-keys="card economy error correction bird valuation hand filtering throughput roost draw">
       <span class="tile-badge">CORE</span>
       <h3><span class="num">06</span>Card Economy</h3>
       <div class="body">
+        <p><b>Why cards are special for Eyrie:</b> Cards aren't just resources — they're the cards you commit into the Decree. A bad card in your Decree can Turmoil you. A good card (especially Bird) gives you flexibility. So your hand isn't a pile of options to spend; it's an <b>error-correction buffer</b>.</p>
+
         <div class="card gold">
           <span class="badge gold">Principle</span>
-          Hand = <b>Error Correction Bandwidth</b>.
+          Hand = <b>Error Correction Bandwidth</b>. Cards in hand let you respond to opponents and adjust your Decree. An empty hand at end of Daylight = brittle next turn.
         </div>
-        <h4>Bird Valuation</h4>
+
+        <h4>Bird Card Valuation</h4>
         <div class="card info">
-          Treat Birds as <b>gold</b>. Never craft them for 1 VP.<br>
-          Save to: fix a suit-locked Decree · recover post-Turmoil.
+          <b>Birds are gold.</b> They count as ANY suit when added to the Decree, so they fix Decree problems that no other card can.<br><br>
+          <b>Never craft Birds for 1 VP items</b> — you're trading your error-correction currency for trivial VP. Save them for: fixing a suit-locked Decree, recovering post-Turmoil, late-game Royal Claim if crafted.
         </div>
-        <h4>Hand Filtering</h4>
+
+        <h4>Hand Filtering — what to keep, what to dump</h4>
         <ul>
-          <li><b>Hold:</b> high-value crafts (Builder) · Birds</li>
-          <li><b>Dump:</b> suits that don't match your Triangle</li>
+          <li><b>Hold:</b> Bird cards, high-value crafts (Brutal Tactics, Tax Collectors), suits matching your Triangle</li>
+          <li><b>Dump into Decree:</b> suits that match your Triangle, in safe columns (Move > Battle ≥ Build > Recruit)</li>
+          <li><b>Spend on Crafts/Aid:</b> low-value cards in suits you don't need</li>
         </ul>
-        <h4>Throughput</h4>
+
+        <h4>Throughput — Roosts beget cards</h4>
         <div class="card do">
-          Build <b>Roosts early</b> → more cards/turn → more options to pivot Decree.
+          <p>Each Evening you draw <b>1 + 1 per uncovered Roost slot on your faction board</b>. Build Roosts <i>early</i> to scale this. With all 7 Roosts deployed, you draw 4 cards per turn — easily fueling a 5-action Decree.</p>
+          <p>This is also why losing Roosts is doubly painful: less VP <i>and</i> less card draw, compounding the death spiral.</p>
         </div>
+
+        <div class="why"><b>Asymmetry insight:</b> Most factions get 1 base draw + bonuses. Eyrie's bonus scales linearly with Roosts. Get the Roosts down fast and your card-economy is ahead of every faction except maybe Vagabond.</div>
       </div>
     </section>
 
@@ -1137,6 +1407,142 @@
           <li>Despot + Commander pairing = best variance profile for mid-game sweep</li>
         </ul>
         <div class="formula">P(kill | Commander) ≫ P(kill | Builder)</div>
+      </div>
+    </section>
+
+    <section class="tile t3 span3" id="sGL" data-keys="glossary terms definitions decree turmoil roost recruit move battle build leader bird suit">
+      <span class="tile-badge">ADVANCED</span>
+      <h3><span class="num">★</span>Glossary</h3>
+      <div class="body">
+        <p class="dim">Every term used in this aid, defined. Quick reference for jargon.</p>
+
+        <h4>Eyrie Pieces</h4>
+        <div class="glossary">
+          <div class="term">
+            <div class="word">Roost</div>
+            <div class="defn">Eyrie's only building type. Acts as scoring engine, recruit point, and card-draw enabler. Your faction has 7 Roosts. More Roosts on the board = more VP per turn AND more cards drawn per Evening. Losing Roosts compounds — you score less AND draw less, fueling a death spiral.</div>
+          </div>
+          <div class="term">
+            <div class="word">Warrior</div>
+            <div class="defn">Standard Eyrie unit. You have ~20. Used to defend Roosts, fight, and Rule clearings. Recruited via Decree's Recruit column.</div>
+          </div>
+          <div class="term">
+            <div class="word">Leader</div>
+            <div class="defn">Eyrie has 4 leader cards: Charismatic, Builder, Commander, Despot. Each provides a passive bonus and a starting Decree (1 card pre-loaded). You start one leader, may swap on Turmoil. Once all 4 are used, you reshuffle and reuse.</div>
+          </div>
+        </div>
+
+        <h4>The Decree</h4>
+        <div class="glossary">
+          <div class="term">
+            <div class="word">Decree</div>
+            <div class="defn">A 4-column card stack representing Eyrie's promised actions. Each column = one action type (Recruit, Move, Battle, Build). Each card in a column = 1 mandatory action of that type, in a clearing matching the card's suit, this Daylight phase.</div>
+          </div>
+          <div class="term">
+            <div class="word">Recruit (column)</div>
+            <div class="defn">Place 1 warrior at a Roost in a clearing matching the card's suit. Riskiest column — fails if you have no Roost of that suit OR no warriors in supply. Never put Recruit cards into a 1-Roost suit.</div>
+          </div>
+          <div class="term">
+            <div class="word">Move (column)</div>
+            <div class="defn">Move warriors from one clearing you Rule to an adjacent one matching the card's suit. Safest column — there's almost always somewhere legal to move. Default dump for excess cards.</div>
+          </div>
+          <div class="term">
+            <div class="word">Battle (column)</div>
+            <div class="defn">Battle in a clearing matching the card's suit. Need warriors there and an enemy to fight. Can fail if enemies vacate before your turn.</div>
+          </div>
+          <div class="term">
+            <div class="word">Build (column)</div>
+            <div class="defn">Place a Roost in a Ruled clearing matching the card's suit, in an empty slot. Fails if no available slot or you don't Rule a matching clearing.</div>
+          </div>
+          <div class="term">
+            <div class="word">Turmoil</div>
+            <div class="defn">Eyrie's failure state. Triggered if you can't fulfill all Decree actions. Effect: discard the entire Decree to a "Lost Decree" pile, lose VP equal to bird cards in the discarded Decree, demote your leader, swap to a new leader, and you don't add new cards to the Decree this turn. Devastating but recoverable if planned.</div>
+          </div>
+          <div class="term">
+            <div class="word">Bird card</div>
+            <div class="defn">A wild-suit card. Counts as any suit when added to the Decree. EXTREMELY valuable — saves you from suit-locks. Hoard them. Each bird in your Decree at Turmoil = 1 lost VP, so don't load up Decrees with birds either.</div>
+          </div>
+        </div>
+
+        <h4>Eyrie Special Mechanics</h4>
+        <div class="glossary">
+          <div class="term">
+            <div class="word">Lords of the Forest</div>
+            <div class="defn">Eyrie ability: you Rule a clearing on TIES, not just on majority. Means a single warrior in a clearing with no enemy warriors gives you Rule. Lets you spread thin without losing wood/Decree fulfillment.</div>
+          </div>
+          <div class="term">
+            <div class="word">Emergency Orders</div>
+            <div class="defn">Birdsong rule: if you have no cards in hand, draw 1. Prevents you from being completely stuck.</div>
+          </div>
+          <div class="term">
+            <div class="word">A New Roost</div>
+            <div class="defn">Birdsong rule: if you have no Roosts on the board (post-Turmoil + lost all), place a new Roost in the clearing with the fewest pieces, with 3 warriors. Comeback mechanic.</div>
+          </div>
+        </div>
+
+        <h4>Leader Abilities</h4>
+        <div class="glossary">
+          <div class="term">
+            <div class="word">Charismatic</div>
+            <div class="defn">Leader. +1 warrior recruited per Recruit action. Best for opening — get all Roosts down fast then Turmoil to swap. Falls off late as supply runs thin.</div>
+          </div>
+          <div class="term">
+            <div class="word">Builder</div>
+            <div class="defn">Leader. Score VP for crafted items as if Vagabond. Backup opener if Charismatic isn't viable. Bird-in-Recruit and Bird-in-Move starting Decree (safe).</div>
+          </div>
+          <div class="term">
+            <div class="word">Commander</div>
+            <div class="defn">Leader. +1 hit in attacks. Top combat option — combined with Brutal Tactics gives 2 free hits per battle. Ideal Charismatic follow-up.</div>
+          </div>
+          <div class="term">
+            <div class="word">Despot</div>
+            <div class="defn">Leader. +1 VP per building/token you destroy in battle. Late-swap option after Charismatic; opens with bird-in-Build (risky if no roosts down).</div>
+          </div>
+        </div>
+
+        <h4>Combat &amp; Crafts</h4>
+        <div class="glossary">
+          <div class="term">
+            <div class="word">Brutal Tactics</div>
+            <div class="defn">Crafted upgrade (fox suit). +1 hit in battle (attacker only); opponent gets +1 VP. Stacks with Commander's +1 = 2 free hits per battle, applied AFTER dice rolls.</div>
+          </div>
+          <div class="term">
+            <div class="word">Royal Claim</div>
+            <div class="defn">Crafted upgrade (bird). At end of Birdsong, score 1 VP per suit you Rule a clearing in. Late-game burst worth ~3 VP/turn if spread well.</div>
+          </div>
+          <div class="term">
+            <div class="word">Armorers / Sappers</div>
+            <div class="defn">Crafted upgrades that negate enemy hits. Cheap defense for Roosts so you don't have to over-Recruit.</div>
+          </div>
+          <div class="term">
+            <div class="word">Tax Collectors</div>
+            <div class="defn">Crafted upgrade (mouse). Spend an action + 1 warrior → draw a card. Trims excess warriors to delay Recruit-Turmoil.</div>
+          </div>
+        </div>
+
+        <h4>Game-Wide Concepts</h4>
+        <div class="glossary">
+          <div class="term">
+            <div class="word">Birdsong / Daylight / Evening</div>
+            <div class="defn">Three phases of every turn. Birdsong = setup (Emergency Orders, A New Roost). Daylight = Decree resolution + crafting + adding cards. Evening = score VP per Roost row + draw cards.</div>
+          </div>
+          <div class="term">
+            <div class="word">Rule</div>
+            <div class="defn">You "Rule" a clearing if you have more pieces (warriors + Roosts) than any other player. Eyrie has Lords of the Forest = ties go to you. Required for Build column and many other actions.</div>
+          </div>
+          <div class="term">
+            <div class="word">Suit</div>
+            <div class="defn">Each clearing is fox, rabbit, or mouse. Cards have matching suits (or bird = wild). Decree cards must be fulfilled in clearings matching their suit.</div>
+          </div>
+          <div class="term">
+            <div class="word">Triangle (strategy)</div>
+            <div class="defn">3 Roosts in clearings of 3 different suits, ideally near-adjacent. Provides redundancy against suit-loss attacks. Core positional strategy — see §04.</div>
+          </div>
+          <div class="term">
+            <div class="word">Coalition</div>
+            <div class="defn">Activate a dominance card to "go coalition" with the lowest-score player. They win if either of you reaches the win condition. Useful in late-game vs Vagabond.</div>
+          </div>
+        </div>
       </div>
     </section>
 
