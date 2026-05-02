@@ -526,6 +526,123 @@
     letter-spacing: 0.01em;
   }
 
+  /* Plain-English callouts */
+  .scenario {
+    background: linear-gradient(180deg, rgba(107,163,196,0.14) 0%, rgba(107,163,196,0.04) 100%);
+    border: 1px solid rgba(107,163,196,0.4);
+    border-left: 4px solid var(--blue);
+    border-radius: 6px;
+    padding: 9px 12px;
+    margin: 8px 0;
+    font-size: 13px;
+  }
+  .scenario .label {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 4px;
+  }
+  .tldr {
+    background: linear-gradient(90deg, rgba(127,176,105,0.15) 0%, transparent 100%);
+    border-left: 3px solid var(--green);
+    padding: 6px 10px;
+    margin: 6px 0;
+    font-size: 13px;
+    border-radius: 0 4px 4px 0;
+  }
+  .tldr b { color: var(--green); }
+  .why {
+    background: linear-gradient(90deg, rgba(227,179,65,0.12) 0%, transparent 100%);
+    border-left: 3px solid var(--yellow);
+    padding: 6px 10px;
+    margin: 6px 0;
+    font-size: 13px;
+    border-radius: 0 4px 4px 0;
+  }
+  .why b { color: var(--yellow); }
+
+  .glossary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 8px;
+    margin: 6px 0;
+  }
+  .term {
+    background: linear-gradient(180deg, rgba(58,44,31,0.7) 0%, rgba(46,34,24,0.7) 100%);
+    border: 1px solid var(--border2);
+    border-radius: 6px;
+    padding: 9px 11px;
+  }
+  .term .word {
+    font-weight: 800;
+    color: var(--accent);
+    font-size: 13px;
+    letter-spacing: 0.01em;
+  }
+  .term .defn {
+    font-size: 12px;
+    color: var(--fg);
+    margin-top: 3px;
+    line-height: 1.45;
+  }
+
+  .phases {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin: 8px 0;
+  }
+  @media (max-width: 600px) { .phases { grid-template-columns: 1fr; } }
+  .phase {
+    background: linear-gradient(180deg, rgba(58,44,31,0.85) 0%, rgba(46,34,24,0.85) 100%);
+    border: 1px solid var(--border2);
+    border-top: 3px solid var(--accent);
+    border-radius: 6px;
+    padding: 10px 11px;
+  }
+  .phase .ph-name {
+    font-weight: 800;
+    color: var(--accent);
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .phase .ph-when {
+    font-size: 11px;
+    color: var(--fg-dim);
+    margin-bottom: 6px;
+  }
+  .phase ul { padding-left: 16px; margin: 4px 0; }
+  .phase li { font-size: 12px; }
+
+  .example {
+    background: linear-gradient(180deg, rgba(176,124,196,0.12) 0%, rgba(176,124,196,0.04) 100%);
+    border: 1px solid rgba(176,124,196,0.4);
+    border-left: 4px solid var(--purple);
+    border-radius: 6px;
+    padding: 10px 12px;
+    margin: 8px 0;
+    font-size: 13px;
+  }
+  .example .label {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--purple);
+    margin-bottom: 4px;
+  }
+  .example .turn {
+    font-family: ui-monospace, monospace;
+    font-weight: 800;
+    color: var(--purple);
+    margin-right: 4px;
+  }
+
   .hidden { display: none !important; }
   .dimmed { opacity: 0.15; pointer-events: none; }
 
@@ -581,9 +698,9 @@
     </div>
 
     <div class="modes" role="tablist">
-      <button class="mode-btn active" data-mode="beginner">Beginner<span class="count">5 tiles</span></button>
-      <button class="mode-btn" data-mode="all">All<span class="count">18</span></button>
-      <button class="mode-btn" data-mode="advanced">Advanced<span class="count">13</span></button>
+      <button class="mode-btn active" data-mode="beginner">Beginner<span class="count">6 tiles</span></button>
+      <button class="mode-btn" data-mode="all">All<span class="count">20</span></button>
+      <button class="mode-btn" data-mode="advanced">Advanced<span class="count">14</span></button>
     </div>
 
     <div class="controls">
@@ -604,39 +721,40 @@
       <div class="gate-step">
         <span class="n">01</span>
         <div class="q">Win path?</div>
-        <div class="a">Dominance (default) · Crafting (2nd) · Score (rare).</div>
+        <div class="a">Dominance (the default — 2/3 of all Cat wins) · Crafting (backup) · Score (rare/lucky).</div>
       </div>
       <div class="gate-step">
         <span class="n">02</span>
         <div class="q">Connected?</div>
-        <div class="a">No → restore Rule. Lose Keep = lose game.</div>
+        <div class="a">Wood needs an unbroken Rule chain to flow. Lose the Keep clearing → no Field Hospitals → game over.</div>
       </div>
       <div class="gate-step">
         <span class="n">03</span>
         <div class="q">Action efficient?</div>
-        <div class="a">3 actions/turn — every one must pay.</div>
+        <div class="a">Only 3 actions per turn. Each one must build, fight, or directly enable one of those.</div>
       </div>
       <div class="gate-step">
         <span class="n">04</span>
         <div class="q">Should I fight?</div>
-        <div class="a">Yes vs Eyrie/Lizard/sympathy · NO vs Alliance bases — smother.</div>
+        <div class="a">Yes vs Eyrie roosts / Lizard gardens / sympathy. NO vs Alliance bases — smother with warriors instead.</div>
       </div>
       <div class="gate-step">
         <span class="n">05</span>
         <div class="q">Rabbit crafting?</div>
-        <div class="a">Cobbler · Command Warren · BBB — they ARE more actions.</div>
+        <div class="a">Cobbler, Command Warren, BBB — these aren't VP, they ARE extra actions. Top priority.</div>
       </div>
     </div>
 
     <div class="first-time">
       <span class="pill">START HERE</span>
-      <div>New to Cats? Two-thirds of Cat wins come via <b>dominance cards</b>, not score. The <b>5 green-bordered tiles below</b> cover the core play loop — keep opponents down, secure rabbit crafting, then pivot to a dominance card you've been quietly setting up.</div>
+      <div>New to Cats? Counterintuitively, you're <b>not</b> a points-grinding faction. Other factions outscore you. Instead, two-thirds of Cat wins come via <b>dominance cards</b> — special "I just need to control 3 corners / 3 same-suit clearings" win conditions you set up quietly while keeping everyone else from winning first. The <b>6 green-bordered tiles below</b> walk you through how each turn flows, your turn 1–3 opening, when to fight (rarely!), when to march (purposefully), what to build, and the 5 mistakes that lose more Cat games than anything else.</div>
     </div>
   </div>
 
   <!-- ============ LEFT RAIL ============ -->
   <aside class="rail" aria-label="Section navigation">
     <div class="rail-group g1"><span class="dot"></span> Essential</div>
+    <a href="#s19" class="t1"><span class="n">★</span>Anatomy of a Turn</a>
     <a href="#s3" class="t1"><span class="n">03</span>Opening (T1–3)</a>
     <a href="#s7" class="t1"><span class="n">07</span>Combat (Don't Fight)</a>
     <a href="#s6" class="t1"><span class="n">06</span>Movement (Don't March)</a>
@@ -659,6 +777,7 @@
     <a href="#s16" class="t3"><span class="n">16</span>Starting Corner</a>
     <a href="#s18" class="t3"><span class="n">18</span>Advanced Tactics</a>
     <a href="#s17" class="t3"><span class="n">17</span>Replay Checklist</a>
+    <a href="#s20" class="t3"><span class="n">★</span>Glossary</a>
   </aside>
 
   <!-- ============ MAIN ============ -->
@@ -668,139 +787,323 @@
     <!-- TIER 1 — ESSENTIAL                           -->
     <!-- ============================================ -->
 
+    <section class="tile t1 span2" id="s19" data-keys="anatomy turn birdsong daylight evening phase walk through actions wood overwork">
+      <span class="tile-badge">ESSENTIAL</span>
+      <h3><span class="num">★</span><span class="priority">START HERE</span>Anatomy of a Turn</h3>
+      <div class="body">
+        <p>Every Cat turn has three phases. Each phase has specific actions you can take. Knowing what fits where is the foundation for everything else in this aid — the "rabbit crafting → free actions" combo, the "build → overwork → build" turn-1 opener, etc.</p>
+
+        <div class="phases">
+          <div class="phase">
+            <div class="ph-name">Birdsong</div>
+            <div class="ph-when">Start of turn</div>
+            <ul>
+              <li>For <b>each Sawmill in a clearing you Rule</b>, place 1 wood there</li>
+              <li>(Activate Field Hospitals if it triggers)</li>
+              <li>(Play Royal Claim if you crafted it)</li>
+            </ul>
+          </div>
+          <div class="phase">
+            <div class="ph-name">Daylight</div>
+            <div class="ph-when">Middle of turn</div>
+            <ul>
+              <li><b>Craft</b> using your Workshops (free, not an action)</li>
+              <li>Take <b>up to 3 actions</b>: Battle, March, Recruit, Build, Overwork</li>
+              <li>(Play a dominance card if you have one)</li>
+            </ul>
+          </div>
+          <div class="phase">
+            <div class="ph-name">Evening</div>
+            <div class="ph-when">End of turn</div>
+            <ul>
+              <li><b>Score VP</b> based on Recruiters in clearings you Rule (with Draw Bonus + Recruiter score row)</li>
+              <li><b>Draw cards:</b> 1 + 1 per Recruiter in a Ruled clearing</li>
+              <li>Discard hand down to 5 if over</li>
+            </ul>
+          </div>
+        </div>
+
+        <h4>Your 5 actions explained</h4>
+        <div class="mini-grid">
+          <div class="card do">
+            <span class="badge do">Battle</span>
+            Pick a clearing where you have warriors. Roll dice and fight. Cats take the higher roll as attacker. Costs 1 action.
+          </div>
+          <div class="card do">
+            <span class="badge do">March</span>
+            Move warriors along Ruled clearings <b>twice</b> in one action. Yes, two moves count as one action — that's why March is efficient.
+          </div>
+          <div class="card do">
+            <span class="badge do">Recruit</span>
+            Place 1 warrior at <b>each Recruiter</b> in clearings you Rule. Once per turn. Scales hard with more Recruiters.
+          </div>
+          <div class="card do">
+            <span class="badge do">Build</span>
+            Spend wood to build a Sawmill, Recruiter, or Workshop in a clearing you Rule with an empty slot. Costs 1 action.
+          </div>
+          <div class="card do">
+            <span class="badge do">Overwork</span>
+            Discard a card matching a Sawmill clearing's suit → place an extra wood at that Sawmill. Costs 1 action but converts a card into wood.
+          </div>
+        </div>
+
+        <h4>Why this matters</h4>
+        <div class="why"><b>The 3-action bottleneck.</b> Most factions get 3+ actions plus extra crafting/scoring. You only get 3 — but crafting is free (it happens during Daylight without using an action). This is why "rabbit crafting" is so valuable: Cobbler/Command Warren give you bonus actions or moves that don't cost from your 3.</div>
+
+        <div class="scenario">
+          <div class="label">Picture this — turn 1 walkthrough</div>
+          You start with 1 Sawmill and 1 Recruiter on the Keep clearing.<br><br>
+          <span style="font-family:ui-monospace,monospace;color:var(--accent);font-weight:800">Birdsong:</span> Your existing Sawmill is at the Keep — a clearing you Rule. Place 1 wood.<br>
+          <span style="font-family:ui-monospace,monospace;color:var(--accent);font-weight:800">Daylight:</span> Take 3 actions: <b>Build</b> a Sawmill in an adjacent fox clearing (cost 1 wood). <b>Overwork</b> a card there to add wood. <b>Build</b> a Recruiter in another clearing.<br>
+          <span style="font-family:ui-monospace,monospace;color:var(--accent);font-weight:800">Evening:</span> Score 1 VP for your 1st Recruiter on the score track. Draw 2 cards (1 base + 1 per Recruiter).<br>
+          <br>
+          You used 3 actions to get 2 buildings down + 1 VP. Decent turn.
+        </div>
+      </div>
+    </section>
+
     <section class="tile t1 span2" id="s3" data-keys="opening turns 1 2 3 ignition stabilize scale">
       <span class="tile-badge">ESSENTIAL</span>
       <h3><span class="num">03</span><span class="priority">PRIORITY 1</span>Opening (Turns 1–3)</h3>
       <div class="body">
-        <p><b>Goal:</b> stable, connected, defensible engine. Messed-up openings lose more Cat games than anything else.</p>
+        <p><b>The first three turns set up everything.</b> A messed-up opening is the single most common reason Cats lose. Your goal is a <b>stable, connected, defensible engine</b>: enough Sawmills to make wood, enough Recruiters to draw cards, ideally one Workshop for crafting — all in clearings you can defend.</p>
+
+        <div class="tldr"><b>TL;DR.</b> Turn 1: Build → Overwork → Build (Sawmill, then Recruiter). Turn 2: Build a Recruiter, then Recruit. Turn 3: Recruit + 2 Builds. By end of turn 3 you should have 3 buildings on the board minimum.</div>
 
         <h4>Turn 1 — Ignition</h4>
         <div class="mini-grid">
           <div class="card do">
-            <div class="hdr"><span class="badge do">Default</span></div>
+            <div class="hdr"><span class="badge do">Default sequence</span></div>
             <span class="line">Build → Overwork → Build</span>
-            <ol><li>Sawmill (safe clearing)</li><li>Overwork (if matching card)</li><li>Recruiter (chokepoint)</li></ol>
+            <ol>
+              <li><b>Build Sawmill</b> in your starting clearing (the Keep) — this is a safe spot you Rule</li>
+              <li><b>Overwork</b> using a card matching your starting clearing's suit. This adds 1 more wood to that Sawmill, paying for build #2</li>
+              <li><b>Build Recruiter</b> in a chokepoint clearing — somewhere your warriors will need to rally</li>
+            </ol>
           </div>
           <div class="card cond">
-            <div class="hdr"><span class="badge cond">No Overwork card</span></div>
+            <div class="hdr"><span class="badge cond">If you have no matching Overwork card</span></div>
             <span class="line">Build → Build → (March?)</span>
-            <ul><li>2 builds > anything else</li><li>March only: secure 3-slot / wood / block Alliance</li></ul>
+            <ul>
+              <li>Two Builds beats anything else for tempo — you start with 8 wood, plenty for two builds</li>
+              <li>Only March if you absolutely need to: secure a 3-slot clearing, push wood corridor, or block an Alliance opening sympathy</li>
+            </ul>
           </div>
         </div>
+
         <div class="card info">
-          <span class="badge info">Placement</span> Sawmill = safe clearing · Recruiter = chokepoint · prefer 2–3 slot clearings.
+          <span class="badge info">Placement rules</span>
+          <ul>
+            <li><b>Sawmill</b> goes in safe clearings near the Keep — no enemy units, low chance of being attacked</li>
+            <li><b>Recruiter</b> goes in chokepoints — clearings where opponents must move through to reach your back line</li>
+            <li>Prefer 2–3 slot clearings (more flexibility for future Workshops too)</li>
+          </ul>
         </div>
 
         <h4>Turn 2 — Stabilize vs Scale</h4>
+        <p>By now you have 1 Sawmill + 1 Recruiter (or 2 Sawmills if you built greedy). Your goal turn 2 is to <b>get a 2nd Recruiter down</b> — that bumps your Evening card draw to 3, which feeds your engine for the rest of the game.</p>
         <div class="mini-grid">
           <div class="card do">
             <div class="hdr"><span class="badge do">Default</span></div>
-            <span class="line">Recruiter → Recruit → Build</span>
-            <div class="dim">Get one recruiter per turn. Goal: 3 recruiters down → baseline 3 cards/turn.</div>
+            <span class="line">Build Recruiter → Recruit → Build Sawmill</span>
+            <div class="dim">Goal: 3 Recruiters down by turn 4 → baseline 3 cards drawn every Evening.</div>
           </div>
           <div class="card cond">
-            <div class="hdr"><span class="badge cond">Rabbit Workshop</span></div>
-            Build a workshop only if you can craft <b>Cobbler / Command Warren / Better Burrow Bank</b> this turn.
+            <div class="hdr"><span class="badge cond">Rabbit Workshop opportunity</span></div>
+            Only build a Workshop if you can <b>craft Cobbler / Command Warren / Better Burrow Bank this turn</b> using cards in hand. Otherwise the Workshop sits idle and wastes a build slot.
           </div>
           <div class="card cond">
-            <div class="hdr"><span class="badge cond">Alliance pressure</span></div>
-            If the Alliance is "in your business" early, propose a quiet truce — neither of you wants a Red Queen's race this early.
+            <div class="hdr"><span class="badge cond">If Alliance is harassing you</span></div>
+            Propose a quiet truce. "Hey Alliance, neither of us benefits from a Red Queen's race this early — let me build out and you focus on the Eyrie." Often works because they're also under pressure.
           </div>
         </div>
 
         <h4>Turn 3 — Engine Online</h4>
+        <p>This is when your build engine should be running smoothly. 3 Recruiters in Ruled clearings = 3 cards drawn per Evening, which fuels every craft and every overwork going forward.</p>
         <div class="mini-grid">
-          <div class="card do"><span class="badge do">Default</span> <span class="line">Recruit → Build → Build</span></div>
-          <div class="card cond"><span class="badge cond">Disrupted</span> <span class="line">Battle → Build → Recruit</span></div>
-          <div class="card do"><span class="badge do">Bird card</span> Extra action = 2–3 builds. Treat birds as gifts.</div>
+          <div class="card do"><span class="badge do">Default</span> <span class="line">Recruit → Build → Build</span> Two builds! Recruiters or your first rabbit Workshop.</div>
+          <div class="card cond"><span class="badge cond">If disrupted</span> <span class="line">Battle → Build → Recruit</span> Clear the disruption first, then resume.</div>
+          <div class="card do"><span class="badge do">Bird card in hand</span> Bird cards count as any suit when overworking, and let you craft any-suit. Use them for an extra build or extra craft. Treat them as gifts.</div>
         </div>
+
         <div class="card info">
-          <span class="badge info">Turn order</span> If you go after Alliance, the opening sympathy may force you to settle for just a sawmill turn 1. After Eyrie/Vagabond is fine — they don't disrupt your build.
+          <span class="badge info">Turn order matters</span>
+          <ul>
+            <li><b>You go after Alliance:</b> their opening sympathy may force you into Martial Law and limit your turn 1 to a single Sawmill. Plan for it.</li>
+            <li><b>You go after Eyrie/Vagabond:</b> they rarely disrupt your build — execute default opening</li>
+            <li><b>You go first:</b> ideal — execute Build → Overwork → Build cleanly</li>
+          </ul>
+        </div>
+
+        <div class="example">
+          <div class="label">Sample turn 1 — SW corner start</div>
+          You start at SW corner with the Keep on a fox clearing. Hand: 2 fox cards, 1 mouse card.<br>
+          <span class="turn">Birdsong:</span> Place 1 wood at the starting Sawmill (the Keep clearing).<br>
+          <span class="turn">Daylight:</span> Build a Sawmill in an adjacent rabbit clearing (cost 1 wood, free since you started with 8). Overwork using a fox card to add wood at the Keep Sawmill (now 2 wood there). Build a Recruiter in the 5-path fox clearing (your spine — see §16).<br>
+          <span class="turn">Evening:</span> Score 1 VP. Draw 2 cards (1 + 1 Recruiter).<br>
+          End state: 2 Sawmills, 1 Recruiter, controlling 3 clearings, set up for turn 2.
         </div>
       </div>
     </section>
 
-    <section class="tile t1" id="s7" data-keys="combat fight battle doctrine smother alliance">
+    <section class="tile t1 span2" id="s7" data-keys="combat fight battle doctrine smother alliance">
       <span class="tile-badge">ESSENTIAL</span>
       <h3><span class="num">07</span><span class="priority">PRIORITY 2</span>Combat — Pick Your Battles</h3>
       <div class="body">
         <div class="rule-big">🚫 Don't fight without a payoff. ✅ But don't be passive.</div>
-        <p class="dim">In 1v1s the Cats win almost every fight — but you only have 3 actions. Each wasted battle = 1 lost build.</p>
-        <h4>Fight when…</h4>
+
+        <p>The Cats have the largest army in the game. In any 1v1 fight, you almost always win. So <b>why not just attack everything?</b> Because you only have 3 actions per turn. Every Battle action is a Battle action you're <i>not</i> using to Build, Recruit, or set up a Dominance card. Wasted battles are how Cats lose games they should win.</p>
+
+        <div class="tldr"><b>TL;DR.</b> Fight only when the battle directly enables a build, restores your Rule chain, or removes a high-value enemy piece (sympathy, Eyrie roost, Lizard garden). Never charge an Alliance base — smother it instead.</div>
+
+        <h4>Fight WHEN one of these is true</h4>
         <div class="card do">
           <ol>
-            <li><b>Removes Alliance sympathy</b> (every time, before Martial Law lapses)</li>
-            <li><b>Eyrie roost in their recruit suit</b> — kill last roost of a suit → forced turmoil</li>
-            <li><b>Lizard garden</b>, especially lightly defended</li>
-            <li><b>Enables a build</b> or <b>restores Rule</b></li>
-            <li><b>Riverfolk stack</b> of 2+ in one clearing</li>
+            <li><b>Removes Alliance sympathy.</b> Every time. Sympathy in your territory triggers Martial Law (extra cost for Alliance to spread there) — kill it before they can spread further.</li>
+            <li><b>Last Eyrie roost of a suit.</b> If they only have 1–2 roosts in a suit and they're putting Recruit cards into that suit's Decree column, killing those roosts forces <b>turmoil</b> — they reset their Decree, lose VP, and stall hard.</li>
+            <li><b>Lizard garden, lightly defended.</b> Each garden destroyed = denied late-game scoring. Don't let them snowball.</li>
+            <li><b>Enables an immediate build.</b> A clearing has 1 enemy warrior blocking your build slot? Battle them off, then build there same turn.</li>
+            <li><b>Restores your Rule chain.</b> Lost Rule of a key clearing means no wood from that Sawmill — Battle to retake.</li>
+            <li><b>Riverfolk stack of 2+ in one clearing.</b> Riverfolk warriors are expensive for them to deploy. Killing 2 of theirs = a turn of Riverfolk progress lost.</li>
           </ol>
         </div>
+
+        <h4>Never Fight</h4>
         <div class="card dont">
           <span class="badge dont">Never</span>
           <ul>
-            <li><b>Attack an Alliance base head-on</b> — you'll lose the action war. Move warriors in to <b>blockade</b> instead, never fight</li>
-            <li>Pure "slow them down" with no gain</li>
-            <li>Total war on Eyrie — keep them down but not out (they help police minor factions)</li>
+            <li><b>Attack an Alliance base head-on.</b> Their Guerrilla War means you take the higher die, not them. Probability says you'll only kill 1+ of theirs ~25% of the time. You will lose the action war and the Alliance will turn that into VP via Outrage. <b>Smother instead</b> — move warriors into the base clearing, don't fight, just camp there. They can't move out without battling you (and won't risk it).</li>
+            <li><b>Pure "slow them down" plays with no immediate gain.</b> Punishing an opponent without scoring or progress is a tempo trade you can't afford.</li>
+            <li><b>Total war on the Eyrie.</b> Yes, you're rivals — but the Eyrie also keeps the minor factions (Lizards, Alliance) honest. If you crush them completely, you're left fighting all the minors alone. Keep the bird down but alive.</li>
           </ul>
+        </div>
+
+        <div class="why"><b>Why "smother" beats "attack" for Alliance bases.</b> If you battle the Alliance, they trigger Outrage and get a card. Their Guerrilla War means most of your dice rolls hurt you, not them. But if you just <i>park</i> warriors in their base clearing without attacking, you trigger nothing — and they can't move warriors out of that clearing without going through you. They're locked in place, scoring nothing, while you continue building elsewhere.</div>
+
+        <div class="scenario">
+          <div class="label">Picture this</div>
+          The Alliance has a base in a mouse clearing with 3 warriors and Armorers crafted. Attacking would cost: 1 action, probably 2+ of your warriors lost (Guerrilla War + Armorers), and they'd get an Outrage card. Net: you spent ~1.5 VP equivalent for ~0 value. Instead: <b>March 5 warriors into their clearing</b> as one action. Now they have 3 warriors, you have 5+, but no battle happened. Next turn: their organize/recruit options collapse because you're standing on their head. They redirect aggression at the Eyrie. You won the matchup without rolling a die.
         </div>
       </div>
     </section>
 
-    <section class="tile t1" id="s6" data-keys="movement march rule connectivity smother blockade">
+    <section class="tile t1 span2" id="s6" data-keys="movement march rule connectivity smother blockade">
       <span class="tile-badge">ESSENTIAL</span>
       <h3><span class="num">06</span><span class="priority">PRIORITY 3</span>Movement — March with Purpose</h3>
       <div class="body">
-        <div class="rule-big">March moves 2 — make every step count.</div>
-        <p class="dim">Cats spend the first half of the game in free fall. Every move must protect a goal, not just expand.</p>
-        <h4>March when…</h4>
+        <div class="rule-big">March is two moves for one action — efficient, but only if every step has a goal.</div>
+
+        <p><b>What March actually does:</b> A March action lets you take <i>two</i> Move actions for the cost of one Daylight action. Each move shifts a group of your warriors from one clearing they Rule into an adjacent clearing. This is unique to the Cats — other factions only move once per Move action.</p>
+
+        <p><b>Why this is dangerous if misused:</b> Cats spend the first half of the game in "free fall" — opponents are scoring, you're building. Every March that doesn't directly protect a goal is a March that should have been a Build instead. The temptation is to march warriors out to "be present everywhere." Resist it.</p>
+
+        <div class="tldr"><b>TL;DR.</b> March only when it smothers an Alliance base, reinforces a future dominance clearing, restores Rule for wood, or sets up a planned attack. "Just spreading out" is a wasted action.</div>
+
+        <h4>March WHEN one of these is true</h4>
         <div class="card do">
           <ol>
-            <li><b>Smother an Alliance base</b> — move warriors in, don't fight, blockade</li>
-            <li><b>Reinforce a recruiter clearing</b> you'll dominate</li>
-            <li><b>Restore Rule</b> for next turn's wood</li>
-            <li><b>Cobbler-free move</b> to rearrange after a strike (T3+ if crafted)</li>
+            <li><b>Smother an Alliance base.</b> Move 4–5 warriors in, don't fight, just camp. You blockade their organize/move actions. (See §07 Combat.)</li>
+            <li><b>Reinforce a Recruiter clearing you'll use for dominance.</b> Dominance cards reward holding 3 corners or 3 same-suit clearings. Move warriors to those clearings <i>before</i> activating the card so you don't lose them turn 1.</li>
+            <li><b>Restore Rule connectivity.</b> If an opponent broke your Rule chain (now your wood can't flow from a Sawmill back to your Workshop), March warriors in to retake the chain.</li>
+            <li><b>Cobbler-free move.</b> If you've crafted Cobbler, you get a free move every turn (not an action). Use it to rearrange after a strike, pull warriors back, or maintain Martial Law on a sympathy clearing without spending one of your 3 actions.</li>
           </ol>
         </div>
+
         <div class="card cond">
-          <span class="badge cond">SW/NW corner</span> The 5-path fox clearing is your spine — move through it, never let it fall.
+          <span class="badge cond">SW/NW corner specifically</span>
+          The 5-path fox clearing adjacent to your Keep is your <b>spine</b>. It connects you to half the board. Lose it, and your warriors are isolated — wood can't flow, dominance is impossible. Defend it like the Keep itself.
+        </div>
+
+        <h4>What "Rule" means and why it matters</h4>
+        <div class="why"><b>You "Rule" a clearing if you have more total pieces (warriors + buildings + tokens) there than any other player.</b> Buildings count, so a clearing with your Sawmill + 0 warriors but 1 enemy warrior is <i>tied</i> — and Cats <b>do not</b> have Lords of the Forest, so ties go to the other player. You need to actually <b>have more pieces</b>. This is why every clearing with a building needs at least 1 warrior on it.</div>
+
+        <div class="scenario">
+          <div class="label">Picture this</div>
+          You have a Sawmill in a mouse clearing with 0 warriors. The Eyrie marches 1 warrior in. Now: Cat pieces = 1 (the Sawmill), Eyrie pieces = 1 (the warrior). It's tied — and you don't Rule. <b>No wood placed at that Sawmill in Birdsong</b> until you March a warrior back in to break the tie. One unprotected building can stall your entire wood chain.
         </div>
       </div>
     </section>
 
-    <section class="tile t1" id="s4" data-keys="building sawmill recruiter workshop targets">
+    <section class="tile t1 span2" id="s4" data-keys="building sawmill recruiter workshop targets">
       <span class="tile-badge">ESSENTIAL</span>
       <h3><span class="num">04</span><span class="priority">PRIORITY 4</span>Building Targets</h3>
       <div class="body">
-        <p class="dim">Memorize this ratio. Imbalance = fragile economy.</p>
-        <div class="card do">
-          <div class="hdr"><span class="badge do">Recruiters</span> Cards + Stability</div>
-          <b>Target all 3 down ASAP</b><br>
-          <span class="dim">3-cost recruiter = baseline 3 card draws. Cards = actions, troops, crafts.</span>
+        <p>Cats have three building types — Sawmills, Recruiters, Workshops — each providing a different resource. <b>The mix matters more than any single type.</b> Too many Sawmills and you have wood you can't spend. Too few Recruiters and you starve for cards. The targets below are the proven ratio.</p>
+
+        <div class="tldr"><b>TL;DR.</b> Get all 3 Recruiters down by turn 4 (cards = everything for you). 2–3 Sawmills (don't stockpile wood). 2 rabbit Workshops (then expand). Imbalance = fragile.</div>
+
+        <h4>What each building does</h4>
+        <div class="mini-grid">
+          <div class="card do">
+            <div class="hdr"><span class="badge do">Recruiter</span> The Card Engine</div>
+            <p><b>Effect:</b> During Evening you draw 1 card per Recruiter <i>in clearings you Rule</i> (plus the base 1).</p>
+            <p><b>Target: all 3 down by turn 4.</b> 3 Recruiters = 4 cards drawn per Evening, fueling overwork, crafts, and combat for the rest of the game.</p>
+            <p><b>VP track:</b> 1, 1, 1, 1, 1, 2, 2, 2, 2, 2 — modest VP per build, but the cards are the real prize.</p>
+          </div>
+          <div class="card do">
+            <div class="hdr"><span class="badge do">Sawmill</span> The Wood Engine</div>
+            <p><b>Effect:</b> Each Birdsong, place 1 wood at each Sawmill in a clearing you Rule.</p>
+            <p><b>Target: 2–3 down.</b> More than 3 means you're producing wood faster than you can spend it.</p>
+            <p><b>Don't stockpile wood</b> — wood sitting unused is a tasty target (despotic Eyrie can destroy a stockpile, Corvids can plot bomb it). Build with it as it comes in.</p>
+            <p><b>VP track:</b> 1, 1, 1, 1, 1, 1 (later sawmills score less than later Recruiters/Workshops).</p>
+          </div>
+          <div class="card cond">
+            <div class="hdr"><span class="badge cond">Workshop</span> The Action Engine</div>
+            <p><b>Effect:</b> Lets you craft cards of matching suits during Daylight. <b>Crafting itself is FREE</b> (not an action).</p>
+            <p><b>Target: 2 rabbit, then 3, then 4.</b> A single Workshop is rarely worth it — you need at least 2 of the same suit to reliably craft each turn.</p>
+            <p><b>VP track:</b> 2, 2, 2, 1, 1, 1 — front-loaded, plus the upgrades you craft are worth more than VP.</p>
+          </div>
         </div>
-        <div class="card do">
-          <div class="hdr"><span class="badge do">Sawmills</span> Wood for Builds</div>
-          <b>Target 2–3</b><br>
-          <span class="dim">Don't stockpile wood — it's a tasty target, especially for despotic Eyrie.</span>
+
+        <h4>The ratio for a healthy mid-game</h4>
+        <div class="card info">
+          <span class="badge info">Target by turn 6</span>
+          <ul>
+            <li>3 Recruiters (max — all down)</li>
+            <li>2–3 Sawmills</li>
+            <li>2 Workshops (both rabbit, ideally Cobbler + Command Warren crafted)</li>
+            <li>Total: 7–8 buildings → ~16 VP from buildings + ongoing engine</li>
+          </ul>
         </div>
-        <div class="card cond">
-          <div class="hdr"><span class="badge cond">Workshops</span> Action Engine</div>
-          <b>Target 2 (rabbit) → 3 → 4</b><br>
-          <span class="dim">Crafting isn't an action. Rabbit crafts give actions back. 1 lone workshop ≈ wasted.</span>
-        </div>
+
+        <div class="why"><b>Why Recruiters first, not Sawmills.</b> Cards are your scarcest resource — they convert into actions (overwork), troops (build), crafts (rabbit upgrades), and Field Hospitals revives. Sawmills make wood, but wood without cards to spend it is just paint on the table. Get the card engine first, then scale wood to match.</div>
+
+        <h4>Building cost reminder</h4>
+        <p>Each successive building of the same type costs <b>more wood</b>: 1st = 1 wood, 2nd = 2 wood, 3rd = 3 wood, 4th = 4 wood, 5th = 5 wood, 6th = 6 wood. So your 3rd Recruiter costs 3 wood — by then you should have 2–3 Sawmills producing it each turn.</p>
       </div>
     </section>
 
-    <section class="tile t1" id="s12" data-keys="failure modes mistakes red flag">
+    <section class="tile t1 span2" id="s12" data-keys="failure modes mistakes red flag">
       <span class="tile-badge">ESSENTIAL</span>
-      <h3><span class="num">12</span><span class="priority">PRIORITY 5</span>5 Failure Modes</h3>
+      <h3><span class="num">12</span><span class="priority">PRIORITY 5</span>5 Failure Modes (and What to Do Instead)</h3>
       <div class="body">
-        <p class="dim">Avoid these 5 patterns = beginner win rate spikes.</p>
-        <div class="card dont"><div class="hdr"><span class="badge dont">1</span> Trying to win by score</div>→ Alliance/Lizard/Eyrie outpace you. Aim dominance.</div>
-        <div class="card dont"><div class="hdr"><span class="badge dont">2</span> Charging Alliance bases</div>→ smother with warriors, never fight head-on.</div>
-        <div class="card dont"><div class="hdr"><span class="badge dont">3</span> Ignoring rabbit crafting</div>→ action starvation. Cobbler/Command Warren = free actions.</div>
-        <div class="card dont"><div class="hdr"><span class="badge dont">4</span> Stockpiling wood</div>→ tasty target, especially for despotic Eyrie. Spend it.</div>
-        <div class="card dont"><div class="hdr"><span class="badge dont">5</span> Losing the Keep</div>→ no Field Hospitals, game effectively lost.</div>
+        <p class="dim">Cat games are usually lost to one of these 5 patterns. Knowing them lets you spot them mid-game and course-correct.</p>
+
+        <div class="card dont">
+          <div class="hdr"><span class="badge dont">1</span> Trying to win by score</div>
+          <b>The mistake:</b> "I'll just build my engine and outscore everyone." But the Alliance bursts 15 VP per turn, the Lizards score on every garden, and the Eyrie scores on every roost. You can't keep up.<br>
+          <b>Instead:</b> Aim for a <b>dominance card</b> from the start. Pick your dominance suit by turn 3, place Recruiters in those clearings, set up the win condition quietly. Score VP only as a tiebreaker.
+        </div>
+        <div class="card dont">
+          <div class="hdr"><span class="badge dont">2</span> Charging Alliance bases head-on</div>
+          <b>The mistake:</b> "I have 5 warriors, they have 2. I'll wipe them out." But Guerrilla War means you'll only kill at most 1 of theirs ~25% of the time, and they get an Outrage card from your battle.<br>
+          <b>Instead:</b> Smother. March warriors <i>into</i> their base clearing without battling. They can't move out, can't organize from there, and you've taken them off the board for free.
+        </div>
+        <div class="card dont">
+          <div class="hdr"><span class="badge dont">3</span> Ignoring rabbit crafting</div>
+          <b>The mistake:</b> "Crafting is for VP, I'll skip it and just build." But Cobbler, Command Warren, and Better Burrow Bank aren't VP — they're <b>extra actions</b> you don't have to pay for. Skipping them is action starvation.<br>
+          <b>Instead:</b> Build 2 rabbit Workshops. Craft these three upgrades whenever a card matches. Treat them as priority over score-scoring crafts.
+        </div>
+        <div class="card dont">
+          <div class="hdr"><span class="badge dont">4</span> Stockpiling wood</div>
+          <b>The mistake:</b> "I'll save wood for a 4-build turn." But that big stockpile is a target — Despotic Eyrie destroys wood for VP, Corvids drop bombs on it, Vagabond steals it.<br>
+          <b>Instead:</b> Spend wood as it comes in. Tiny stockpiles (~3 wood) for a big final-turn burst is fine; large stockpiles (5+) are signaling to the table.
+        </div>
+        <div class="card dont">
+          <div class="hdr"><span class="badge dont">5</span> Losing the Keep</div>
+          <b>The mistake:</b> "I'll send my warriors out to dominate, the Keep can sit with 1 warrior." Then someone clears it and you lose Field Hospitals (your warrior-revival ability tied to the Keep clearing).<br>
+          <b>Instead:</b> Always 3+ warriors at the Keep clearing. Watch for Favor of the Mice (wipes all enemy units in mouse clearings — lethal if your Keep is a mouse clearing) and dominance attacks.
+        </div>
       </div>
     </section>
 
@@ -808,26 +1111,46 @@
     <!-- TIER 2 — CORE                                -->
     <!-- ============================================ -->
 
-    <section class="tile t2" id="s1" data-keys="core model win condition identity faction dominance">
+    <section class="tile t2 span2" id="s1" data-keys="core model win condition identity faction dominance">
       <span class="tile-badge">CORE</span>
-      <h3><span class="num">01</span>Core Model</h3>
+      <h3><span class="num">01</span>Core Model — What You Actually Are</h3>
       <div class="body">
+        <p>The Cats are commonly recommended as a beginner faction because they have the most pieces, the largest army, and simple rules. <b>This is misleading.</b> Cats are arguably the hardest faction to win with — many groups have <i>never</i> seen a Cat victory.</p>
+
+        <p>The reason: <b>you score slowly</b>, your engine takes time to set up, and other factions hit their burst points faster. Trying to outscore them is a losing race. You need a different theory of victory.</p>
+
         <div class="card info">
-          <span class="badge info">Win</span> You <b>cannot</b> out-score the Alliance/Lizards/Eyrie. Win by <b>dominance</b> (2/3 of Cat wins) or <b>crafting</b>.
+          <span class="badge info">Win condition</span> You <b>cannot</b> out-score the Alliance/Lizards/Eyrie. Win by <b>dominance</b> (2/3 of all Cat wins, per the designer himself) or <b>crafting</b> (the other 1/3). Score wins are unicorn-rare.
         </div>
-        <h4>Constraints</h4>
+
+        <h4>Your hard constraints</h4>
         <ul>
-          <li>3 actions/turn — your tightest bottleneck</li>
-          <li>Wood requires <b>Rule connectivity</b></li>
-          <li>Score race: you lose. 1v1 fights: you win almost any.</li>
+          <li><b>3 actions per turn — your tightest bottleneck.</b> Less than the Eyrie (decree-driven 4–6), way less than the Riverfolk (action soup). Every action must pay back tempo immediately.</li>
+          <li><b>Wood needs an unbroken Rule chain.</b> If a Sawmill clearing isn't connected to where you're building, the wood doesn't flow. Rule connectivity is your supply line.</li>
+          <li><b>Score race: you lose. 1v1 fights: you almost always win.</b> Lean into the second, avoid the first.</li>
         </ul>
-        <h4>Win Priority</h4>
+
+        <h4>Win Path Priority</h4>
         <div class="mini-grid">
-          <div class="card do"><span class="badge do">1st</span> Dominance card</div>
-          <div class="card do"><span class="badge do">2nd</span> Crafting (rabbit-heavy)</div>
-          <div class="card cond"><span class="badge cond">3rd</span> Score from buildings</div>
-          <div class="card info"><span class="badge info">Always</span> Keep everyone else down</div>
+          <div class="card do">
+            <span class="badge do">1st — Dominance</span>
+            Trade your VP track for a special win condition: hold 3 corners, OR hold all 3 of one suit, OR hold 5 specific clearings (bird dominance). Activated via a dominance card you've drawn.
+          </div>
+          <div class="card do">
+            <span class="badge do">2nd — Crafting</span>
+            Score VP through crafted items + free actions from rabbit upgrades. Reach 30 VP via building scoring + 6–10 VP from item crafts.
+          </div>
+          <div class="card cond">
+            <span class="badge cond">3rd — Score</span>
+            Pure building-based VP. Rare; only viable if opponents melt down (Eyrie turmoils repeatedly, Lizards wipe each other out).
+          </div>
+          <div class="card info">
+            <span class="badge info">Always — police the table</span>
+            Regardless of win path, you spend most of your action budget keeping other factions from winning first. Your toolkit (largest army, March-x2, smothering) is built for this.
+          </div>
         </div>
+
+        <div class="why"><b>Why dominance over score.</b> Building VP is a slow trickle: ~2 VP per turn from Sawmill/Recruiter scoring. Even with perfect play you barely crack 30. But dominance just <i>requires holding territory</i> — and you have the army to hold territory. Once the dominance card is in your hand, you're 1–2 turns from winning if you've prepared the clearings.</div>
       </div>
     </section>
 
@@ -835,23 +1158,31 @@
       <span class="tile-badge">CORE</span>
       <h3><span class="num">02</span>Action Economy</h3>
       <div class="body">
+        <p><b>Most factions think:</b> "I have 5 wood, what should I build?" <b>Cats think:</b> "I have 3 actions, what's the best use of each?" Wood is recoverable. Cards are recoverable. <b>Actions are not</b> — once a turn ends, those 3 are gone forever.</p>
+
         <div class="card do">
-          <div class="hdr"><span class="badge do">Good Action</span></div>
+          <div class="hdr"><span class="badge do">Good actions pay back tempo</span></div>
           <ul>
-            <li>Generates VP now (build)</li>
-            <li>Enables future builds</li>
-            <li>Prevents engine collapse</li>
+            <li><b>Generates VP now</b> (build = score on the building track immediately)</li>
+            <li><b>Enables future builds</b> (Recruit a warrior to defend a build slot you'll fill next turn)</li>
+            <li><b>Prevents engine collapse</b> (Battle to retake Rule of a key clearing so wood keeps flowing)</li>
           </ul>
         </div>
+
         <div class="card dont">
-          <div class="hdr"><span class="badge dont">Bad Action</span></div>
+          <div class="hdr"><span class="badge dont">Bad actions waste tempo</span></div>
           <ul>
-            <li>Fighting without gain</li>
-            <li>Moving without purpose</li>
-            <li>Crafting without impact</li>
+            <li><b>Fighting without immediate gain</b> ("just slowing them down" is rarely worth 1 of 3 actions)</li>
+            <li><b>Moving without purpose</b> (rearranging warriors "just in case" — usually you don't need to)</li>
+            <li><b>Crafting without impact</b> (1-VP filler crafts when you could've built a Recruiter for 2 VP + cards)</li>
           </ul>
         </div>
-        <div class="card info"><span class="badge info">Truth</span> Real resource = <b>ACTIONS</b>, not wood.</div>
+
+        <div class="card info">
+          <span class="badge info">Truth</span> The real resource is <b>ACTIONS</b>, not wood. A turn where you "did 3 things and built 0 buildings" is almost always a wasted turn.
+        </div>
+
+        <div class="why"><b>The bonus-action trick:</b> Bird cards count as wild for Overwork, so a bird card lets you Overwork on any Sawmill regardless of suit. Cobbler gives you a free Move every turn. Command Warren gives you a free battle. These all add to your 3-action budget — that's why rabbit crafting is a top priority (see §05).</div>
       </div>
     </section>
 
@@ -859,45 +1190,87 @@
       <span class="tile-badge">CORE</span>
       <h3><span class="num">05</span>Crafting — Rabbit-First</h3>
       <div class="body">
-        <div class="card do"><span class="badge do">Why</span> Crafting is <b>not an action</b>. Rabbit crafts give back the actions you don't have.</div>
-        <h4>S-Tier — Rabbit (build 2 rabbit workshops)</h4>
-        <ul>
-          <li><b>Command Warren</b> — start a battle at start of Daylight (free sympathy removal, free counterattack)</li>
-          <li><b>Cobbler</b> — free move every turn (rearrange, pull back, maintain Martial Law)</li>
-          <li><b>Better Burrow Bank</b> — extra cards = more actions, troops, crafts</li>
-        </ul>
+        <p><b>Why crafting matters for Cats specifically:</b> Crafting is <b>free</b> — it happens during Daylight without using any of your 3 actions. So a card crafted is a card converted into permanent value at zero action cost. Some crafts give VP (1–2 each, modest); some give <b>persistent rules changes that essentially add to your action budget</b>. Those are the ones that win you games.</p>
+
+        <div class="tldr"><b>TL;DR.</b> Build 2 rabbit Workshops. Craft Cobbler, Command Warren, Better Burrow Bank when matching cards appear. These three together effectively give you ~2 extra actions per turn — for free.</div>
+
+        <div class="card do"><span class="badge do">The principle</span> Crafting is not an action. Rabbit upgrades give back the actions you don't have. Mouse upgrades give you cards (which become actions). Fox crafts mostly feed the Vagabond — avoid early.</div>
+
+        <h4>S-Tier — Rabbit upgrades (build 2 rabbit Workshops first)</h4>
+        <div class="mini-grid">
+          <div class="card do">
+            <span class="badge do">Command Warren</span>
+            <p><b>Effect:</b> At the start of Daylight, take 1 free Battle action.</p>
+            <p><b>Why insane for Cats:</b> A free Battle every turn means you can clear Alliance sympathy or kill an Eyrie roost <i>without spending</i> 1 of your 3 actions. Net gain: 1 action per turn, every turn, for the rest of the game.</p>
+          </div>
+          <div class="card do">
+            <span class="badge do">Cobbler</span>
+            <p><b>Effect:</b> At the start of Daylight, take 1 free Move action.</p>
+            <p><b>Why insane:</b> Free Move = pull warriors back after a strike, reposition before a Battle, restore Rule chains, maintain Martial Law on sympathy clearings — all without spending an action.</p>
+          </div>
+          <div class="card do">
+            <span class="badge do">Better Burrow Bank</span>
+            <p><b>Effect:</b> Once per turn, draw an extra rabbit card.</p>
+            <p><b>Why insane for Cats:</b> Cards = actions (Overwork), troops (Build), crafts (more upgrades), Field Hospitals revives. Every BBB card pumps your engine.</p>
+          </div>
+        </div>
+
         <h4>Strong Pickups — Other Suits</h4>
         <ul>
-          <li><b>Codebreakers</b> (mouse, 1 cost) — see opponents' hands, scout Favors/Ambush</li>
-          <li><b>Tax Collector</b> (mouse) — 1 warrior → 1 card, great trade for Cats</li>
-          <li><b>Scouting Party</b> (mouse) — safely clear sympathy/buildings with one warrior</li>
-          <li><b>Armorers</b> (fox) — only when gearing up for the dominance fight; negates a bad roll</li>
-          <li><b>Royal Claim</b> (bird) — late-game burst with the 4-workshop setup</li>
+          <li><b>Codebreakers</b> (mouse, 1 cost) — see opponents' hands. Scout for Favors and Ambushes before they hit you. Cheap, always useful.</li>
+          <li><b>Tax Collector</b> (mouse) — sacrifice 1 warrior to draw a card. With Field Hospitals + plenty of recruits, you barely lose anything for a card.</li>
+          <li><b>Scouting Party</b> (mouse) — when you do attack, you ignore Ambush. Safely clears sympathy or buildings with just 1 warrior.</li>
+          <li><b>Armorers</b> (fox) — discard to negate enemy hits. Only worth it when you're about to push for dominance and need to guarantee your warriors survive.</li>
+          <li><b>Royal Claim</b> (bird) — at end of Birdsong, score 1 VP per suit you Rule a clearing in. Late-game burst with the 4-Workshop setup; can finish you a score win in a pinch.</li>
         </ul>
+
         <h4>Workshop Build Order</h4>
         <div class="mini-grid">
-          <div class="card do"><span class="badge do">Default</span> 2 rabbit, then 1 mouse <span class="dim">(or 1 mouse, then 2 rabbit)</span></div>
-          <div class="card cond"><span class="badge cond">4th workshop</span> 1 mouse · 2 rabbit · 1 fox = nearly every craft you'll want, including Royal Claim</div>
-          <div class="card dont"><span class="badge dont">Avoid</span> 1 lone rabbit workshop (not enough leverage). Skip fox crafts early — most are bird cards or feed the Vagabond.</div>
+          <div class="card do"><span class="badge do">Default</span> Build <b>2 rabbit Workshops</b> first (so you can reliably craft each turn from rabbit cards), then 1 mouse Workshop. Order doesn't matter — start with whichever suit your hand currently has.</div>
+          <div class="card cond"><span class="badge cond">4th Workshop</span> 1 mouse · 2 rabbit · 1 fox covers nearly every craft you'll want, including Royal Claim. Build the fox Workshop only if you're committing to score-path or specifically want Royal Claim.</div>
+          <div class="card dont"><span class="badge dont">Avoid</span> 1 lone rabbit Workshop. You won't draw matching cards reliably enough to leverage it. Skip fox crafts early — most are bird cards or feed the Vagabond.</div>
         </div>
+
+        <div class="why"><b>The sympathy-before-craft trick (you can do it too):</b> Place a rabbit-suit clearing into your control on turn 1. On turn 2, draw a rabbit card. Craft Cobbler using that card and that Workshop's suit. From turn 3 onward you have a free Move every turn. That's the equivalent of starting every turn at 4 actions instead of 3.</div>
       </div>
     </section>
 
-    <section class="tile t2" id="s11" data-keys="defense keep field hospitals resilience outcast">
+    <section class="tile t2 span2" id="s11" data-keys="defense keep field hospitals resilience outcast">
       <span class="tile-badge">CORE</span>
-      <h3><span class="num">11</span>Defense — Keep & Field Hospitals</h3>
+      <h3><span class="num">11</span>Defense — Keep &amp; Field Hospitals</h3>
       <div class="body">
+        <p><b>The Keep clearing is sacred.</b> The Cats' faction ability "Field Hospitals" lets you spend a card matching a clearing's suit to <b>revive a warrior at the Keep clearing</b> when one of your warriors is killed. This is what makes you durable — opponents kill your warriors, you draw cards, you revive them right back at the Keep.</p>
+
+        <div class="tldr"><b>TL;DR.</b> Lose the Keep clearing = lose Field Hospitals = lose the game. Always 3+ warriors at the Keep. Discard liberally to revive — you have plenty of cards.</div>
+
         <div class="card dont">
-          <div class="hdr"><span class="badge dont">Protect Keep at all costs</span></div>
-          Lose Keep → no Field Hospitals → game over. Watch for sneaky removals (Favor of the Mice, dominance attacks).
+          <div class="hdr"><span class="badge dont">Protect the Keep at all costs</div>
+          If your Keep clearing is destroyed (you lose Rule of it, AND the Keep building is removed), you no longer have anywhere to revive warriors. Your army can't replenish. The faction collapses.<br><br>
+          <b>Watch for these sneaky removals:</b>
+          <ul>
+            <li><b>Favor of the Mice / Foxes / Rabbits</b> — wipes ALL enemy units in clearings of that suit. If your Keep is in a mouse clearing and someone plays Favor of the Mice, you instantly lose everything in mouse clearings — including the Keep.</li>
+            <li><b>Dominance attacks</b> — opponents may push hard at the Keep clearing late game to deny you Field Hospitals before you can dominate.</li>
+            <li><b>Plot bombs (Corvid)</b> — devastating if placed on the Keep.</li>
+          </ul>
         </div>
-        <h4>Field Hospitals — soak losses</h4>
+
+        <h4>Field Hospitals — your secret weapon</h4>
+        <p>Every time one of your warriors dies <i>in a clearing whose suit you have a card for in your hand</i>, you can discard that card to place the warrior at the Keep. This is huge:</p>
         <ul>
-          <li>With 5 recruiters down + Field Hospitals you can soak <b>8–10 losses in a round</b> and retake a clearing</li>
-          <li>Discard cards liberally — they're cheap and you draw lots</li>
-          <li>vs Lizards: <b>discard to manipulate the outcast suit</b> in your favor</li>
+          <li>With 5 Recruiters down + Field Hospitals, you can soak <b>8–10 warrior losses in a single round</b> and retake the contested clearing</li>
+          <li>Discard cards liberally — at 3 Recruiters you draw 4 cards/turn, so cards are cheap</li>
+          <li><b>vs Lizards specifically:</b> the cards you discard go to the discard pile, which manipulates the <b>outcast suit cycle</b>. Discarding non-base-suit cards pushes outcast away from your bases. Free defensive utility.</li>
         </ul>
-        <div class="card info"><span class="badge info">Tempo</span> If a dominance push fails turn 1, you can usually retake. Don't panic.</div>
+
+        <div class="card info">
+          <span class="badge info">Tempo defense</span>
+          If your turn-1 dominance push fails (opponents throw everything at your dominance clearing), <b>don't panic</b>. With 5 Recruiters and Field Hospitals you can absorb a brutal round of losses and retake the clearing next turn. Most opponents don't have the staying power to win the contested-clearing war over multiple rounds.
+        </div>
+
+        <div class="scenario">
+          <div class="label">Picture this — surviving an Eyrie assault</div>
+          The Eyrie marches 6 warriors into your Recruiter clearing with Commander + Brutal Tactics. Battle: they roll well and kill 3 of your 4 warriors. <b>Without Field Hospitals:</b> you're crippled. <b>With Field Hospitals + 5 cards in hand:</b> you discard 3 cards matching that clearing's suit, place 3 warriors at the Keep. Next turn, March them back, restore Rule. The Eyrie spent a huge action turn for ~zero progress. Your engine survives.
+        </div>
       </div>
     </section>
 
@@ -1135,6 +1508,138 @@
           <div class="card info"><span class="badge info">08</span> Building mix? <div class="dim">R 3 · SM 2–3 · WS 2 (rabbit) → 4</div></div>
           <div class="card info"><span class="badge info">09</span> Wood stockpile? <div class="dim">Spend it — Eyrie/Corvids burn it.</div></div>
           <div class="card info"><span class="badge info">10</span> Keep status? <div class="dim">Lost? Trace the chain — game-ender.</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="tile t3 span3" id="s20" data-keys="glossary terms definitions sawmill recruiter workshop wood overwork march keep field hospitals rule clearing">
+      <span class="tile-badge">ADVANCED</span>
+      <h3><span class="num">★</span>Glossary</h3>
+      <div class="body">
+        <p class="dim">Every term used in this aid, defined. Quick reference for jargon.</p>
+
+        <h4>Cat Pieces &amp; Buildings</h4>
+        <div class="glossary">
+          <div class="term">
+            <div class="word">Sawmill</div>
+            <div class="defn">Cat building that produces 1 wood each Birdsong (only if you Rule the clearing). Wood is then spent to build more buildings. Costs 1, 2, 3 wood for the 1st/2nd/3rd built.</div>
+          </div>
+          <div class="term">
+            <div class="word">Recruiter</div>
+            <div class="defn">Cat building that places 1 warrior at the clearing each time you take the Recruit action. Also adds +1 to your Evening card draw if you Rule the clearing. The most important building type — get all 3 down fast.</div>
+          </div>
+          <div class="term">
+            <div class="word">Workshop</div>
+            <div class="defn">Cat building that lets you craft cards of matching suit during Daylight. Crafting itself is FREE (not an action). Build 2 rabbit Workshops first; they unlock the S-tier rabbit upgrades.</div>
+          </div>
+          <div class="term">
+            <div class="word">Keep</div>
+            <div class="defn">A unique pre-placed Cat building (the big stone fortress) in your starting clearing. Required for Field Hospitals to function. Lose the Keep clearing → no warrior revives → you almost certainly lose the game.</div>
+          </div>
+          <div class="term">
+            <div class="word">Wood</div>
+            <div class="defn">Yellow log token. Produced at Sawmills in Birdsong. Spent to Build new buildings. Don't stockpile too much — it's a target.</div>
+          </div>
+          <div class="term">
+            <div class="word">Warrior</div>
+            <div class="defn">Standard Cat unit. You start with the most warriors of any faction (25 total). Used to defend buildings, fight, smother enemies.</div>
+          </div>
+        </div>
+
+        <h4>Cat Actions</h4>
+        <div class="glossary">
+          <div class="term">
+            <div class="word">Battle</div>
+            <div class="defn">Daylight action. Attack a clearing where you have warriors. Roll dice, attacker takes higher number as hits, defender takes lower. Costs 1 of your 3 actions per turn.</div>
+          </div>
+          <div class="term">
+            <div class="word">March</div>
+            <div class="defn">Daylight action. Take TWO Move actions for the cost of one. Each move shifts a group of warriors from one Ruled clearing to an adjacent one. Cats-unique.</div>
+          </div>
+          <div class="term">
+            <div class="word">Recruit</div>
+            <div class="defn">Daylight action (once per turn). Place 1 warrior at each Recruiter in clearings you Rule. With 3 Recruiters down, this is +3 warriors per Recruit action.</div>
+          </div>
+          <div class="term">
+            <div class="word">Build</div>
+            <div class="defn">Daylight action. Place a building in a Ruled clearing with an empty slot. Cost = 1 wood per building of that type already on the board (1, 2, 3, ...).</div>
+          </div>
+          <div class="term">
+            <div class="word">Overwork</div>
+            <div class="defn">Daylight action. Discard a card matching a Sawmill clearing's suit, place an extra wood at that Sawmill. Lets you turn cards into wood — useful for big build turns.</div>
+          </div>
+        </div>
+
+        <h4>Cat Special Abilities</h4>
+        <div class="glossary">
+          <div class="term">
+            <div class="word">Field Hospitals</div>
+            <div class="defn">Cat ability. When one of your warriors is killed, you may discard a card matching that clearing's suit to place the warrior at the Keep clearing instead of removing it. Requires the Keep building to still exist.</div>
+          </div>
+          <div class="term">
+            <div class="word">Rule</div>
+            <div class="defn">You "Rule" a clearing if you have more total pieces (warriors + buildings + tokens) there than any other player. Cats do NOT have Lords of the Forest, so ties = nobody Rules. Required for: building, recruiting, marching out, scoring sawmill wood.</div>
+          </div>
+          <div class="term">
+            <div class="word">Cobbler</div>
+            <div class="defn">Rabbit-suit crafted upgrade. Free Move action at start of every Daylight (doesn't cost from your 3 actions). Top priority craft.</div>
+          </div>
+          <div class="term">
+            <div class="word">Command Warren</div>
+            <div class="defn">Rabbit-suit crafted upgrade. Free Battle action at start of every Daylight. Top priority craft.</div>
+          </div>
+          <div class="term">
+            <div class="word">Better Burrow Bank (BBB)</div>
+            <div class="defn">Rabbit-suit crafted upgrade. Once per turn, draw an extra card. Top priority craft.</div>
+          </div>
+          <div class="term">
+            <div class="word">Royal Claim</div>
+            <div class="defn">Bird-suit crafted upgrade. At end of Birdsong, score 1 VP per suit you Rule a clearing in. Late-game burst, requires bird Workshop.</div>
+          </div>
+        </div>
+
+        <h4>Game-Wide Concepts</h4>
+        <div class="glossary">
+          <div class="term">
+            <div class="word">Suit</div>
+            <div class="defn">Each clearing is one of three suits: fox, rabbit, or mouse. Cards have suits matching these (plus bird = wild). Many actions require suit-matching cards.</div>
+          </div>
+          <div class="term">
+            <div class="word">Bird card</div>
+            <div class="defn">A wild-suit card. Counts as any suit when overworking, building, recruiting, etc. Treat as gold — they unlock plays you couldn't otherwise make.</div>
+          </div>
+          <div class="term">
+            <div class="word">Clearing slot</div>
+            <div class="defn">Each clearing has a fixed number of building slots (1, 2, or 3). Once filled, no more buildings can go there. 3-slot clearings are most valuable.</div>
+          </div>
+          <div class="term">
+            <div class="word">Birdsong / Daylight / Evening</div>
+            <div class="defn">The three phases of every player's turn. Birdsong = setup (place wood). Daylight = main actions (Build/Battle/March/Recruit/Overwork) + crafting. Evening = score, draw cards, discard.</div>
+          </div>
+          <div class="term">
+            <div class="word">Dominance card</div>
+            <div class="defn">Special victory cards: hold 3 corners, OR all 3 clearings of one suit, OR 5 specific bird clearings. Activate to ignore VP score and chase the alternate condition. 2/3 of Cat wins come from these.</div>
+          </div>
+          <div class="term">
+            <div class="word">Coalition</div>
+            <div class="defn">When activating a dominance card mid-game, you can also "go coalition" — give up your VP track and team with the lowest-score player. They win if either of you reaches the win condition. Useful with the Vagabond.</div>
+          </div>
+          <div class="term">
+            <div class="word">Martial Law</div>
+            <div class="defn">If a clearing has 3+ enemy warriors, the Alliance must spend +1 card to spread sympathy there. Triggering Martial Law = a defensive strategy against Alliance.</div>
+          </div>
+          <div class="term">
+            <div class="word">Turmoil (Eyrie)</div>
+            <div class="defn">When the Eyrie can't fulfill their Decree, they lose VP, discard their Decree, and weaken. Forcing turmoil (e.g. by killing roosts in their Recruit suit) is a top Cat play vs Eyrie.</div>
+          </div>
+          <div class="term">
+            <div class="word">Outrage (Alliance)</div>
+            <div class="defn">When you remove Alliance sympathy or battle on a sympathy clearing, the Alliance gets a free card. Good reason to NOT attack their bases — every battle gives them VP fuel.</div>
+          </div>
+          <div class="term">
+            <div class="word">Outcast suit (Lizards)</div>
+            <div class="defn">A suit currently designated as "outcast." Lizards get bonuses on outcast-suit clearings. Discarding cards manipulates the cycle — Cats can use Field Hospitals discards to push outcast away from their Keep's suit.</div>
+          </div>
         </div>
       </div>
     </section>
