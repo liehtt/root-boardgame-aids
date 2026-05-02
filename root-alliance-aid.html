@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Woodland Alliance — Play Aid</title>
+<style>
+  :root {
+    --bg: #0d1810;
+    --bg2: #131f17;
+    --bg3: #1a2a1f;
+    --bg4: #24372c;
+    --fg: #e8edd9;
+    --fg-dim: #9aae8d;
+    --fg-dim2: #6a7d60;
+    --border: #243a2c;
+    --border2: #3a5740;
+    --accent: #d64545;
+    --accent-deep: #a02828;
+    --accent-glow: rgba(214,69,69,0.28);
+    --green: #7fb069;
+    --red: #d64545;
+    --yellow: #e3b341;
+    --blue: #6ba3c4;
+    --purple: #b07cc4;
+    --essential: #d64545;
+    --essential-glow: rgba(214,69,69,0.30);
+    --core: #7fb069;
+    --core-glow: rgba(127,176,105,0.25);
+    --advanced: #6a7d60;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    color: var(--fg);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 14px;
+    line-height: 1.4;
+  }
+  body {
+    background:
+      radial-gradient(ellipse at 50% -10%, rgba(214,69,69,0.10) 0%, transparent 55%),
+      radial-gradient(ellipse at 10% 100%, rgba(127,176,105,0.06) 0%, transparent 50%),
+      var(--bg);
+    background-attachment: fixed;
+    min-height: 100vh;
+  }
+  body.dense { font-size: 12.5px; }
+  body.dense .tile .body { padding: 8px 10px; }
+  body.dense .card { padding: 6px 8px; margin: 4px 0; }
+  body.dense .tile h3 { padding: 8px 12px; }
+
+  .dim { color: var(--fg-dim); }
+
+  .app {
+    display: grid;
+    grid-template-columns: 230px 1fr;
+    grid-template-rows: auto auto 1fr;
+    grid-template-areas:
+      "header header"
+      "hero   hero"
+      "rail   main";
+    min-height: 100vh;
+  }
+
+  header {
+    grid-area: header;
+    position: sticky; top: 0; z-index: 100;
+    background: linear-gradient(180deg, rgba(19,31,23,0.98) 0%, rgba(13,24,16,0.92) 100%);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 2px 20px rgba(0,0,0,0.5), 0 1px 0 rgba(214,69,69,0.10) inset;
+    padding: 10px 14px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 14px;
+    align-items: center;
+    backdrop-filter: blur(10px);
+  }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; }
+  .brand .torch {
+    width: 34px; height: 34px;
+    background: linear-gradient(135deg, #e25555 0%, #a02828 100%);
+    color: #fff7ee;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    box-shadow: 0 2px 8px rgba(160,40,40,0.5), inset 0 1px 0 rgba(255,255,255,0.2);
+  }
+  .brand .sub { color: var(--fg-dim); font-size: 11px; font-weight: 500; }
+
+  .modes {
+    display: flex;
+    gap: 0;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 3px;
+  }
+  .mode-btn {
+    padding: 6px 14px;
+    background: transparent;
+    border: none;
+    color: var(--fg-dim);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 4px;
+    letter-spacing: 0.02em;
+  }
+  .mode-btn:hover { color: var(--fg); }
+  .mode-btn.active {
+    background: linear-gradient(135deg, #e25555 0%, #a02828 100%);
+    color: #fff;
+    box-shadow: 0 2px 6px rgba(160,40,40,0.45), inset 0 1px 0 rgba(255,255,255,0.25);
+  }
+  .mode-btn .count { font-size: 10px; opacity: 0.75; margin-left: 4px; }
+
+  .controls { display: flex; gap: 6px; align-items: center; }
+  .controls input {
+    height: 34px; width: 180px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    color: var(--fg);
+    padding: 0 10px;
+    font-size: 13px;
+  }
+  .controls input:focus { outline: 2px solid var(--accent); border-color: var(--accent); }
+  .btn {
+    height: 34px; padding: 0 10px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    color: var(--fg);
+    font-size: 12px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .btn:hover { background: var(--bg4); border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent-glow); }
+  .btn.active {
+    background: linear-gradient(135deg, #e25555 0%, #a02828 100%);
+    color: #fff;
+    border-color: var(--accent);
+    box-shadow: 0 2px 6px rgba(160,40,40,0.45), inset 0 1px 0 rgba(255,255,255,0.25);
+  }
+
+  .hero {
+    grid-area: hero;
+    background:
+      radial-gradient(ellipse at 50% 0%, rgba(214,69,69,0.18) 0%, transparent 65%),
+      linear-gradient(180deg, rgba(36,55,44,0.55) 0%, rgba(19,31,23,0.3) 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 18px 20px 16px;
+    position: relative;
+  }
+  .hero::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; bottom: 0; height: 1px;
+    background: linear-gradient(90deg, transparent 0%, rgba(214,69,69,0.4) 50%, transparent 100%);
+  }
+  .hero-banner {
+    text-align: center;
+    font-size: clamp(20px, 3.2vw, 30px);
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    background: linear-gradient(180deg, #ffb6a3 0%, #e25555 60%, #a02828 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 16px;
+    text-shadow: 0 0 40px rgba(214,69,69,0.3);
+    filter: drop-shadow(0 2px 8px rgba(160,40,40,0.3));
+  }
+  .hero-banner .small {
+    display: block;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    color: var(--fg-dim);
+    font-weight: 700;
+    margin-bottom: 6px;
+    -webkit-text-fill-color: var(--fg-dim);
+  }
+
+  .gate-big {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+  }
+  @media (max-width: 900px) { .gate-big { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 500px) { .gate-big { grid-template-columns: 1fr; } }
+  .gate-step {
+    background: linear-gradient(180deg, rgba(36,55,44,0.8) 0%, rgba(19,31,23,0.6) 100%);
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    padding: 12px 14px 12px 34px;
+    position: relative;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(200,225,180,0.06);
+    transition: transform 150ms, box-shadow 150ms;
+  }
+  .gate-step:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(160,40,40,0.25), inset 0 1px 0 rgba(200,225,180,0.1);
+    border-color: var(--accent);
+  }
+  .gate-step .n {
+    position: absolute;
+    top: 50%; left: 10px;
+    transform: translateY(-50%);
+    width: 22px; height: 22px;
+    background: linear-gradient(135deg, #e25555 0%, #a02828 100%);
+    color: #fff7ee;
+    font-family: ui-monospace, monospace;
+    font-size: 10px;
+    font-weight: 800;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 2px 6px rgba(160,40,40,0.55), inset 0 1px 0 rgba(255,255,255,0.3);
+  }
+  .gate-step .q { font-weight: 700; font-size: 14px; color: var(--fg); }
+  .gate-step .a { font-size: 12px; color: var(--fg-dim); margin-top: 3px; }
+
+  .first-time {
+    margin-top: 14px;
+    background: linear-gradient(90deg, rgba(127,176,105,0.18) 0%, rgba(127,176,105,0.05) 100%);
+    border: 1px solid rgba(127,176,105,0.45);
+    border-left: 4px solid var(--core);
+    border-radius: 8px;
+    padding: 11px 14px;
+    font-size: 13px;
+    display: flex; align-items: center; gap: 12px;
+    box-shadow: 0 2px 10px rgba(127,176,105,0.12), inset 0 1px 0 rgba(127,176,105,0.1);
+  }
+  .first-time .pill {
+    background: linear-gradient(135deg, #96c47f 0%, #5e8f4d 100%);
+    color: #0a1a0f;
+    font-weight: 800;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    padding: 4px 10px;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+    white-space: nowrap;
+  }
+  body.mode-advanced .first-time { display: none; }
+  body.mode-all .first-time { display: none; }
+
+  .rail {
+    grid-area: rail;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    padding: 10px 6px;
+    overflow-y: auto;
+    position: sticky;
+    top: 64px;
+    height: calc(100vh - 64px);
+  }
+  .rail-group {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--fg-dim2);
+    text-transform: uppercase;
+    padding: 10px 10px 4px;
+    margin-top: 4px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .rail-group .dot { width: 8px; height: 8px; border-radius: 50%; }
+  .rail-group.g1 .dot { background: var(--essential); }
+  .rail-group.g2 .dot { background: var(--core); }
+  .rail-group.g3 .dot { background: var(--advanced); }
+
+  .rail a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 10px;
+    color: var(--fg-dim);
+    text-decoration: none;
+    font-size: 13px;
+    border-radius: 5px;
+    border-left: 3px solid transparent;
+    margin-bottom: 2px;
+  }
+  .rail a:hover { background: var(--bg3); color: var(--fg); }
+  .rail a.active {
+    background: linear-gradient(90deg, rgba(214,69,69,0.18) 0%, rgba(214,69,69,0.02) 100%);
+    color: var(--fg);
+    border-left-color: var(--accent);
+    box-shadow: inset 0 0 0 1px rgba(214,69,69,0.15);
+  }
+  .rail a .n {
+    font-family: ui-monospace, monospace;
+    font-size: 11px;
+    color: var(--fg-dim2);
+    min-width: 20px;
+  }
+  .rail a.active .n { color: var(--accent); }
+  .rail a.t1::before { content: "●"; color: var(--essential); margin-left: auto; font-size: 10px; }
+  .rail a.t2::before { content: "●"; color: var(--core); margin-left: auto; font-size: 10px; }
+  .rail a.t3::before { content: "●"; color: var(--advanced); margin-left: auto; font-size: 10px; }
+
+  body.mode-beginner .rail a.t3 { display: none; }
+  body.mode-beginner .rail-group.g3 { display: none; }
+  body.mode-advanced .rail a.t1 { display: none; }
+  body.mode-advanced .rail-group.g1 { display: none; }
+
+  main {
+    grid-area: main;
+    padding: 14px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-auto-rows: min-content;
+    grid-auto-flow: dense;
+    gap: 12px;
+    align-content: start;
+  }
+  body.dense main { gap: 8px; padding: 8px; }
+
+  .tile {
+    background: linear-gradient(180deg, rgba(26,42,31,0.88) 0%, rgba(19,31,23,0.88) 100%);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    scroll-margin-top: 80px;
+    position: relative;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4), inset 0 1px 0 rgba(200,225,180,0.04);
+    transition: transform 180ms, box-shadow 180ms;
+  }
+  .tile:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.5), 0 0 0 1px rgba(214,69,69,0.2), inset 0 1px 0 rgba(200,225,180,0.08);
+  }
+  .tile h3 {
+    margin: 0;
+    padding: 11px 14px;
+    background: linear-gradient(180deg, rgba(36,55,44,0.9) 0%, rgba(26,42,31,0.6) 100%);
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-left: 3px solid var(--accent);
+    letter-spacing: 0.01em;
+  }
+  .tile h3 .num {
+    font-family: ui-monospace, monospace;
+    font-size: 11px;
+    color: var(--fg-dim2);
+    background: var(--bg);
+    padding: 1px 6px;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+  }
+  .tile .body { padding: 10px 14px; flex: 1; }
+  .tile-badge {
+    position: absolute;
+    top: 8px; right: 10px;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    padding: 2px 7px;
+    border-radius: 3px;
+    z-index: 2;
+  }
+
+  /* TIER 1 — Essential (crimson) */
+  .tile.t1 {
+    border: 2px solid var(--essential);
+    box-shadow: 0 0 0 1px var(--essential-glow), 0 6px 20px rgba(214,69,69,0.18), inset 0 1px 0 rgba(214,69,69,0.12);
+  }
+  .tile.t1:hover {
+    box-shadow: 0 0 0 1px var(--essential-glow), 0 10px 28px rgba(214,69,69,0.3), inset 0 1px 0 rgba(214,69,69,0.18);
+  }
+  .tile.t1 h3 {
+    background: linear-gradient(90deg, rgba(214,69,69,0.22) 0%, rgba(36,55,44,0.7) 100%);
+    border-left-color: var(--essential);
+    border-left-width: 4px;
+    font-size: 15px;
+  }
+  .tile.t1 h3 .priority {
+    background: linear-gradient(135deg, #e25555 0%, #a02828 100%);
+    color: #fff7ee;
+    font-family: ui-monospace, monospace;
+    font-size: 10px;
+    font-weight: 800;
+    padding: 3px 7px;
+    border-radius: 4px;
+    letter-spacing: 0.05em;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.25);
+  }
+  .tile.t1 .tile-badge {
+    background: linear-gradient(135deg, #e25555 0%, #a02828 100%);
+    color: #fff7ee;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  }
+
+  /* TIER 2 — Core (green) */
+  .tile.t2 h3 { border-left-color: var(--core); }
+  .tile.t2 .tile-badge {
+    background: rgba(127,176,105,0.18);
+    color: var(--core);
+    border: 1px solid rgba(127,176,105,0.45);
+  }
+
+  /* TIER 3 — Advanced (muted) */
+  .tile.t3 { opacity: 0.92; }
+  .tile.t3 h3 {
+    border-left-color: var(--advanced);
+    background: rgba(26,42,31,0.6);
+    font-size: 12px;
+    color: var(--fg-dim);
+  }
+  .tile.t3 .tile-badge {
+    background: var(--bg3);
+    color: var(--fg-dim);
+    border: 1px solid var(--border2);
+  }
+  .tile.t3 .body { font-size: 13px; color: var(--fg-dim); }
+  .tile.t3 .body b { color: var(--fg); }
+
+  body.mode-beginner .tile.t3 { display: none; }
+  body.mode-advanced .tile.t1 { display: none; }
+
+  .tile.t1 { order: 1; }
+  .tile.t2 { order: 2; }
+  .tile.t3 { order: 3; }
+
+  .tile.span2 { grid-column: span 2; }
+  .tile.span3 { grid-column: span 3; }
+  @media (max-width: 1200px) { .tile.span3 { grid-column: span 2; } }
+  @media (max-width: 900px) { .tile.span2, .tile.span3 { grid-column: span 1; } }
+
+  .tile h4 {
+    margin: 8px 0 4px;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .tile ul, .tile ol { margin: 4px 0; padding-left: 20px; }
+  .tile li { margin: 2px 0; }
+  .tile p { margin: 4px 0; }
+
+  .card {
+    background: linear-gradient(180deg, rgba(36,55,44,0.75) 0%, rgba(26,42,31,0.75) 100%);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 11px;
+    margin: 6px 0;
+    box-shadow: inset 0 1px 0 rgba(200,225,180,0.05), 0 1px 2px rgba(0,0,0,0.25);
+  }
+  .card.do    { border-left-color: var(--green); }
+  .card.dont  { border-left-color: var(--red); }
+  .card.cond  { border-left-color: var(--yellow); }
+  .card.info  { border-left-color: var(--blue); }
+  .card .hdr { display: flex; align-items: center; gap: 6px; margin-bottom: 3px; font-size: 12px; font-weight: 600; }
+  .card ul, .card ol { margin: 2px 0; padding-left: 18px; }
+  .card li { font-size: 12px; }
+
+  .badge {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    padding: 1px 5px;
+    border-radius: 2px;
+    text-transform: uppercase;
+  }
+  .badge.do   { background: rgba(127,176,105,0.18); color: var(--green);  border: 1px solid rgba(127,176,105,0.45); }
+  .badge.dont { background: rgba(214,69,69,0.15);   color: var(--red);    border: 1px solid rgba(214,69,69,0.5); }
+  .badge.cond { background: rgba(227,179,65,0.15);  color: var(--yellow); border: 1px solid rgba(227,179,65,0.45); }
+  .badge.info { background: rgba(107,163,196,0.18); color: var(--blue);   border: 1px solid rgba(107,163,196,0.5); }
+
+  .line {
+    font-family: ui-monospace, monospace;
+    background: var(--bg);
+    padding: 4px 8px;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+    display: inline-block;
+    margin: 3px 3px 3px 0;
+    font-size: 12px;
+  }
+
+  .mini-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 6px;
+    margin: 6px 0;
+  }
+
+  .rule-big {
+    font-size: 15px;
+    text-align: center;
+    padding: 12px;
+    background: linear-gradient(180deg, rgba(214,69,69,0.2) 0%, rgba(214,69,69,0.08) 100%);
+    border: 2px solid rgba(214,69,69,0.55);
+    border-radius: 8px;
+    margin: 8px 0 10px;
+    font-weight: 700;
+    color: #ffd1c4;
+    box-shadow: 0 0 20px var(--essential-glow), inset 0 1px 0 rgba(255,180,165,0.12);
+    letter-spacing: 0.01em;
+  }
+
+  .math-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 6px;
+    margin: 6px 0;
+  }
+  .math-row {
+    background: linear-gradient(180deg, rgba(36,55,44,0.8) 0%, rgba(26,42,31,0.8) 100%);
+    border: 1px solid var(--border2);
+    border-radius: 6px;
+    padding: 8px 10px;
+    text-align: center;
+  }
+  .math-row .pct {
+    font-family: ui-monospace, monospace;
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+  }
+  .math-row .lbl { font-size: 11px; color: var(--fg-dim); margin-top: 2px; }
+
+  .hidden { display: none !important; }
+  .dimmed { opacity: 0.15; pointer-events: none; }
+
+  .kbd {
+    display: inline-block;
+    font-family: ui-monospace, monospace;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-bottom-width: 2px;
+    border-radius: 3px;
+    padding: 0 5px;
+    font-size: 11px;
+  }
+
+  @media (max-width: 900px) {
+    .app { grid-template-columns: 1fr; grid-template-areas: "header" "hero" "main"; }
+    .rail { display: none; }
+    header { grid-template-columns: 1fr; gap: 8px; }
+    .controls input { width: 100%; }
+    .controls { flex-wrap: wrap; }
+  }
+
+  @media print {
+    body { background: #fff; color: #000; font-size: 9pt; }
+    header, .rail, .controls, .modes, .first-time { display: none; }
+    .app { display: block; }
+    .hero { background: #eee; color: #000; padding: 8px; }
+    .hero-banner { color: #000; -webkit-text-fill-color: #000; }
+    .gate-step { background: #fff; color: #000; border: 1px solid #666; }
+    main { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; padding: 0; }
+    .tile { border: 1px solid #666; page-break-inside: avoid; background: #fff; opacity: 1 !important; display: flex !important; box-shadow: none !important; }
+    .tile h3 { background: #eee; color: #000; font-size: 11pt !important; }
+    .tile.span2, .tile.span3 { grid-column: span 2; }
+    .card { background: #f6f6f6; color: #000; border: 1px solid #999; }
+    .badge, .tile-badge { border: 1px solid #000; color: #000; background: #eee; }
+  }
+</style>
+</head>
+<body class="mode-beginner">
+
+<div class="app">
+
+  <header>
+    <div class="brand">
+      <div class="torch">🔥</div>
+      <div>
+        <div>Woodland Alliance</div>
+        <div class="sub">Complete Play Aid</div>
+      </div>
+    </div>
+
+    <div class="modes" role="tablist">
+      <button class="mode-btn active" data-mode="beginner">Beginner<span class="count">5 tiles</span></button>
+      <button class="mode-btn" data-mode="all">All<span class="count">15</span></button>
+      <button class="mode-btn" data-mode="advanced">Advanced<span class="count">10</span></button>
+    </div>
+
+    <div class="controls">
+      <input id="search" type="search" placeholder="🔍 Filter… /" aria-label="Filter">
+      <button class="btn" id="dense" title="Dense (D)">Dense</button>
+      <button class="btn" id="reset" title="Reset (R)">Reset</button>
+    </div>
+  </header>
+
+  <div class="hero">
+    <div class="hero-banner">
+      <span class="small">THE ONE RULE</span>
+      Be someone else's problem. Bank the points. Win in one turn.
+    </div>
+
+    <div class="gate-big">
+      <div class="gate-step">
+        <span class="n">01</span>
+        <div class="q">Under the radar?</div>
+        <div class="a">Stay just behind in score. Don't telegraph your potential.</div>
+      </div>
+      <div class="gate-step">
+        <span class="n">02</span>
+        <div class="q">Base safe?</div>
+        <div class="a">2 warriors + Armorers = ~94% surviving an attack.</div>
+      </div>
+      <div class="gate-step">
+        <span class="n">03</span>
+        <div class="q">Card hoard?</div>
+        <div class="a">Banked supporters = banked VP. Don't waste on Martial Law.</div>
+      </div>
+      <div class="gate-step">
+        <span class="n">04</span>
+        <div class="q">Sympathy 1st</div>
+        <div class="a">Place sympathy in Birdsong before crafting/favor in Daylight.</div>
+      </div>
+      <div class="gate-step">
+        <span class="n">05</span>
+        <div class="q">Big turn ready?</div>
+        <div class="a">15 → 30 in one turn is the win shape.</div>
+      </div>
+    </div>
+
+    <div class="first-time">
+      <span class="pill">START HERE</span>
+      <div>New to Alliance? You're an insurgency, not an army. The <b>5 red-bordered tiles below</b> cover the four pillars: stay invisible, get one safe base down, weaponize Guerrilla War + Armorers, and bank cards for one giant scoring turn at the end.</div>
+    </div>
+  </div>
+
+  <aside class="rail" aria-label="Section navigation">
+    <div class="rail-group g1"><span class="dot"></span> Essential</div>
+    <a href="#s1" class="t1"><span class="n">01</span>Be Invisible</a>
+    <a href="#s2" class="t1"><span class="n">02</span>First Base</a>
+    <a href="#s3" class="t1"><span class="n">03</span>Armorers + GW</a>
+    <a href="#s4" class="t1"><span class="n">04</span>The Big Turn</a>
+    <a href="#s5" class="t1"><span class="n">05</span>5 Failure Modes</a>
+
+    <div class="rail-group g2"><span class="dot"></span> Core</div>
+    <a href="#s6" class="t2"><span class="n">06</span>Crafting Priorities</a>
+    <a href="#s7" class="t2"><span class="n">07</span>Sympathy Math</a>
+    <a href="#s8" class="t2"><span class="n">08</span>Officers &amp; Bases</a>
+    <a href="#s9" class="t2"><span class="n">09</span>Time-Bomb Revolt</a>
+    <a href="#s10" class="t2"><span class="n">10</span>Pre-Turn Audit</a>
+
+    <div class="rail-group g3"><span class="dot"></span> Advanced</div>
+    <a href="#s11" class="t3"><span class="n">11</span>Matchups</a>
+    <a href="#s12" class="t3"><span class="n">12</span>Lizard Counter</a>
+    <a href="#s13" class="t3"><span class="n">13</span>Mental Model</a>
+    <a href="#s14" class="t3"><span class="n">14</span>Advanced Tactics</a>
+    <a href="#s15" class="t3"><span class="n">15</span>Replay Checklist</a>
+  </aside>
+
+  <main>
+
+    <!-- ===================== TIER 1 ===================== -->
+
+    <section class="tile t1 span2" id="s1" data-keys="philosophy invisible threat stealth identity insurgency under radar">
+      <span class="tile-badge">ESSENTIAL</span>
+      <h3><span class="num">01</span><span class="priority">PRIORITY 1</span>Be Invisible</h3>
+      <div class="body">
+        <div class="rule-big">If anyone says "stop the Alliance," you've already lost.</div>
+        <p>Alliance scores by efficiently spending cards — a path that's <b>obvious</b> once visible. Your job is to look harmless until the win is locked in. The right Alliance game ends with one player suddenly going from 15 → 30 VP.</p>
+        <h4>Three threats to manage</h4>
+        <div class="mini-grid">
+          <div class="card cond"><span class="badge cond">Threat</span> Looking like the leader → coalition forms.</div>
+          <div class="card cond"><span class="badge cond">Threat</span> Visible card hoard → "she's holding 8 cards, kill her base."</div>
+          <div class="card cond"><span class="badge cond">Threat</span> Provoking the Cats early → choke-out blockades.</div>
+        </div>
+        <h4>How to disappear</h4>
+        <ul>
+          <li>Stay <b>just behind in score</b>; let Eyrie/Cats trade leadership</li>
+          <li>Show only <b>1–2 bases</b>, modest officers — not your card stash</li>
+          <li>Play up "I only have 4 cards, I'm fine" table-talk</li>
+          <li>Frame your sympathy placement as <b>"someone else's problem"</b> — sympathy on Eyrie's path? "I'm just hassling them, not you"</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="tile t1 span2" id="s2" data-keys="opening first base placement turn 1 2 supporters revolt safe central">
+      <span class="tile-badge">ESSENTIAL</span>
+      <h3><span class="num">02</span><span class="priority">PRIORITY 2</span>First Base — Land It Safely</h3>
+      <div class="body">
+        <p>Goal of turns 1–2: <b>1 base on the board, alive</b>. Everything else flows from this.</p>
+
+        <h4>Pre-Turn-1 evaluation (6 cards: 3 hand + 3 supporters)</h4>
+        <div class="card do">
+          <ol>
+            <li>Group all 6 cards by suit</li>
+            <li>Identify which suits have <b>2+ revolt opportunities</b></li>
+            <li>Pick a target suit that gives you <b>at least 2 backup revolts</b> if turn 2 is contested</li>
+          </ol>
+        </div>
+
+        <h4>Clearing Selection</h4>
+        <div class="mini-grid">
+          <div class="card do">
+            <span class="badge do">Look for</span>
+            <ul><li>Central, well-connected (3+ paths)</li><li>Few enemy buildings/warriors</li><li>Far from Cat Keep / Eyrie home</li></ul>
+          </div>
+          <div class="card dont">
+            <span class="badge dont">Avoid</span>
+            <ul><li>2-path corner clearings (bottleneck)</li><li>Adjacent to enemy stronghold</li><li>Clearings Vagabond/Riverfolk view as free VP</li></ul>
+          </div>
+        </div>
+
+        <h4>Turn 1 Default Pattern</h4>
+        <div class="card info">
+          <span class="badge info">Birdsong</span> Place sympathy in target clearing<br>
+          <span class="badge info">Daylight</span> Craft if possible (mouse/rabbit only)<br>
+          <span class="badge info">Evening</span> Move officers, dump remaining cards into supporters
+        </div>
+        <div class="card cond">
+          <span class="badge cond">Hold revolt for T2</span> unless you have a <b>favor card</b>, <b>Ambush</b>, or <b>S-tier craft</b> (Armorers, BBB) requiring it sooner.
+        </div>
+      </div>
+    </section>
+
+    <section class="tile t1" id="s3" data-keys="armorers guerrilla war combo invincible defense math">
+      <span class="tile-badge">ESSENTIAL</span>
+      <h3><span class="num">03</span><span class="priority">PRIORITY 3</span>Armorers + Guerrilla War</h3>
+      <div class="body">
+        <div class="rule-big">Guerrilla War is the strongest ability in Root.</div>
+        <p>You take the <b>higher</b> of the two dice when defending. Combined with Armorers (negate enemy hits) you become functionally <b>untouchable</b>.</p>
+        <h4>Defending with 1 warrior — opponent attack outcomes</h4>
+        <div class="math-grid">
+          <div class="math-row"><div class="pct">44%</div><div class="lbl">0 losses to you</div></div>
+          <div class="math-row"><div class="pct">31%</div><div class="lbl">1 loss</div></div>
+          <div class="math-row"><div class="pct">19%</div><div class="lbl">2 losses</div></div>
+          <div class="math-row"><div class="pct">6%</div><div class="lbl">3 losses</div></div>
+        </div>
+        <div class="card do"><span class="badge do">Translation</span> Sympathy with <b>1 defender</b> → opponent has only ~25% chance to clear it in one battle action.</div>
+        <div class="card do"><span class="badge do">2 defenders</span> → ~6% chance. With Armorers, even less.</div>
+        <h4>Craft Armorers ASAP</h4>
+        <ul>
+          <li>If any other faction had GW + Armorers, they'd never lose</li>
+          <li>Once Armorers is on the table, opponents start dismissing your bases as "not worth it"</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="tile t1" id="s4" data-keys="big turn 30 points win condition burst scoring final 3 cost sympathy track milestones">
+      <span class="tile-badge">ESSENTIAL</span>
+      <h3><span class="num">04</span><span class="priority">PRIORITY 4</span>The Big Turn</h3>
+      <div class="body">
+        <div class="rule-big">15 → 30 VP in one turn is the Alliance win shape.</div>
+        <p>You don't grind to 30. You hover at ~15, enter the endgame around <b>~20 VP</b>, then burst into the <b>3-cost sympathy track</b> where most of your VP lives.</p>
+        <h4>The Sequence</h4>
+        <div class="card info">
+          <span class="badge info">Birdsong</span> Spread 2–3 sympathy from your supporters
+        </div>
+        <div class="card info">
+          <span class="badge info">Daylight</span> Craft off the new sympathy clearings (favor / VP items)
+        </div>
+        <div class="card info">
+          <span class="badge info">Evening</span> Move base defenders out, organize them into more sympathy
+        </div>
+        <h4>Setup requirements</h4>
+        <ul>
+          <li>1–2 bases secure (Armorers ideally crafted)</li>
+          <li>5+ supporter cards stockpiled, mixed suits</li>
+          <li>Clearings of 2–3 different suits within reach</li>
+          <li>Officers staged for organize chains (2 minimum for Move+Organize chain)</li>
+        </ul>
+        <div class="card cond"><span class="badge cond">Don't telegraph</span> Don't let your supporter pile cross 8–9 cards visibly. People notice.</div>
+        <div class="card info"><span class="badge info">Score milestones</span> 0–10: invisible · 10–20: building · 20+: load the cannon · 25+: fire it.</div>
+      </div>
+    </section>
+
+    <section class="tile t1" id="s5" data-keys="failure modes mistakes pitfalls beginner">
+      <span class="tile-badge">ESSENTIAL</span>
+      <h3><span class="num">05</span><span class="priority">PRIORITY 5</span>5 Failure Modes</h3>
+      <div class="body">
+        <p class="dim">Avoid these = win rate spikes hard.</p>
+        <div class="card dont"><div class="hdr"><span class="badge dont">1</span> Visible threat</div>Surging to 1st in score → entire table aims at you.</div>
+        <div class="card dont"><div class="hdr"><span class="badge dont">2</span> Burning all cards on Martial Law</div>Cards are your VP currency — bank them.</div>
+        <div class="card dont"><div class="hdr"><span class="badge dont">3</span> Spreading thin</div>Officer-heavy with weak base defense → easy to topple.</div>
+        <div class="card dont"><div class="hdr"><span class="badge dont">4</span> Buying from Riverfolk</div>They keep your warriors. Your army shrinks for nothing.</div>
+        <div class="card dont"><div class="hdr"><span class="badge dont">5</span> Letting Lizards sanctify you</div>Match the outcast suit at all costs. See §12.</div>
+      </div>
+    </section>
+
+    <!-- ===================== TIER 2 ===================== -->
+
+    <section class="tile t2 span2" id="s6" data-keys="crafting armorers better burrow bank tax collectors codebreakers scouting party favor">
+      <span class="tile-badge">CORE</span>
+      <h3><span class="num">06</span>Crafting Priorities</h3>
+      <div class="body">
+        <p>Alliance crafting is suit-flexible — you don't need workshops, just sympathy. Lean <b>mouse / rabbit</b> for VP cards. <b>Avoid fox VP cards</b> (best Vagabond items).</p>
+
+        <h4>S-Tier Upgrades</h4>
+        <div class="mini-grid">
+          <div class="card do">
+            <span class="badge do">Armorers</span>
+            Negate enemy hits. With Guerrilla War: invincible base defense.
+          </div>
+          <div class="card do">
+            <span class="badge do">Better Burrow Bank</span>
+            More cards = more VP for Alliance. You convert cards to points faster than anyone.
+          </div>
+          <div class="card do">
+            <span class="badge do">Tax Collectors</span>
+            1 warrior → 1 card. Yes you're low on warriors — but you'll just recruit one back, and the card is worth it.
+          </div>
+          <div class="card do">
+            <span class="badge do">Sappers</span>
+            Stack with Armorers + Guerrilla War. Bases become untouchable.
+          </div>
+        </div>
+
+        <h4>Anti-Ambush Tools</h4>
+        <div class="card cond">
+          <span class="badge cond">Scouting Party</span> Negates Ambush — important since you'll occasionally have to attack
+        </div>
+        <div class="card cond">
+          <span class="badge cond">Codebreakers</span> See opponents' hands; spot Ambush threats before committing
+        </div>
+
+        <h4>Sympathy-Before-Craft Trick</h4>
+        <div class="card info">
+          <span class="badge info">Order</span> Birdsong (place sympathy) → Daylight (craft using <i>that</i> clearing's suit) lets you set up a favor card requirement <b>and use it</b> in one turn. Plan multi-turn favor setups.
+        </div>
+      </div>
+    </section>
+
+    <section class="tile t2" id="s7" data-keys="sympathy placement card economy supporters efficient">
+      <span class="tile-badge">CORE</span>
+      <h3><span class="num">07</span>Sympathy Math &amp; Placement</h3>
+      <div class="body">
+        <p>Each card spent on sympathy ≈ 1 VP. If an opponent destroys it, they paid in actions; you paid almost nothing.</p>
+        <h4>Maximize VP/card</h4>
+        <ul>
+          <li>Spread to clearings <b>matching your supporter suits</b> — you organize with the suit you have, not what's on the board</li>
+          <li>Bird cards: save for matching <b>same-suit-as-base</b> spreads (vs Lizards) or rescues</li>
+          <li>Look for "free card" opportunities — sympathy on a clearing the Eyrie <b>must</b> battle through (Outrage trigger)</li>
+        </ul>
+        <h4>Provocation patterns</h4>
+        <div class="card do">
+          <span class="badge do">Sympathy as bait</span>
+          Place on clearings opponents are forced through. Outrage gives you a card every time they remove or move-attack it. Sympathy that survives 1 attack already paid 2x.
+        </div>
+        <div class="card cond">
+          <span class="badge cond">Wood-stockpile signal</span> A Cat clearing with stockpiled wood is a juicy revolt target — destroying that wood is a heavy points swing for you and a major loss for them.
+        </div>
+      </div>
+    </section>
+
+    <section class="tile t2" id="s8" data-keys="officers bases warriors recruit limit pile">
+      <span class="tile-badge">CORE</span>
+      <h3><span class="num">08</span>Officers &amp; Bases</h3>
+      <div class="body">
+        <h4>Officer Targets</h4>
+        <ul>
+          <li><b>2 officers minimum</b> ASAP — unlocks Move + Organize chain in Evening, accelerating sympathy spread and 2nd-base deployment</li>
+          <li><b>~5 officers</b> by mid-game — enough actions to chain spread/organize</li>
+          <li>Beyond 5: diminishing returns; each officer = 1 less defender</li>
+        </ul>
+        <h4>Base Defense Floor</h4>
+        <div class="card do">
+          <span class="badge do">2 warriors + Armorers</span> Most opponents won't bother. The ROI for them is awful.
+        </div>
+        <div class="card cond">
+          <span class="badge cond">1 warrior + Armorers</span> Tempting target. Acceptable for short windows.
+        </div>
+        <div class="card dont">
+          <span class="badge dont">0 warriors</span> Free destruction. Don't.
+        </div>
+        <h4>Reserve a Base for Adjacency</h4>
+        <div class="card info">
+          <span class="badge info">Trick</span> Hold off building your second base until you can place it <b>adjacent to a future revolt clearing</b>. Now organization can flow outward through that adjacency.
+        </div>
+      </div>
+    </section>
+
+    <section class="tile t2" id="s9" data-keys="time bomb revolt aggressive sympathy escort payload">
+      <span class="tile-badge">CORE</span>
+      <h3><span class="num">09</span>Time-Bomb Revolt</h3>
+      <div class="body">
+        <p>After base 1 lands, switch from <b>safe</b> sympathy to <b>aggressive</b> sympathy in important enemy clearings.</p>
+        <h4>The Pattern (4 officers minimum)</h4>
+        <div class="card do">
+          <ol>
+            <li>Birdsong: spread sympathy into a key enemy clearing</li>
+            <li>Daylight: move 2 warriors there (officer chain), organize for a base if possible</li>
+            <li>Evening: recruit a warrior back at base to keep it safe</li>
+          </ol>
+        </div>
+        <div class="card info">
+          <span class="badge info">Result</span> A defended sympathy/base in their face. They can pour warriors at it — Guerrilla War means their warriors die more than yours. Add Ambush + Armorers and it's a dagger they can't pull out.
+        </div>
+        <h4>Where to plant</h4>
+        <ul>
+          <li>Eyrie's forced battle/move/build clearing (Outrage card stream)</li>
+          <li>Cat wood stockpile clearing (huge VP swing)</li>
+          <li>Lizard's outcast-mismatch clearing (denies sanctify)</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="tile t2" id="s10" data-keys="pre turn audit checklist birdsong">
+      <span class="tile-badge">CORE</span>
+      <h3><span class="num">10</span>Pre-Turn Audit</h3>
+      <div class="body">
+        <p class="dim">Run at start of every Birdsong.</p>
+        <div class="card info"><span class="badge info">1</span> What's my visible score rank? <div class="dim">Aim 2nd–3rd. If 1st, slow down.</div></div>
+        <div class="card info"><span class="badge info">2</span> Base defense floor met? <div class="dim">≥2 warriors per base, Armorers if up.</div></div>
+        <div class="card info"><span class="badge info">3</span> Outrage opportunities? <div class="dim">Sympathy in opponents' forced paths?</div></div>
+        <div class="card info"><span class="badge info">4</span> Vs Lizards: outcast match? <div class="dim">Spread to NON-matching suits using bird cards strategically.</div></div>
+        <div class="card info"><span class="badge info">5</span> Big-turn distance? <div class="dim">Cards in supporters × ~1 VP = your potential burst.</div></div>
+      </div>
+    </section>
+
+    <!-- ===================== TIER 3 ===================== -->
+
+    <section class="tile t3 span3" id="s11" data-keys="matchups cats eyrie vagabond riverfolk corvid duchy keepers">
+      <span class="tile-badge">ADVANCED</span>
+      <h3><span class="num">11</span>Matchups</h3>
+      <div class="body">
+        <div class="mini-grid" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));">
+          <div class="card dont">
+            <div class="hdr"><span class="badge dont">Marquise (Cats)</span></div>
+            <b>Threat:</b> Choke-out — they can dump 5+ warriors in your base clearing as a blockade.<br>
+            <b>Counter:</b> Don't be their biggest threat. Reserve a 2nd base adjacent to revolt clearings for outflow paths. <b>Look for wood stockpiles</b> — revolting on those is a massive VP swing for you, massive loss for them.
+          </div>
+          <div class="card cond">
+            <div class="hdr"><span class="badge cond">Eyrie</span></div>
+            <b>Both threat and farm.</b> Their static Decree forces them through specific clearings — plant sympathy there for an Outrage card-stream.<br>
+            <b>Migrate away</b> as they grow strong. <b>Commander negates Guerrilla War</b>; <b>Brutal Tactics + Commander = your ability nullified</b>. Exit their orbit before that combo lands. Despot eats your sympathy for VP — they get points but feed you cards (calculate the trade).
+          </div>
+          <div class="card cond">
+            <div class="hdr"><span class="badge cond">Vagabond</span></div>
+            <b>Threat:</b> Crossbow evens GW odds. Scoundrel's Scorched Earth = nuclear (once/game). Multi-attack turns.<br>
+            <b>Counter:</b> Befriend them — craft <b>weak items</b> as Aid (mutually beneficial VP). Never craft fox VP cards (their best gear). Let bigger factions handle them. If they go Hostile you become their VP buffet.
+          </div>
+          <div class="card info">
+            <div class="hdr"><span class="badge info">Riverfolk</span></div>
+            <b>Minimal interaction.</b> NEVER buy services — they keep your warriors permanently. You're terrible revolt targets for each other.<br>
+            <b>Action:</b> Make sure someone at the table polices them. Talk down opponents who want to over-buy from Riverfolk.
+          </div>
+          <div class="card cond">
+            <div class="hdr"><span class="badge cond">Corvid Conspiracy</span></div>
+            Plot bombs near your bases = catastrophic. <b>Codebreakers helps</b> you scout. Expose plots if you can spare actions; don't stack a base with everything you've got.
+          </div>
+          <div class="card cond">
+            <div class="hdr"><span class="badge cond">Duchy / Keepers</span></div>
+            Aggressive military factions. Treat like Cats: don't be biggest threat, hold defensive layers, exploit their crown/relic obsession to plant sympathy on their forced paths.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="tile t3 span2" id="s12" data-keys="lizard cult outcast suit sanctify counter manipulation">
+      <span class="tile-badge">ADVANCED</span>
+      <h3><span class="num">12</span>Lizard Counter (Key Matchup)</h3>
+      <div class="body">
+        <p>Lizards vs Alliance is a high-stakes mirror — both can wreck the other. The ball is in <b>your</b> court if you play it right.</p>
+
+        <h4>Core Rule</h4>
+        <div class="rule-big">Never let them sanctify you. Stay on ONE base. Manage the outcast suit.</div>
+
+        <h4>Outcast Suit Manipulation</h4>
+        <div class="card do">
+          <ul>
+            <li>You burn more cards than anyone — <b>you control the outcast suit</b> better than they do</li>
+            <li>Spread sympathy to clearings of <b>different suit</b> from your base</li>
+            <li>Use <b>bird cards</b> to spread to clearings <b>matching</b> your base suit</li>
+            <li>Train with bird cards when possible</li>
+            <li><b>Craft liberally</b> — denies them items and shifts outcast cycling</li>
+          </ul>
+        </div>
+
+        <h4>Why You Hurt Them So Badly</h4>
+        <ul>
+          <li><b>Revolt kills don't become acolytes.</b> You vaporize their warriors AND their gardens with no compensation</li>
+          <li>Each sympathy of yours costs them <b>1–2 acolytes</b> to even attack — and they still lose warriors in combat</li>
+          <li>Forcing them to move warriors from adjacent clearings = several cards spent to do something you do for nothing</li>
+          <li>They run out of acolytes faster than you run out of sympathy</li>
+        </ul>
+
+        <div class="card cond"><span class="badge cond">Risk</span> Other players can collude on the outcast suit. But removing your single base while you keep cycling cards is a tall order.</div>
+      </div>
+    </section>
+
+    <section class="tile t3" id="s13" data-keys="mental model mindset reframe insurgency">
+      <span class="tile-badge">ADVANCED</span>
+      <h3><span class="num">13</span>Mental Model</h3>
+      <div class="body">
+        <div class="card dont">
+          <div class="hdr"><span class="badge dont">Stop thinking</span></div>
+          "How do I score points fastest?"
+        </div>
+        <div class="card do">
+          <div class="hdr"><span class="badge do">Start thinking</span></div>
+          "How do I look like I'm <b>not</b> winning while building a 15-VP burst?"
+        </div>
+        <p class="dim" style="margin-top:8px;">Alliance wins by <b>misdirection</b>. You're not weak — you're hiding strength. The card hoard is your real score.</p>
+        <div class="card info"><span class="badge info">Heuristic</span> If you've been ignored for 3 turns straight, you're probably winning.</div>
+      </div>
+    </section>
+
+    <section class="tile t3 span2" id="s14" data-keys="advanced tactics provocation outrage cycling base placement">
+      <span class="tile-badge">ADVANCED</span>
+      <h3><span class="num">14</span>Advanced Tactics</h3>
+      <div class="body">
+        <div class="mini-grid" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));">
+          <div class="card do">
+            <div class="hdr"><span class="badge do">Outrage card-pump</span></div>
+            Plant sympathy in a clearing the Eyrie's Decree forces them to battle/move through. They feed you a card every time they trigger Outrage. Free engine.
+          </div>
+          <div class="card do">
+            <div class="hdr"><span class="badge do">Ambush insurance</span></div>
+            Hold an Ambush card in hand vs aggressive factions. The threat alone deters attacks; revealing it once usually pays for itself.
+          </div>
+          <div class="card do">
+            <div class="hdr"><span class="badge do">Adjacency for organize</span></div>
+            Plan base #2 placement so it's adjacent to your next revolt target. You can organize outward through it — multiplies your action range.
+          </div>
+          <div class="card cond">
+            <div class="hdr"><span class="badge cond">Vagabond aid as VP trade</span></div>
+            Slip the Vagabond <b>weak items</b> via Aid for mutual VP. Avoids Hostile state where they harvest your sympathy.
+          </div>
+          <div class="card cond">
+            <div class="hdr"><span class="badge cond">Bird card discipline</span></div>
+            Bird cards are flexible suit-fillers. Save for: same-suit spreads (vs Lizards), Outrage retaliation, big-turn organize chains. Don't waste them.
+          </div>
+          <div class="card info">
+            <div class="hdr"><span class="badge info">Card hoard ceiling</span></div>
+            ~6 cards in supporters = invisible. ~9+ = "she's about to pop" alarm bells. Spread some sympathy as a release valve before crossing the threshold.
+          </div>
+          <div class="card info">
+            <div class="hdr"><span class="badge info">Free-turn fishing</span></div>
+            Sometimes the best Birdsong is just placing 2 sympathy and ending. If no one's punishing you, don't burn cards for marginal VP.
+          </div>
+          <div class="card dont">
+            <div class="hdr"><span class="badge dont">Don't revolt the Riverfolk</span></div>
+            They have no buildings worth your effort. Spend that revolt on a Cat/Eyrie clearing instead.
+          </div>
+          <div class="card info">
+            <div class="hdr"><span class="badge info">Phase transitions</span></div>
+            <b>Phase 1</b> (T1–3): land base 1, accumulate cards. <b>Phase 2</b> (T4–6): expand sympathy wide, add 2nd base. <b>Phase 3</b> (T7+): expect coordinated attacks — plan <b>damage mitigation</b>, not full prevention. <b>Phase 4</b> (final 1–2 turns): big-turn burst.
+          </div>
+          <div class="card cond">
+            <div class="hdr"><span class="badge cond">Stand and Deliver</span></div>
+            Card-draw upgrade — steal a card from a player with more cards than you. Pairs perfectly with your "always have fewer cards visibly" posture.
+          </div>
+          <div class="card cond">
+            <div class="hdr"><span class="badge cond">Mild inconvenience > severe pain</span></div>
+            Sympathy that mildly bothers <i>everyone</i> beats sympathy that maims one player. Even threat distribution = no one prioritizes you.
+          </div>
+          <div class="card cond">
+            <div class="hdr"><span class="badge cond">3 sympathy on T1 if possible</span></div>
+            High-tempo opening: 3 tokens beats 2 if board allows. Forces immediate threat spread across multiple opponents.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="tile t3 span2" id="s15" data-keys="replay diagnosis post game checklist mistakes">
+      <span class="tile-badge">ADVANCED</span>
+      <h3><span class="num">15</span>Replay Diagnosis</h3>
+      <div class="body">
+        <p class="dim">After each game — first "no" = biggest leak.</p>
+        <div class="mini-grid">
+          <div class="card info"><span class="badge info">01</span> Stayed off the leader board until late? <div class="dim">If you led from T4, target on your back.</div></div>
+          <div class="card info"><span class="badge info">02</span> Armorers landed by T5? <div class="dim">Top crafting priority.</div></div>
+          <div class="card info"><span class="badge info">03</span> Card hoard sized right? <div class="dim">Visible 6+ = under radar; 9+ = alarms.</div></div>
+          <div class="card info"><span class="badge info">04</span> Outrage exploited? <div class="dim">Sympathy in Eyrie's path = card stream.</div></div>
+          <div class="card info"><span class="badge info">05</span> Bases at 2+ defenders? <div class="dim">Or did one fall to a single attack?</div></div>
+          <div class="card info"><span class="badge info">06</span> Big-turn executed? <div class="dim">Hit 12+ VP in one turn at end?</div></div>
+          <div class="card info"><span class="badge info">07</span> Vs Lizards: outcast managed? <div class="dim">Did your base suit ever match outcast?</div></div>
+          <div class="card info"><span class="badge info">08</span> Vagabond relationship? <div class="dim">Befriended or Hostile? Hostile = leak.</div></div>
+          <div class="card info"><span class="badge info">09</span> Bought from Riverfolk? <div class="dim">Should be 0. Always.</div></div>
+          <div class="card info"><span class="badge info">10</span> Bird cards used well? <div class="dim">Or wasted as filler?</div></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+(function(){
+  const tiles = () => document.querySelectorAll('.tile');
+  const railLinks = document.querySelectorAll('.rail a');
+  const search = document.getElementById('search');
+  const denseBtn = document.getElementById('dense');
+  const resetBtn = document.getElementById('reset');
+  const modeBtns = document.querySelectorAll('.mode-btn');
+
+  function setMode(mode) {
+    document.body.classList.remove('mode-beginner','mode-all','mode-advanced');
+    document.body.classList.add('mode-' + mode);
+    modeBtns.forEach(b => b.classList.toggle('active', b.dataset.mode === mode));
+    try { localStorage.setItem('alliance-mode', mode); } catch(e){}
+  }
+  modeBtns.forEach(b => b.addEventListener('click', () => setMode(b.dataset.mode)));
+  try { const s = localStorage.getItem('alliance-mode'); if (s) setMode(s); } catch(e){}
+
+  denseBtn.addEventListener('click', () => {
+    document.body.classList.toggle('dense');
+    denseBtn.classList.toggle('active');
+  });
+
+  resetBtn.addEventListener('click', () => {
+    search.value = '';
+    applyFilter('');
+    document.body.classList.remove('dense');
+    denseBtn.classList.remove('active');
+    setMode('beginner');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  function applyFilter(q) {
+    q = q.trim().toLowerCase();
+    tiles().forEach(t => {
+      if (!q) { t.classList.remove('dimmed'); return; }
+      const hay = (t.getAttribute('data-keys') || '') + ' ' + t.textContent.toLowerCase();
+      t.classList.toggle('dimmed', !hay.includes(q));
+    });
+  }
+  search.addEventListener('input', e => applyFilter(e.target.value));
+
+  document.addEventListener('keydown', e => {
+    const tag = (e.target.tagName || '').toLowerCase();
+    const typing = tag === 'input' || tag === 'textarea';
+    if (e.key === '/' && !typing) { e.preventDefault(); search.focus(); return; }
+    if (e.key === 'Escape') { search.value=''; applyFilter(''); search.blur(); return; }
+    if (typing) return;
+    if (e.key.toLowerCase() === 'd') { denseBtn.click(); return; }
+    if (e.key.toLowerCase() === 'r') { resetBtn.click(); return; }
+    if (e.key.toLowerCase() === 'b') { setMode('beginner'); return; }
+    if (e.key.toLowerCase() === 'a') { setMode('all'); return; }
+    if (e.key.toLowerCase() === 'v') { setMode('advanced'); return; }
+    if (/^[1-9]$/.test(e.key)) {
+      const el = document.getElementById('s' + e.key);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+
+  const idToLink = {};
+  railLinks.forEach(a => {
+    const id = a.getAttribute('href').slice(1);
+    idToLink[id] = a;
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        railLinks.forEach(a => a.classList.remove('active'));
+        const link = idToLink[entry.target.id];
+        if (link) link.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-80px 0px -60% 0px', threshold: 0 });
+  tiles().forEach(t => observer.observe(t));
+})();
+</script>
+</body>
+</html>
