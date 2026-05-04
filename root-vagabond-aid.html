@@ -1,0 +1,1801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Vagabond — Play Aid</title>
+<style>
+  :root {
+    --bg: #15101e;
+    --bg2: #1d1626;
+    --bg3: #271d31;
+    --bg4: #34253f;
+    --fg: #ede1cf;
+    --fg-dim: #a89888;
+    --fg-dim2: #756553;
+    --border: #382a40;
+    --border2: #523c5b;
+    --accent: #c89060;
+    --accent-deep: #9a6532;
+    --accent-glow: rgba(200,144,96,0.28);
+    --green: #7fb069;
+    --red: #d64545;
+    --yellow: #e3b341;
+    --blue: #6ba3c4;
+    --purple: #b893d8;
+    --essential: #b893d8;
+    --essential-glow: rgba(184,147,216,0.30);
+    --core: #c89060;
+    --core-glow: rgba(200,144,96,0.25);
+    --advanced: #786853;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    color: var(--fg);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 14px;
+    line-height: 1.4;
+  }
+  body {
+    background:
+      radial-gradient(ellipse at 50% -10%, rgba(184,147,216,0.10) 0%, transparent 55%),
+      radial-gradient(ellipse at 10% 100%, rgba(200,144,96,0.06) 0%, transparent 50%),
+      var(--bg);
+    background-attachment: fixed;
+    min-height: 100vh;
+  }
+  body.dense { font-size: 12.5px; }
+  body.dense .tile .body { padding: 8px 10px; }
+  body.dense .card { padding: 6px 8px; margin: 4px 0; }
+  body.dense .tile h3 { padding: 8px 12px; }
+
+  .dim { color: var(--fg-dim); }
+
+  .app {
+    display: grid;
+    grid-template-columns: 230px 1fr;
+    grid-template-rows: auto auto 1fr;
+    grid-template-areas:
+      "header header"
+      "hero   hero"
+      "rail   main";
+    min-height: 100vh;
+  }
+
+  header {
+    grid-area: header;
+    position: sticky; top: 0; z-index: 100;
+    background: linear-gradient(180deg, rgba(29,22,38,0.98) 0%, rgba(21,16,30,0.92) 100%);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 2px 20px rgba(0,0,0,0.5), 0 1px 0 rgba(184,147,216,0.10) inset;
+    padding: 10px 14px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 14px;
+    align-items: center;
+    backdrop-filter: blur(10px);
+  }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; }
+  .brand .pack {
+    width: 34px; height: 34px;
+    background: linear-gradient(135deg, #d8a878 0%, #9a6532 100%);
+    color: #1a1004;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    box-shadow: 0 2px 8px rgba(154,101,50,0.55), inset 0 1px 0 rgba(255,255,255,0.25);
+  }
+  .brand .sub { color: var(--fg-dim); font-size: 11px; font-weight: 500; }
+
+  .modes {
+    display: flex;
+    gap: 0;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 3px;
+  }
+  .mode-btn {
+    padding: 6px 14px;
+    background: transparent;
+    border: none;
+    color: var(--fg-dim);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 4px;
+    letter-spacing: 0.02em;
+  }
+  .mode-btn:hover { color: var(--fg); }
+  .mode-btn.active {
+    background: linear-gradient(135deg, #d8a878 0%, #9a6532 100%);
+    color: #1a1004;
+    box-shadow: 0 2px 6px rgba(154,101,50,0.45), inset 0 1px 0 rgba(255,255,255,0.25);
+  }
+  .mode-btn .count { font-size: 10px; opacity: 0.75; margin-left: 4px; }
+
+  .controls { display: flex; gap: 6px; align-items: center; }
+  .controls input {
+    height: 34px; width: 180px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    color: var(--fg);
+    padding: 0 10px;
+    font-size: 13px;
+  }
+  .controls input:focus { outline: 2px solid var(--accent); border-color: var(--accent); }
+  .btn {
+    height: 34px; padding: 0 10px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    color: var(--fg);
+    font-size: 12px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .btn:hover { background: var(--bg4); border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent-glow); }
+  .btn.active {
+    background: linear-gradient(135deg, #d8a878 0%, #9a6532 100%);
+    color: #1a1004;
+    border-color: var(--accent);
+    box-shadow: 0 2px 6px rgba(154,101,50,0.45), inset 0 1px 0 rgba(255,255,255,0.25);
+  }
+
+  .hero {
+    grid-area: hero;
+    background:
+      radial-gradient(ellipse at 50% 0%, rgba(184,147,216,0.15) 0%, transparent 65%),
+      linear-gradient(180deg, rgba(52,37,63,0.55) 0%, rgba(29,22,38,0.3) 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 18px 20px 16px;
+    position: relative;
+  }
+  .hero::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; bottom: 0; height: 1px;
+    background: linear-gradient(90deg, transparent 0%, rgba(184,147,216,0.4) 50%, transparent 100%);
+  }
+  .hero-banner {
+    text-align: center;
+    font-size: clamp(20px, 3.2vw, 30px);
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    background: linear-gradient(180deg, #e0c8eb 0%, #b893d8 50%, #8964a8 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 16px;
+    text-shadow: 0 0 40px rgba(184,147,216,0.3);
+    filter: drop-shadow(0 2px 8px rgba(120,70,160,0.3));
+  }
+  .hero-banner .small {
+    display: block;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    color: var(--fg-dim);
+    font-weight: 700;
+    margin-bottom: 6px;
+    -webkit-text-fill-color: var(--fg-dim);
+  }
+
+  .gate-big {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+  }
+  @media (max-width: 900px) { .gate-big { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 500px) { .gate-big { grid-template-columns: 1fr; } }
+  .gate-step {
+    background: linear-gradient(180deg, rgba(52,37,63,0.8) 0%, rgba(29,22,38,0.6) 100%);
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    padding: 12px 14px 12px 34px;
+    position: relative;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(220,200,235,0.06);
+    transition: transform 150ms, box-shadow 150ms;
+  }
+  .gate-step:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(154,101,50,0.25), inset 0 1px 0 rgba(220,200,235,0.1);
+    border-color: var(--accent);
+  }
+  .gate-step .n {
+    position: absolute;
+    top: 50%; left: 10px;
+    transform: translateY(-50%);
+    width: 22px; height: 22px;
+    background: linear-gradient(135deg, #c89cdc 0%, #8964a8 100%);
+    color: #1a1024;
+    font-family: ui-monospace, monospace;
+    font-size: 10px;
+    font-weight: 800;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 2px 6px rgba(120,70,160,0.55), inset 0 1px 0 rgba(255,255,255,0.3);
+  }
+  .gate-step .q { font-weight: 700; font-size: 14px; color: var(--fg); }
+  .gate-step .a { font-size: 12px; color: var(--fg-dim); margin-top: 3px; }
+
+  .first-time {
+    margin-top: 14px;
+    background: linear-gradient(90deg, rgba(200,144,96,0.18) 0%, rgba(200,144,96,0.05) 100%);
+    border: 1px solid rgba(200,144,96,0.45);
+    border-left: 4px solid var(--core);
+    border-radius: 8px;
+    padding: 11px 14px;
+    font-size: 13px;
+    display: flex; align-items: center; gap: 12px;
+    box-shadow: 0 2px 10px rgba(200,144,96,0.12), inset 0 1px 0 rgba(200,144,96,0.1);
+  }
+  .first-time .pill {
+    background: linear-gradient(135deg, #d8a878 0%, #9a6532 100%);
+    color: #1a1004;
+    font-weight: 800;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    padding: 4px 10px;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+    white-space: nowrap;
+  }
+  body.mode-advanced .first-time { display: none; }
+  body.mode-all .first-time { display: none; }
+
+  .rail {
+    grid-area: rail;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    padding: 10px 6px;
+    overflow-y: auto;
+    position: sticky;
+    top: 64px;
+    height: calc(100vh - 64px);
+  }
+  .rail-group {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--fg-dim2);
+    text-transform: uppercase;
+    padding: 10px 10px 4px;
+    margin-top: 4px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .rail-group .dot { width: 8px; height: 8px; border-radius: 50%; }
+  .rail-group.g1 .dot { background: var(--essential); }
+  .rail-group.g2 .dot { background: var(--core); }
+  .rail-group.g3 .dot { background: var(--advanced); }
+
+  .rail a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 10px;
+    color: var(--fg-dim);
+    text-decoration: none;
+    font-size: 13px;
+    border-radius: 5px;
+    border-left: 3px solid transparent;
+    margin-bottom: 2px;
+  }
+  .rail a:hover { background: var(--bg3); color: var(--fg); }
+  .rail a.active {
+    background: linear-gradient(90deg, rgba(184,147,216,0.18) 0%, rgba(184,147,216,0.02) 100%);
+    color: var(--fg);
+    border-left-color: var(--essential);
+    box-shadow: inset 0 0 0 1px rgba(184,147,216,0.15);
+  }
+  .rail a .n {
+    font-family: ui-monospace, monospace;
+    font-size: 11px;
+    color: var(--fg-dim2);
+    min-width: 20px;
+  }
+  .rail a.active .n { color: var(--essential); }
+  .rail a.t1::before { content: "●"; color: var(--essential); margin-left: auto; font-size: 10px; }
+  .rail a.t2::before { content: "●"; color: var(--core); margin-left: auto; font-size: 10px; }
+  .rail a.t3::before { content: "●"; color: var(--advanced); margin-left: auto; font-size: 10px; }
+
+  body.mode-beginner .rail a.t3 { display: none; }
+  body.mode-beginner .rail-group.g3 { display: none; }
+  body.mode-advanced .rail a.t1 { display: none; }
+  body.mode-advanced .rail-group.g1 { display: none; }
+
+  main {
+    grid-area: main;
+    padding: 14px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-auto-rows: min-content;
+    grid-auto-flow: dense;
+    gap: 12px;
+    align-content: start;
+  }
+  body.dense main { gap: 8px; padding: 8px; }
+
+  .tile {
+    background: linear-gradient(180deg, rgba(39,29,49,0.88) 0%, rgba(29,22,38,0.88) 100%);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    scroll-margin-top: 80px;
+    position: relative;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4), inset 0 1px 0 rgba(220,200,235,0.04);
+    transition: transform 180ms, box-shadow 180ms;
+  }
+  .tile:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.5), 0 0 0 1px rgba(184,147,216,0.2), inset 0 1px 0 rgba(220,200,235,0.08);
+  }
+  .tile h3 {
+    margin: 0;
+    padding: 11px 14px;
+    background: linear-gradient(180deg, rgba(52,37,63,0.9) 0%, rgba(39,29,49,0.6) 100%);
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-left: 3px solid var(--accent);
+    letter-spacing: 0.01em;
+  }
+  .tile h3 .num {
+    font-family: ui-monospace, monospace;
+    font-size: 11px;
+    color: var(--fg-dim2);
+    background: var(--bg);
+    padding: 1px 6px;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+  }
+  .tile .body { padding: 10px 14px; flex: 1; }
+  .tile-badge {
+    position: absolute;
+    top: 8px; right: 10px;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    padding: 2px 7px;
+    border-radius: 3px;
+    z-index: 2;
+  }
+
+  /* TIER 1 — Essential (violet) */
+  .tile.t1 {
+    border: 2px solid var(--essential);
+    box-shadow: 0 0 0 1px var(--essential-glow), 0 6px 20px rgba(184,147,216,0.18), inset 0 1px 0 rgba(184,147,216,0.12);
+  }
+  .tile.t1:hover {
+    box-shadow: 0 0 0 1px var(--essential-glow), 0 10px 28px rgba(184,147,216,0.3), inset 0 1px 0 rgba(184,147,216,0.18);
+  }
+  .tile.t1 h3 {
+    background: linear-gradient(90deg, rgba(184,147,216,0.22) 0%, rgba(52,37,63,0.7) 100%);
+    border-left-color: var(--essential);
+    border-left-width: 4px;
+    font-size: 15px;
+  }
+  .tile.t1 h3 .priority {
+    background: linear-gradient(135deg, #c89cdc 0%, #8964a8 100%);
+    color: #1a1024;
+    font-family: ui-monospace, monospace;
+    font-size: 10px;
+    font-weight: 800;
+    padding: 3px 7px;
+    border-radius: 4px;
+    letter-spacing: 0.05em;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.25);
+  }
+  .tile.t1 .tile-badge {
+    background: linear-gradient(135deg, #c89cdc 0%, #8964a8 100%);
+    color: #1a1024;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  }
+
+  /* TIER 2 — Core (copper) */
+  .tile.t2 h3 { border-left-color: var(--core); }
+  .tile.t2 .tile-badge {
+    background: rgba(200,144,96,0.18);
+    color: var(--core);
+    border: 1px solid rgba(200,144,96,0.45);
+  }
+
+  /* TIER 3 — Advanced (muted brown) */
+  .tile.t3 { opacity: 0.92; }
+  .tile.t3 h3 {
+    border-left-color: var(--advanced);
+    background: rgba(39,29,49,0.6);
+    font-size: 12px;
+    color: var(--fg-dim);
+  }
+  .tile.t3 .tile-badge {
+    background: var(--bg3);
+    color: var(--fg-dim);
+    border: 1px solid var(--border2);
+  }
+  .tile.t3 .body { font-size: 13px; color: var(--fg-dim); }
+  .tile.t3 .body b { color: var(--fg); }
+
+  body.mode-beginner .tile.t3 { display: none; }
+  body.mode-advanced .tile.t1 { display: none; }
+
+  .tile.t1 { order: 1; }
+  .tile.t2 { order: 2; }
+  .tile.t3 { order: 3; }
+
+  .tile.span2 { grid-column: span 2; }
+  .tile.span3 { grid-column: span 3; }
+  @media (max-width: 1200px) { .tile.span3 { grid-column: span 2; } }
+  @media (max-width: 900px) { .tile.span2, .tile.span3 { grid-column: span 1; } }
+
+  .tile h4 {
+    margin: 8px 0 4px;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .tile ul, .tile ol { margin: 4px 0; padding-left: 20px; }
+  .tile li { margin: 2px 0; }
+  .tile p { margin: 4px 0; }
+
+  .card {
+    background: linear-gradient(180deg, rgba(52,37,63,0.75) 0%, rgba(39,29,49,0.75) 100%);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 11px;
+    margin: 6px 0;
+    box-shadow: inset 0 1px 0 rgba(220,200,235,0.05), 0 1px 2px rgba(0,0,0,0.25);
+  }
+  .card.do    { border-left-color: var(--green); }
+  .card.dont  { border-left-color: var(--red); }
+  .card.cond  { border-left-color: var(--yellow); }
+  .card.info  { border-left-color: var(--blue); }
+  .card .hdr { display: flex; align-items: center; gap: 6px; margin-bottom: 3px; font-size: 12px; font-weight: 600; }
+  .card ul, .card ol { margin: 2px 0; padding-left: 18px; }
+  .card li { font-size: 12px; }
+
+  .badge {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    padding: 1px 5px;
+    border-radius: 2px;
+    text-transform: uppercase;
+  }
+  .badge.do   { background: rgba(127,176,105,0.18); color: var(--green);  border: 1px solid rgba(127,176,105,0.45); }
+  .badge.dont { background: rgba(214,69,69,0.15);   color: var(--red);    border: 1px solid rgba(214,69,69,0.5); }
+  .badge.cond { background: rgba(227,179,65,0.15);  color: var(--yellow); border: 1px solid rgba(227,179,65,0.45); }
+  .badge.info { background: rgba(107,163,196,0.18); color: var(--blue);   border: 1px solid rgba(107,163,196,0.5); }
+
+  .line {
+    font-family: ui-monospace, monospace;
+    background: var(--bg);
+    padding: 4px 8px;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+    display: inline-block;
+    margin: 3px 3px 3px 0;
+    font-size: 12px;
+  }
+
+  .mini-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 6px;
+    margin: 6px 0;
+  }
+
+  .rule-big {
+    font-size: 15px;
+    text-align: center;
+    padding: 12px;
+    background: linear-gradient(180deg, rgba(184,147,216,0.2) 0%, rgba(184,147,216,0.08) 100%);
+    border: 2px solid rgba(184,147,216,0.55);
+    border-radius: 8px;
+    margin: 8px 0 10px;
+    font-weight: 700;
+    color: #f0d5fc;
+    box-shadow: 0 0 20px rgba(184,147,216,0.18), inset 0 1px 0 rgba(240,213,252,0.12);
+    letter-spacing: 0.01em;
+  }
+
+  .scenario {
+    background: linear-gradient(180deg, rgba(107,163,196,0.14) 0%, rgba(107,163,196,0.04) 100%);
+    border: 1px solid rgba(107,163,196,0.4);
+    border-left: 4px solid var(--blue);
+    border-radius: 6px;
+    padding: 9px 12px;
+    margin: 8px 0;
+    font-size: 13px;
+  }
+  .scenario .label {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 4px;
+  }
+  .tldr {
+    background: linear-gradient(90deg, rgba(127,176,105,0.15) 0%, transparent 100%);
+    border-left: 3px solid var(--green);
+    padding: 6px 10px;
+    margin: 6px 0;
+    font-size: 13px;
+    border-radius: 0 4px 4px 0;
+  }
+  .tldr b { color: var(--green); }
+  .why {
+    background: linear-gradient(90deg, rgba(227,179,65,0.13) 0%, transparent 100%);
+    border-left: 3px solid var(--yellow);
+    padding: 6px 10px;
+    margin: 6px 0;
+    font-size: 13px;
+    border-radius: 0 4px 4px 0;
+  }
+  .why b { color: var(--yellow); }
+  .example {
+    background: linear-gradient(180deg, rgba(200,144,96,0.13) 0%, rgba(200,144,96,0.04) 100%);
+    border: 1px solid rgba(200,144,96,0.4);
+    border-left: 4px solid var(--accent);
+    border-radius: 6px;
+    padding: 10px 12px;
+    margin: 8px 0;
+    font-size: 13px;
+  }
+  .example .label {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .example .turn {
+    font-family: ui-monospace, monospace;
+    font-weight: 800;
+    color: var(--accent);
+    margin-right: 4px;
+  }
+
+  /* Phase blocks for Anatomy */
+  .phases {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin: 8px 0;
+  }
+  @media (max-width: 600px) { .phases { grid-template-columns: 1fr; } }
+  .phase {
+    background: linear-gradient(180deg, rgba(52,37,63,0.85) 0%, rgba(39,29,49,0.85) 100%);
+    border: 1px solid var(--border2);
+    border-top: 3px solid var(--essential);
+    border-radius: 6px;
+    padding: 10px 11px;
+  }
+  .phase .ph-name {
+    font-weight: 800;
+    color: var(--essential);
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .phase .ph-when {
+    font-size: 11px;
+    color: var(--fg-dim);
+    margin-bottom: 6px;
+  }
+  .phase ul { padding-left: 16px; margin: 4px 0; }
+  .phase li { font-size: 12px; }
+
+  /* Vagabond character cards */
+  .chars {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 8px;
+    margin: 8px 0;
+  }
+  .char {
+    background: linear-gradient(180deg, rgba(52,37,63,0.85) 0%, rgba(39,29,49,0.85) 100%);
+    border: 1px solid var(--border2);
+    border-top: 3px solid var(--accent);
+    border-radius: 6px;
+    padding: 10px 11px;
+  }
+  .char .name {
+    font-weight: 800;
+    color: var(--accent);
+    font-size: 14px;
+    letter-spacing: 0.02em;
+  }
+  .char .role {
+    font-size: 11px;
+    color: var(--fg-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 6px;
+  }
+  .char .start { font-size: 12px; margin: 4px 0; }
+  .char .start b { color: var(--essential); }
+  .char .when {
+    font-size: 11px;
+    color: var(--fg-dim);
+    border-top: 1px dashed var(--border);
+    padding-top: 6px;
+    margin-top: 6px;
+  }
+  .char.tier-s { border-top-color: var(--green); }
+  .char.tier-s .name { color: var(--green); }
+  .char.tier-a { border-top-color: var(--accent); }
+  .char.tier-b { border-top-color: var(--yellow); }
+  .char.tier-b .name { color: var(--yellow); }
+  .char.tier-c { border-top-color: var(--red); }
+  .char.tier-c .name { color: var(--red); }
+
+  /* Item icons grid */
+  .items-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 6px;
+    margin: 6px 0;
+  }
+  .item {
+    background: linear-gradient(180deg, rgba(52,37,63,0.7) 0%, rgba(39,29,49,0.7) 100%);
+    border: 1px solid var(--border2);
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+  .item .it-name {
+    font-weight: 800;
+    color: var(--accent);
+    font-size: 13px;
+  }
+
+  /* Glossary */
+  .glossary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 8px;
+    margin: 6px 0;
+  }
+  .term {
+    background: linear-gradient(180deg, rgba(52,37,63,0.7) 0%, rgba(39,29,49,0.7) 100%);
+    border: 1px solid var(--border2);
+    border-radius: 6px;
+    padding: 9px 11px;
+  }
+  .term .word {
+    font-weight: 800;
+    color: var(--accent);
+    font-size: 13px;
+    letter-spacing: 0.01em;
+  }
+  .term .defn {
+    font-size: 12px;
+    color: var(--fg);
+    margin-top: 3px;
+    line-height: 1.45;
+  }
+
+  .hidden { display: none !important; }
+  .dimmed { opacity: 0.15; pointer-events: none; }
+
+  .kbd {
+    display: inline-block;
+    font-family: ui-monospace, monospace;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-bottom-width: 2px;
+    border-radius: 3px;
+    padding: 0 5px;
+    font-size: 11px;
+  }
+
+  @media (max-width: 900px) {
+    .app { grid-template-columns: 1fr; grid-template-areas: "header" "hero" "main"; }
+    .rail { display: none; }
+    header { grid-template-columns: 1fr; gap: 8px; }
+    .controls input { width: 100%; }
+    .controls { flex-wrap: wrap; }
+  }
+
+  @media print {
+    body { background: #fff; color: #000; font-size: 9pt; }
+    header, .rail, .controls, .modes, .first-time { display: none; }
+    .app { display: block; }
+    .hero { background: #eee; color: #000; padding: 8px; }
+    .hero-banner { color: #000; -webkit-text-fill-color: #000; }
+    .gate-step { background: #fff; color: #000; border: 1px solid #666; }
+    main { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; padding: 0; }
+    .tile { border: 1px solid #666; page-break-inside: avoid; background: #fff; opacity: 1 !important; display: flex !important; box-shadow: none !important; }
+    .tile h3 { background: #eee; color: #000; font-size: 11pt !important; }
+    .tile.span2, .tile.span3 { grid-column: span 2; }
+    .card { background: #f6f6f6; color: #000; border: 1px solid #999; }
+    .badge, .tile-badge { border: 1px solid #000; color: #000; background: #eee; }
+    .char, .item, .term, .phase { background: #fff; border: 1px solid #666; }
+  }
+</style>
+</head>
+<body class="mode-beginner">
+
+<div class="app">
+
+  <header>
+    <div class="brand">
+      <div class="pack">🎒</div>
+      <div>
+        <div>Vagabond</div>
+        <div class="sub">Complete Play Aid</div>
+      </div>
+    </div>
+
+    <div class="modes" role="tablist">
+      <button class="mode-btn active" data-mode="beginner">Beginner<span class="count">6 tiles</span></button>
+      <button class="mode-btn" data-mode="all">All<span class="count">17</span></button>
+      <button class="mode-btn" data-mode="advanced">Advanced<span class="count">11</span></button>
+    </div>
+
+    <div class="controls">
+      <input id="search" type="search" placeholder="🔍 Filter… /" aria-label="Filter">
+      <button class="btn" id="dense" title="Dense (D)">Dense</button>
+      <button class="btn" id="reset" title="Reset (R)">Reset</button>
+    </div>
+  </header>
+
+  <div class="hero">
+    <div class="hero-banner">
+      <span class="small">THE ONE RULE</span>
+      Get stuff. Stay alive. Then trade actions for points.
+    </div>
+
+    <div class="gate-big">
+      <div class="gate-step">
+        <span class="n">01</span>
+        <div class="q">Hit the ruins?</div>
+        <div class="a">Turns 1–4 are about visiting all 4 ruins to extract items. The hammer and a sword are top priority.</div>
+      </div>
+      <div class="gate-step">
+        <span class="n">02</span>
+        <div class="q">Avoiding aggro?</div>
+        <div class="a">Don't end your turn next to Riverfolk stacks or Eyrie expansion paths. Sympathy clearings are safe havens.</div>
+      </div>
+      <div class="gate-step">
+        <span class="n">03</span>
+        <div class="q">Crafting cards?</div>
+        <div class="a">Every craftable card in your hand = +1 VP + a free item. Always craft when you can.</div>
+      </div>
+      <div class="gate-step">
+        <span class="n">04</span>
+        <div class="q">Sword count?</div>
+        <div class="a">2 swords = safer. 3 swords = scoring engine via Infamy battles (1 VP per warrior killed while Hostile).</div>
+      </div>
+      <div class="gate-step">
+        <span class="n">05</span>
+        <div class="q">Threat read?</div>
+        <div class="a">Score doesn't equal threat. Assess by faction-specific potential (open slots, supporters, gardens).</div>
+      </div>
+    </div>
+
+    <div class="first-time">
+      <span class="pill">START HERE</span>
+      <div>New to Vagabond? You're <b>not really a faction</b> — you're one wandering character carrying gear, with no buildings, no army, just an inventory of items. The <b>6 violet-bordered tiles below</b> walk you through what you actually are, how each turn flows, which Vagabond character to pick, the all-important "loot the ruins" opening, the combat math that becomes your win condition, and the 5 mistakes that lose more Vagabond games than anything else.</div>
+    </div>
+  </div>
+
+  <aside class="rail" aria-label="Section navigation">
+    <div class="rail-group g1"><span class="dot"></span> Essential</div>
+    <a href="#s1" class="t1"><span class="n">01</span>Be the Wanderer</a>
+    <a href="#s2" class="t1"><span class="n">02</span>Anatomy of a Turn</a>
+    <a href="#s3" class="t1"><span class="n">03</span>Pick Your Vagabond</a>
+    <a href="#s4" class="t1"><span class="n">04</span>Get Stuff (Opening)</a>
+    <a href="#s5" class="t1"><span class="n">05</span>Combat Math</a>
+    <a href="#s6" class="t1"><span class="n">06</span>5 Failure Modes</a>
+
+    <div class="rail-group g2"><span class="dot"></span> Core</div>
+    <a href="#s7" class="t2"><span class="n">07</span>Items &amp; Damage</a>
+    <a href="#s8" class="t2"><span class="n">08</span>Aid &amp; Crafting</a>
+    <a href="#s9" class="t2"><span class="n">09</span>Quests</a>
+    <a href="#s10" class="t2"><span class="n">10</span>Relationships</a>
+    <a href="#s11" class="t2"><span class="n">11</span>Mid-Game Pivot</a>
+
+    <div class="rail-group g3"><span class="dot"></span> Advanced</div>
+    <a href="#s12" class="t3"><span class="n">12</span>Matchups</a>
+    <a href="#s13" class="t3"><span class="n">13</span>Coalition Path</a>
+    <a href="#s14" class="t3"><span class="n">14</span>Mental Model</a>
+    <a href="#s15" class="t3"><span class="n">15</span>Advanced Tactics</a>
+    <a href="#s16" class="t3"><span class="n">16</span>Replay Checklist</a>
+    <a href="#s17" class="t3"><span class="n">17</span>Glossary</a>
+  </aside>
+
+  <main>
+
+    <!-- ===================== TIER 1 ===================== -->
+
+    <section class="tile t1 span2" id="s1" data-keys="philosophy wanderer identity character vagabond rpg">
+      <span class="tile-badge">ESSENTIAL</span>
+      <h3><span class="num">01</span><span class="priority">PRIORITY 1</span>Be the Wanderer</h3>
+      <div class="body">
+        <div class="rule-big">You're not a faction — you're one character carrying gear, alone in the woods.</div>
+
+        <p><b>What makes you different:</b> Every other faction has buildings, warriors, an army. You have <i>one piece</i> on the board (your meeple) and a personal inventory of <i>items</i>. The items <b>are</b> your faction. Lose your items and you're nothing. Build your items and you're potentially the strongest player at the table.</p>
+
+        <div class="tldr"><b>TL;DR.</b> Spend turns 1–4 hitting the 4 ruins to grab their items. Once you have 2+ swords, transition to scoring via combat (Infamy), Aid, and Quests. You can quietly snowball into a win — but only if no one notices.</div>
+
+        <h4>Why people don't see you coming</h4>
+        <p>"No one is looking at player boards to see what is going on there, and with the Vagabond your player board is everything you have." Most players track factions by board presence — you have almost none. So when you start unloading items in a single turn, opponents are caught off guard.</p>
+
+        <h4>Three threats to manage</h4>
+        <div class="mini-grid">
+          <div class="card cond"><span class="badge cond">Threat 1</span> <b>Early aggression.</b> Before you have swords, any faction that ends a turn with units in your clearing can punch you for free. Damaged items mean you lose a turn licking wounds.</div>
+          <div class="card cond"><span class="badge cond">Threat 2</span> <b>Becoming visible.</b> The moment players realize how much VP you're sitting on, they coalition. Don't telegraph item count.</div>
+          <div class="card cond"><span class="badge cond">Threat 3</span> <b>The Riverfolk stack.</b> Otters can drop 4 warriors in one clearing in a single action. If you ended your turn there, you're toast.</div>
+        </div>
+
+        <h4>Three ways you score</h4>
+        <ul>
+          <li><b>Crafting items</b> (1 VP per item) — modest but constant</li>
+          <li><b>Aid → Friendship</b> (give cards to factions, eventually score VP per aid) — steady</li>
+          <li><b>Combat (Infamy)</b> — once Hostile to a faction, every warrior you kill = 1 VP. With 3 swords this snowballs hard</li>
+          <li><b>Quests</b> — opportunistic 2 VP each (or a card)</li>
+        </ul>
+
+        <div class="why"><b>The hidden truth:</b> Vagabond wins look easy because by the time anyone notices, you've already won. But Vagabond <i>losses</i> happen when one faction realizes turn 3 that you're vulnerable and beats you up before you collect any swords. The early game is a stealth phase, not a combat phase.</div>
+      </div>
+    </section>
+
+    <section class="tile t1 span2" id="s2" data-keys="anatomy turn birdsong daylight evening phases slip refresh lick wounds">
+      <span class="tile-badge">ESSENTIAL</span>
+      <h3><span class="num">02</span><span class="priority">PRIORITY 2</span>Anatomy of a Turn</h3>
+      <div class="body">
+        <p>Vagabond turns work very differently from other factions. There's no army to manage, no buildings to track. Instead, your turn is about <b>spending items</b> as currency to take actions — each action exhausts the matching item, which then has to be refreshed.</p>
+
+        <div class="phases">
+          <div class="phase">
+            <div class="ph-name">Birdsong</div>
+            <div class="ph-when">Start of turn</div>
+            <ul>
+              <li><b>Refresh items</b> (default = 3, more with Tea)</li>
+              <li><b>Slip:</b> 1 free movement to an adjacent clearing OR a forest (doesn't trigger Hostile — unique to Vagabond)</li>
+              <li>(Activate Royal Claim if crafted, etc.)</li>
+            </ul>
+          </div>
+          <div class="phase">
+            <div class="ph-name">Daylight</div>
+            <div class="ph-when">Middle of turn</div>
+            <ul>
+              <li><b>Take any number of actions</b>, each exhausts an item:</li>
+              <li>· Move (boots) · Battle (sword) · Strike (crossbow)</li>
+              <li>· Aid (give card to faction) · Quest (spend matching items)</li>
+              <li>· Craft (use hammers + cards) · Repair (torch)</li>
+              <li>· Special action (depends on Vagabond class)</li>
+            </ul>
+          </div>
+          <div class="phase">
+            <div class="ph-name">Evening</div>
+            <div class="ph-when">End of turn</div>
+            <ul>
+              <li><b>Lick wounds:</b> repair 1 damaged item if you're alone in a forest</li>
+              <li><b>Draw cards</b> (1 + bonus per friendship + Draw Bonus)</li>
+              <li>Discard hand to 5 if over</li>
+            </ul>
+          </div>
+        </div>
+
+        <h4>How items work as currency</h4>
+        <p>Each item starts <b>refreshed</b> (face-up). When you take an action, you flip a matching item to <b>exhausted</b> (face-down). At start of next turn's Birdsong, you refresh up to 3 items (more if you have Tea). So having more total items lets you take more actions per turn — but only if you can refresh them all.</p>
+
+        <h4>The damaged track — your lifeline</h4>
+        <p>When opponents attack you in battle, hits don't kill warriors (you have none); they <b>damage your items</b>. Damaged items move to a separate "damaged" track and can't be used or refreshed. To get them back, you need to:</p>
+        <ul>
+          <li>Use a <b>Repair</b> action (costs 1 hammer + 1 matching-color card to fix 1 item)</li>
+          <li>Or use the Ranger's <b>Hideout</b> ability (repair 3 items at once)</li>
+          <li>Or <b>lick wounds</b> in Evening (repair 1 item if alone in a forest — slow but free)</li>
+        </ul>
+
+        <div class="why"><b>Why this matters:</b> Damaged items mean lost actions per turn. If you're at 2 swords + 1 boot + 2 hammers and someone deals 3 damage, you might lose your sword AND your boot, leaving you stranded. Item count = action budget = win condition.</div>
+
+        <div class="scenario">
+          <div class="label">Picture this — turn 1</div>
+          You start as the Thief with a torch, boots, and a sword. Your starting clearing is a fox clearing with a ruin.<br><br>
+          <span style="font-family:ui-monospace,monospace;color:var(--essential);font-weight:800">Birdsong:</span> Refresh items (already refreshed turn 1).<br>
+          <span style="font-family:ui-monospace,monospace;color:var(--essential);font-weight:800">Daylight:</span> Explore the ruin (1 free torch action) — gain a hammer item. Move (boot) to adjacent clearing. Attempt to craft a 1-VP item if you have a matching card.<br>
+          <span style="font-family:ui-monospace,monospace;color:var(--essential);font-weight:800">Evening:</span> Draw 1 card.<br>
+          End state: 4 items (torch, boot, sword, hammer), in good position to hit ruin #2 next turn.
+        </div>
+      </div>
+    </section>
+
+    <section class="tile t1 span3" id="s3" data-keys="characters thief tinker ranger vagrant arbiter scoundrel pick choose vagabond class">
+      <span class="tile-badge">ESSENTIAL</span>
+      <h3><span class="num">03</span><span class="priority">PRIORITY 3</span>Pick Your Vagabond</h3>
+      <div class="body">
+        <p>There are 6 Vagabond characters, each with different starting items and a unique special ability. Your choice shapes your entire strategy. Tier ratings reflect the BGG strategy guide's assessment.</p>
+
+        <div class="chars">
+          <div class="char tier-s">
+            <div class="name">Arbiter <span class="badge do">S-tier</span></div>
+            <div class="role">The Consistent Powerhouse</div>
+            <div class="start"><b>Start:</b> torch, boots, <b>2 swords</b></div>
+            <div class="start"><b>Ability — Protector:</b> can defend another player in their battle (rarely used)</div>
+            <div class="when">
+              <b>Why pick:</b> 2 swords means you skip the entire "vulnerable opening" phase that plagues other Vagabonds. You can score Infamy from the very first turn if you find a target. After looting one ruin sword you have 3 swords, which is the soft "win condition" threshold. <b>Most consistently strong</b> Vagabond per BGG.
+            </div>
+          </div>
+          <div class="char tier-a">
+            <div class="name">Ranger <span class="badge cond">A-tier</span></div>
+            <div class="role">The Combat Build</div>
+            <div class="start"><b>Start:</b> torch, boots, sword, <b>crossbow</b></div>
+            <div class="start"><b>Ability — Hideout:</b> repair 3 items at once</div>
+            <div class="when">
+              <b>Why pick:</b> Sword + crossbow gives you both attack power and ranged poke (crossbow has no return fire). Hideout means you don't fear damage as much — repair 3 items in one action. Pick a target faction early and grind Infamy.
+            </div>
+          </div>
+          <div class="char tier-a">
+            <div class="name">Thief (Roger) <span class="badge cond">A-tier</span></div>
+            <div class="role">The Balanced Default</div>
+            <div class="start"><b>Start:</b> torch, boots, sword, <b>tea</b></div>
+            <div class="start"><b>Ability — Steal:</b> take a random card from a player in your clearing</div>
+            <div class="when">
+              <b>Why pick:</b> The canonical Vagabond. Sword for safety, tea means you can refresh 4+ items per turn (no need to hoard). Pair with Codebreakers (see opponent hands) to know what you'll Steal. Balanced and forgiving.
+            </div>
+          </div>
+          <div class="char tier-b">
+            <div class="name">Tinker <span class="badge cond">B-tier (high ceiling)</span></div>
+            <div class="role">The Spoilt Crafter</div>
+            <div class="start"><b>Start:</b> torch, boots, <b>hammer</b>, <b>bag</b></div>
+            <div class="start"><b>Ability — Tinker:</b> search the discard pile for a card</div>
+            <div class="when">
+              <b>Why pick:</b> Starts with the hammer (rare) and can pull any discarded card. Only Vagabond capable of crafting Favor cards. Extra bag means more items.<br>
+              <b>The catch:</b> No starting sword = high vulnerability. Skilled opponents will rush you. Pick this only if your group won't gang up on the obvious threat.
+            </div>
+          </div>
+          <div class="char tier-b">
+            <div class="name">Scoundrel <span class="badge cond">B-tier (situational)</span></div>
+            <div class="role">The Fire-Setter</div>
+            <div class="start"><b>Start:</b> torch, boots</div>
+            <div class="start"><b>Ability — Scorched Earth:</b> destroy ALL pieces in your clearing (once per game)</div>
+            <div class="when">
+              <b>Why pick:</b> Coolest ability in the game. Wipes a Cat clearing with stockpiled wood = massive VP swing. Strong as a coalition partner (cuts off enemy paths).<br>
+              <b>The catch:</b> No swords = early target. Sadly Scorched Earth scores no Infamy directly (the killed warriors don't count). A specialty pick.
+            </div>
+          </div>
+          <div class="char tier-c">
+            <div class="name">Vagrant <span class="badge dont">C-tier</span></div>
+            <div class="role">The Infamy Specialist</div>
+            <div class="start"><b>Start:</b> torch, boots</div>
+            <div class="start"><b>Ability — Instigate:</b> force two hostile factions to battle each other</div>
+            <div class="when">
+              <b>Why pick:</b> The only Vagabond that scores Infamy off Instigate kills (where neither faction loses items). High Infamy ceiling — up to 6 hits if forced battle goes well.<br>
+              <b>The catch:</b> No swords AND no extra items = doubly vulnerable in opening. Arbiter reaches similar Infamy with way less risk. Speculative pick.
+            </div>
+          </div>
+        </div>
+
+        <div class="why"><b>BGG verdict:</b> Arbiter is the safest competitive pick (consistent strong opening). Tinker has highest peak power but only if your group lets you live. Avoid Vagrant unless you specifically want the Instigate gimmick.</div>
+      </div>
+    </section>
+
+    <section class="tile t1 span2" id="s4" data-keys="opening turns 1 2 3 4 ruins items hammer sword loot collect">
+      <span class="tile-badge">ESSENTIAL</span>
+      <h3><span class="num">04</span><span class="priority">PRIORITY 4</span>Get Stuff (Opening Turns 1–4)</h3>
+      <div class="body">
+        <div class="rule-big">Turns 1–4: visit all 4 ruins, extract items, stay alive.</div>
+
+        <p>The opening for every Vagabond character is roughly the same: <b>systematically loot the 4 ruins on the map</b>. Each ruin contains an item. Two of them have a <b>hammer</b> and one has a <b>sword</b> — these are the priority. Once you have a hammer, you can craft items (which gives you VP + more items). Once you have 2 swords, opponents stop seeing you as easy prey.</p>
+
+        <div class="tldr"><b>TL;DR.</b> Visit ruins in T1–4. Prioritize routes that pass through hammer/sword ruins first. Avoid Riverfolk/Eyrie/Cat clusters. End each turn somewhere safe (sympathy clearing, isolated forest).</div>
+
+        <h4>Ruin priority</h4>
+        <ul>
+          <li><b>Sword ruin (#1 priority if no starting sword)</b> — turns you from soft target to viable</li>
+          <li><b>Hammer ruin</b> — unlocks crafting (1 VP + items per craft = compounding)</li>
+          <li><b>Other ruins</b> (boots / tea) — useful but not urgent</li>
+        </ul>
+
+        <div class="why"><b>Why ruins specifically:</b> Each ruin has the Explore action — Vagabond ability that yields the item inside. Ruins are pre-placed at game start (4 of them). Once looted, the ruin is gone. So your goal is "be the first to all 4." Other factions can't loot ruins, so this is uncontested.</div>
+
+        <h4>Avoiding the early beatdown</h4>
+        <p>Without swords, your defenses are: lots of items (each absorbs 1 hit), licking wounds, and avoidance. The smart play is mostly avoidance.</p>
+        <div class="card dont">
+          <span class="badge dont">Don't end your turn</span>
+          <ul>
+            <li>In a clearing with <b>2+ Riverfolk warriors</b> — they'll spend an action to mess you up for nothing</li>
+            <li>Where you think the <b>Eyrie's Decree forces them next turn</b> — they're going to battle there anyway</li>
+            <li>In a Cat <b>recruiter cluster</b> — Cats with 4+ warriors are tempting Vagabond hunters</li>
+          </ul>
+        </div>
+        <div class="card do">
+          <span class="badge do">Safe haven options</span>
+          <ul>
+            <li><b>Clearings with Alliance sympathy and few warriors</b> — opponents avoid these (Outrage triggers)</li>
+            <li><b>Forests</b> — Slip lets you move to a forest for free, and you can lick wounds there</li>
+            <li><b>Empty clearings</b> — boring but safe</li>
+          </ul>
+        </div>
+
+        <div class="example">
+          <div class="label">Example opening route</div>
+          You start in a fox clearing (no ruin). Two ruins are 1 move away (rabbit + mouse), one is 2 moves (mouse). Hand: 2 fox cards.<br>
+          <span class="turn">T1:</span> Move to the rabbit ruin. Explore → gain hammer. End turn.<br>
+          <span class="turn">T2:</span> Move to mouse ruin. Explore → gain boots. Move again. Craft a 1-VP item using your fox cards if possible.<br>
+          <span class="turn">T3:</span> Move toward the second mouse ruin. Explore → gain sword. <b>Now you have 2 swords (counting starter). Safe.</b><br>
+          <span class="turn">T4:</span> Last ruin (across the map). Explore → tea or whatever's left. Now fully kitted and ready to score.
+        </div>
+      </div>
+    </section>
+
+    <section class="tile t1 span2" id="s5" data-keys="combat math swords battle infamy hostile attacks score">
+      <span class="tile-badge">ESSENTIAL</span>
+      <h3><span class="num">05</span><span class="priority">PRIORITY 5</span>Combat Math &amp; Infamy</h3>
+      <div class="body">
+        <p>Combat is your <b>highest-throughput scoring path</b> once you have 3+ swords. But the math is non-obvious — let's break it down.</p>
+
+        <div class="tldr"><b>TL;DR.</b> 1 sword = 1 Battle action per turn. Each Battle scores 1 VP per warrior killed (Infamy) IF you're Hostile to that faction. With 3 swords + Hostile target = 6+ VP per turn. Crossbow is bonus (1 free hit, no counter, but turns you Hostile).</div>
+
+        <h4>How swords work</h4>
+        <ul>
+          <li>Each Battle action exhausts <b>1 sword</b>. So 3 swords = 3 Battles per turn (if you can refresh them all)</li>
+          <li>Your hits in battle = number of swords you have (refreshed or exhausted)</li>
+          <li>So 3 swords means you roll dice + add 0 (Vagabond doesn't get army-size bonus); you take the higher die as attacker</li>
+        </ul>
+
+        <h4>What is Infamy?</h4>
+        <p><b>Infamy is your VP-from-combat track</b>. Each warrior you kill in battle scores you VP — <b>but only if you're already Hostile to that faction</b>. You become Hostile by attacking that faction without Aiding them recently. Once Hostile:</p>
+        <ul>
+          <li>1 VP per warrior killed (most Vagabonds)</li>
+          <li>Vagrant: 2 VP per warrior killed if BOTH factions are hostile to you (Instigate)</li>
+        </ul>
+
+        <h4>The throughput math</h4>
+        <p>With 3 swords + Hostile target faction in a clearing with 3 warriors:</p>
+        <ul>
+          <li><b>Battle 1:</b> kill ~2 warriors (depends on dice; roughly 2 hits average) = 2 VP</li>
+          <li><b>Battle 2:</b> kill 1 more (may need to wait, opponent may move) = 1 VP</li>
+          <li><b>Battle 3:</b> opportunistic = 1+ VP</li>
+        </ul>
+        <p>Realistic per-turn yield: <b>~6 VP from combat</b>. Plus you're denying that faction warriors. Compare to Aid (~2 VP/turn maxed out) or Crafting (~1 VP per item, not every turn).</p>
+
+        <h4>Crossbow (Strike action)</h4>
+        <div class="card info">
+          <span class="badge info">Strike</span>
+          The crossbow lets you deal <b>1 free hit</b> to any clearing you can reach, with <b>no counter-attack</b>. Costs 1 crossbow exhaustion. Doesn't score Infamy directly, but kills the warrior — and if you were already Hostile, that hit's killing the warrior counts.
+        </div>
+        <p><b>The crossbow trick:</b> If you want to <i>become</i> Hostile to a faction, kill one warrior with the crossbow. You're now Hostile. From this turn forward, your sword attacks score Infamy.</p>
+
+        <div class="why"><b>Why combat scoring beats other paths:</b> Crafting caps at 1 VP per item (and items are limited). Aid caps at ~3 VP per max-friendship per game. Quests cap at 2 VP each. <b>Combat scales with sword count and target density</b> — a Lizard with 6 acolytes/warriors in one cluster = 6+ VP for you to harvest. No other path scales this way.</div>
+
+        <div class="scenario">
+          <div class="label">Picture this — Infamy farming the Lizards</div>
+          You're Arbiter at turn 7 with 4 swords (2 starting + 2 from ruins/aid). The Lizards have 4 warriors stacked on a lightly-defended garden. You've previously become Hostile to them by attacking once.<br><br>
+          <span class="turn">Daylight:</span> Move into Lizard clearing (1 boot). Battle: kill 2 warriors → +2 VP. Battle: kill 1 + the garden building → +2 VP. Battle: kill last warrior → +1 VP. Total: <b>5 VP this turn from combat alone</b>.<br>
+          <br>
+          The Lizards now have to spend acolytes to recover. You move on. Repeat next turn against another lightly-defended target. This is your win condition.
+        </div>
+      </div>
+    </section>
+
+    <section class="tile t1 span2" id="s6" data-keys="failure modes mistakes pitfalls beginner">
+      <span class="tile-badge">ESSENTIAL</span>
+      <h3><span class="num">06</span><span class="priority">PRIORITY 6</span>5 Failure Modes (and What to Do Instead)</h3>
+      <div class="body">
+        <p class="dim">If you've lost as Vagabond, it was almost certainly one of these. Fix them and your win rate jumps.</p>
+
+        <div class="card dont">
+          <div class="hdr"><span class="badge dont">1</span> Getting attacked T2 with no sword</div>
+          <b>The mistake:</b> Picked Tinker/Scoundrel/Vagrant, ended turn 1 in a clearing with the Riverfolk. They send 3 warriors and damage half your items. Turn 2 = lick wounds = lost game.<br>
+          <b>Instead:</b> If you have no starting sword, end turn 1 in a forest, an empty clearing, or an Alliance sympathy clearing. Loot the sword ruin <b>before</b> ending in danger zones.
+        </div>
+        <div class="card dont">
+          <div class="hdr"><span class="badge dont">2</span> Skipping crafts</div>
+          <b>The mistake:</b> "I'll save these cards." Cards in hand at end of game = 0 VP. Cards crafted into items = 1 VP each + an item that scores you more. Always craft when you have the matching hammer.<br>
+          <b>Instead:</b> Craft every craftable card, every turn. Mouse and Rabbit items are safest (don't power up Vagabond's competition).
+        </div>
+        <div class="card dont">
+          <div class="hdr"><span class="badge dont">3</span> Never going Hostile</div>
+          <b>The mistake:</b> Aiding everyone, never attacking. You score ~5 VP/game from items + ~5 VP from Aid = 10 VP. Game ends, you lose by 20.<br>
+          <b>Instead:</b> Mid-game, pick a Hostile target faction. Use the crossbow to flip Hostile if you weren't already. Now your battles score Infamy = 1 VP per kill = the path to 30.
+        </div>
+        <div class="card dont">
+          <div class="hdr"><span class="badge dont">4</span> Aiding the Alliance / Lizards</div>
+          <b>The mistake:</b> Heavy Aid into Alliance or Lizard Cult. Each card you give them = 1 VP for them (they convert cards to VP faster than anyone). You're handing them the win.<br>
+          <b>Instead:</b> Aid the <b>Cats and Eyrie</b> primarily (they get less from cards). Aid Alliance/Lizards <b>only when their items are excellent</b>, and stop early.
+        </div>
+        <div class="card dont">
+          <div class="hdr"><span class="badge dont">5</span> Misreading threat</div>
+          <b>The mistake:</b> "The Cats are leading at 18, I'll attack them." But the Cats slow down at high VP (slots fill up). The Alliance at 13 with 8 supporters is the real threat — about to burst 15 VP.<br>
+          <b>Instead:</b> Assess threat by faction-specific potential, not raw VP. See <a href="#s12">Matchups</a> for the threat-read for each faction.
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== TIER 2 ===================== -->
+
+    <section class="tile t2 span2" id="s7" data-keys="items damage repair refresh exhaust torch boots sword hammer crossbow tea bag coins">
+      <span class="tile-badge">CORE</span>
+      <h3><span class="num">07</span>Items &amp; Damage Track</h3>
+      <div class="body">
+        <p>Items are everything. Each item type does something different — and gets exhausted by specific actions. Understanding the inventory mechanics deeply is what separates good Vagabonds from great ones.</p>
+
+        <h4>The 7 item types</h4>
+        <div class="items-grid">
+          <div class="item">
+            <div class="it-name">🥾 Boots</div>
+            <b>Used for:</b> Move action.<br>
+            <b>Why important:</b> Without boots, you can't leave your clearing (except via Slip). 2+ boots lets you move multiple times per turn.
+          </div>
+          <div class="item">
+            <div class="it-name">⚔️ Swords</div>
+            <b>Used for:</b> Battle action (and as combat strength).<br>
+            <b>Why important:</b> Swords ARE your win condition late game. 3+ swords = Infamy farming. Sword count = combat threat to others.
+          </div>
+          <div class="item">
+            <div class="it-name">🔨 Hammers</div>
+            <b>Used for:</b> Crafting.<br>
+            <b>Why important:</b> 1 hammer = 1 craft per turn. The hammer ruin item (orange-suit hammer) is the most-fought-over ruin.
+          </div>
+          <div class="item">
+            <div class="it-name">🏹 Crossbow</div>
+            <b>Used for:</b> Strike action (1 hit, no counter).<br>
+            <b>Why important:</b> Free hit at range. Used to flip Hostile without committing to a battle. Ranger starts with one.
+          </div>
+          <div class="item">
+            <div class="it-name">🍵 Tea</div>
+            <b>Used for:</b> Adds +1 to your Birdsong refresh limit per Tea.<br>
+            <b>Why important:</b> More items refreshed = more actions. Tea is hidden value — boring but vital for high item counts.
+          </div>
+          <div class="item">
+            <div class="it-name">🎒 Bag</div>
+            <b>Used for:</b> Holds extra items (you have an inventory limit).<br>
+            <b>Why important:</b> Without bags, you cap at fewer items. Tinker starts with one extra; everyone else needs to craft.
+          </div>
+          <div class="item">
+            <div class="it-name">🪙 Coins</div>
+            <b>Used for:</b> Buying from Riverfolk Company services.<br>
+            <b>Why important:</b> Conditional value. Useful only if Riverfolk are in the game. Don't seek out unless they are.
+          </div>
+        </div>
+
+        <h4>Refresh / Exhaust / Damage cycle</h4>
+        <ul>
+          <li><b>Refreshed (face-up):</b> Item is ready to use. Spending the item flips it to exhausted.</li>
+          <li><b>Exhausted (face-down):</b> Item is used this turn. Refreshed at start of next Birdsong (up to your refresh limit).</li>
+          <li><b>Damaged:</b> Item taken hit in combat. Set aside on damaged track. Cannot use OR refresh until repaired.</li>
+        </ul>
+
+        <h4>Refresh limit (the silent constraint)</h4>
+        <div class="card info">
+          <span class="badge info">Default refresh</span>
+          You refresh up to <b>3 items per Birdsong</b>. So 4 items but only 3 refresh = 1 stays exhausted.<br>
+          Each <b>Tea</b> adds +1 to refresh limit. So Tea + 4 items = all refresh.
+        </div>
+
+        <h4>Repairing damaged items</h4>
+        <p>Damaged items return to refreshed via:</p>
+        <ul>
+          <li><b>Repair action</b> (1 hammer + 1 matching-color card → repair 1 item). Costs an action.</li>
+          <li><b>Hideout (Ranger only):</b> repair 3 items at once. Free action.</li>
+          <li><b>Lick wounds:</b> end Evening alone in a forest → repair 1 damaged item. Free but takes a slow turn.</li>
+        </ul>
+
+        <div class="why"><b>Why this matters:</b> Damage management is your real defense. With 8 items, you can absorb 8 hits before you "die" — but each damaged item is a missed action. Plan repair into your turn cycle.</div>
+      </div>
+    </section>
+
+    <section class="tile t2 span2" id="s8" data-keys="aid crafting friendship coins items vp scoring">
+      <span class="tile-badge">CORE</span>
+      <h3><span class="num">08</span>Aid &amp; Crafting</h3>
+      <div class="body">
+        <p>Aid and Crafting are your <b>steady scoring streams</b> in the early-mid game. They're not as bursty as combat-Infamy, but they're reliable, low-risk, and they scale with hand size.</p>
+
+        <h4>Aid — what it actually does</h4>
+        <p>Aid is a Daylight action where you give a card matching the clearing's suit to a faction in your clearing. In return:</p>
+        <ul>
+          <li>The faction must give you 1 of their <b>crafted items</b> (they choose which)</li>
+          <li>You draw a card</li>
+          <li>You move 1 step on the friendship track with that faction</li>
+        </ul>
+
+        <h4>The friendship track</h4>
+        <div class="card info">
+          <span class="badge info">Path to Allied</span>
+          <ol>
+            <li><b>Indifferent</b> (start) — no special status</li>
+            <li>Aid 3 times → <b>Friendly</b> — score 1 VP per Aid going forward</li>
+            <li>Aid 2 more times while Friendly → <b>Allied</b> — score 2 VP per Aid going forward</li>
+          </ol>
+        </div>
+        <p>Becoming Allied with one faction is good for ~5–8 VP across a game. Becoming Allied with two is rare but possible if you commit hard.</p>
+
+        <h4>Aid targets — who to befriend</h4>
+        <div class="card do">
+          <span class="badge do">Best Aid targets</span>
+          <ul>
+            <li><b>Cats</b> — get less out of cards than other factions, easy to keep down. Cards they receive ≈ 1 VP per card.</li>
+            <li><b>Eyrie</b> — bird cards specifically are deceptively safe; Eyrie wants few of them anyway. Useful early to deflect the bird's aggression.</li>
+            <li><b>Riverfolk</b> — yes you might fight them later, but early Aid gets items + cards while they're weak.</li>
+          </ul>
+        </div>
+        <div class="card dont">
+          <span class="badge dont">Avoid heavy Aid</span>
+          <ul>
+            <li><b>Alliance</b> — every card you give them ≈ 1 VP for them. Aid only if their crafted items are excellent.</li>
+            <li><b>Lizards</b> — cards = extra actions AND points. You'd be feeding their engine.</li>
+          </ul>
+        </div>
+
+        <h4>Crafting</h4>
+        <p>Crafting is the same mechanic the Cats use, but for Vagabond it's <i>doubly</i> good: you score the VP <b>and</b> get the item. To craft:</p>
+        <ul>
+          <li>Have a card with crafting requirements (suit + image)</li>
+          <li>Have hammer items of the matching colors (orange/blue/yellow/green corresponding to suits)</li>
+          <li>Spend the card → place item in your inventory + score the card's VP value (1–3)</li>
+        </ul>
+
+        <div class="why"><b>Hammer color matters:</b> The starting hammer (Tinker / from ruin) is one specific color. To craft cards of <i>other</i> colors, you need additional hammers (which other factions craft and you can Aid for). This is why heavy item-crafting on the table = good for the Vagabond.</div>
+
+        <h4>Crafting priority for Vagabond</h4>
+        <ul>
+          <li><b>Mouse and rabbit VP cards</b> — safe, useful, won't power up rivals (Cats/Eyrie)</li>
+          <li><b>Avoid fox VP cards</b> if your group is item-conscious — fox items are powerful general gear (Sword, Crossbow). Crafting them puts them on the table where opponents can grab via Aid</li>
+          <li>Wait — actually for <b>you</b>, fox items are great. The "avoid fox" rule is for the Cats. As Vagabond, you want every item you can grab.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="tile t2" id="s9" data-keys="quests questing card vp 2 points opportunistic">
+      <span class="tile-badge">CORE</span>
+      <h3><span class="num">09</span>Quests</h3>
+      <div class="body">
+        <p>Quest cards represent specific tasks. Each Quest card has a suit (the clearing it must be done in) and 2 item requirements (you must exhaust those items to complete it).</p>
+
+        <h4>The Quest mechanic</h4>
+        <ul>
+          <li>Quest cards are face-up next to the board (3 active)</li>
+          <li>Daylight action: be in a clearing matching the Quest's suit, exhaust the required items, complete the quest</li>
+          <li><b>First quest in a suit:</b> draw 1 card OR score 1 VP (your choice)</li>
+          <li><b>Each subsequent quest in that suit:</b> score 2 VP</li>
+        </ul>
+
+        <h4>When to quest</h4>
+        <div class="card info">
+          <span class="badge info">Take if</span>
+          <ul>
+            <li>You're already in the right suit clearing (no detour cost)</li>
+            <li>The required items are already exhausted or you have spares</li>
+            <li>You have multiple quests of the same suit available (the 2 VP scaling kicks in)</li>
+          </ul>
+        </div>
+        <div class="card dont">
+          <span class="badge dont">Skip if</span>
+          <ul>
+            <li>Requires major detour (3+ extra moves)</li>
+            <li>The required items are critical for combat this turn</li>
+            <li>You're in early game and item-collection is more important</li>
+          </ul>
+        </div>
+
+        <div class="why"><b>BGG verdict:</b> Quests are opportunistic. Don't build a strategy around them — but don't ignore them either. Take the freebies when they're in your path. Lean toward "card" on the first quest of each suit (more cards = more crafts later); take VP after.</div>
+      </div>
+    </section>
+
+    <section class="tile t2 span2" id="s10" data-keys="relationships friendly hostile indifferent infamy aid attack switch">
+      <span class="tile-badge">CORE</span>
+      <h3><span class="num">10</span>Relationships</h3>
+      <div class="body">
+        <p>Every faction has a relationship status with you, tracked on your faction board:</p>
+
+        <div class="mini-grid">
+          <div class="card info">
+            <span class="badge info">Indifferent</span> Default. No bonuses, no penalties. You can still battle but won't score Infamy.
+          </div>
+          <div class="card do">
+            <span class="badge do">Friendly</span> After 3 Aids to that faction. Each subsequent Aid scores 1 VP.
+          </div>
+          <div class="card do">
+            <span class="badge do">Allied</span> After 5 total Aids (3 + 2). Each Aid scores 2 VP. Plus, allied warriors don't trigger Hostile when you battle nearby.
+          </div>
+          <div class="card dont">
+            <span class="badge dont">Hostile</span> After you attack their warriors (without Aiding them recently). All future battles against them score 1 VP per warrior killed (Infamy).
+          </div>
+        </div>
+
+        <h4>How you become Hostile</h4>
+        <ul>
+          <li>Battling their warriors when not Friendly/Allied with them</li>
+          <li>Killing one of their warriors with the crossbow Strike</li>
+          <li>Note: <b>Removing buildings/tokens</b> (not warriors) does NOT trigger Hostile</li>
+        </ul>
+
+        <h4>The flip — when to go Hostile</h4>
+        <p>Most Vagabond games begin with Indifferent toward all factions. Around <b>turn 4–6</b>, you should pick a target to become Hostile to. Considerations:</p>
+        <div class="card cond">
+          <span class="badge cond">Pick a Hostile target with</span>
+          <ul>
+            <li><b>Lots of warriors clustered</b> — Lizards, Riverfolk, sometimes Eyrie</li>
+            <li><b>Lightly defended high-value pieces</b> (gardens, sympathy, Roosts)</li>
+            <li><b>NOT the leading scorer</b> — they'll target you back. Pick #2 or #3 in score.</li>
+          </ul>
+        </div>
+
+        <h4>Hostile penalty</h4>
+        <div class="why"><b>The cost:</b> Once Hostile to a faction, when you move <b>through</b> their warriors' clearings, you take an extra "passage cost" — meaning Hostile factions can slow your movement. Slip movement bypasses this.</div>
+
+        <h4>Becoming Friendly with someone you were Hostile to</h4>
+        <p>You can recover from Hostile by Aiding 3 times (now those Aid cards are mostly used to <i>repair</i> the relationship, not to score). This is rarely worth it — once Hostile, stay Hostile and farm Infamy.</p>
+      </div>
+    </section>
+
+    <section class="tile t2 span2" id="s11" data-keys="midgame pivot turns 5 6 7 scoring transition swords combat">
+      <span class="tile-badge">CORE</span>
+      <h3><span class="num">11</span>Mid-Game Pivot</h3>
+      <div class="body">
+        <p>Around <b>turn 4–6</b>, your strategy shifts. The opening was about <b>accumulation</b> (items). The mid-game is about <b>scoring with what you accumulated</b>.</p>
+
+        <div class="tldr"><b>TL;DR.</b> Once you have 2+ swords, transition from defensive looting to offensive scoring. Pick a Hostile target. Begin Infamy farming. Keep aiding non-threats for steady VP. Maintain ~2 craft VP per turn.</div>
+
+        <h4>The pivot signals</h4>
+        <ul>
+          <li>You have <b>2+ swords</b> (now safe from most attacks)</li>
+          <li>All ruins are looted (no more "free" items from exploration)</li>
+          <li>One faction has emerged as a clear threat or scoring leader</li>
+          <li>You have a <b>hand of cards</b> ready to spend on Aid/Craft</li>
+        </ul>
+
+        <h4>The mid-game scoring stack</h4>
+        <p>Each turn you should aim for 3–5 VP via combination:</p>
+        <ul>
+          <li><b>1 VP from crafting</b> (1 item from a card you have)</li>
+          <li><b>1–2 VP from Aiding</b> (Friendly/Allied bonuses)</li>
+          <li><b>2–4 VP from combat</b> (Infamy on Hostile target)</li>
+          <li><b>0–2 VP from Quest</b> (if a Quest happens to be in your path)</li>
+        </ul>
+
+        <h4>The combat priority</h4>
+        <div class="card do">
+          <span class="badge do">Attack if</span>
+          <ul>
+            <li>Target is Hostile to you (Infamy scoring active)</li>
+            <li>Target has 2+ warriors stacked (multiple kills per battle)</li>
+            <li>You have all swords refreshed</li>
+            <li>Killing the warriors also removes a high-value building (extra VP for some Vagabonds)</li>
+          </ul>
+        </div>
+
+        <div class="example">
+          <div class="label">Sample turn 6 — mid-game in full swing</div>
+          You're Arbiter at 14 VP with 3 swords, hostile to Lizards. The Lizards have 3 warriors + 1 garden in a rabbit clearing (lightly defended).<br>
+          <span class="turn">Birdsong:</span> Refresh items, slip into the rabbit clearing.<br>
+          <span class="turn">Daylight:</span> Battle (kill 2 warriors, +2 VP). Battle (kill 1 warrior + garden building, +1 VP for kill, +1 VP for building). Aid the Cats with a leftover card, scoring 1 VP at Friendly. Craft a 1-VP item.<br>
+          <span class="turn">Evening:</span> Draw 2 cards.<br>
+          <b>Net: 6 VP this turn.</b> Lizards down 3 warriors and a garden.
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== TIER 3 ===================== -->
+
+    <section class="tile t3 span3" id="s12" data-keys="matchups cats eyrie alliance lizards riverfolk corvid duchy keepers threat assessment">
+      <span class="tile-badge">ADVANCED</span>
+      <h3><span class="num">12</span>Matchups &amp; Threat Assessment</h3>
+      <div class="body">
+        <p class="dim">Each matchup answers: how to read their threat, when to Aid them, when to attack them. <b>Score doesn't equal threat</b> — assess by faction-specific potential.</p>
+
+        <div class="mini-grid" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));">
+          <div class="card cond">
+            <div class="hdr"><span class="badge cond">Marquise (Cats)</span></div>
+            <b>Threat read:</b> Count their open building slots × 2 ≈ remaining VP potential. Watch for dominance setup (warriors clustered for corner takes).<br>
+            <b>Aid them:</b> Yes — cards are mid-value to them. Befriending Cats is the safest aid path.<br>
+            <b>Attack them:</b> Late game when slots fill up — Cats have many board pieces to harvest for Infamy. Don't break Cats fully though, they keep Alliance in line.
+          </div>
+          <div class="card cond">
+            <div class="hdr"><span class="badge cond">Eyrie</span></div>
+            <b>Threat read:</b> Count Roosts × position on score track. Easiest faction to assess — their VP is mostly transparent. Watch for Despot leader (sudden VP burst from removing pieces).<br>
+            <b>Aid them:</b> Yes — bird cards specifically are safe (they want few of them). Eyrie crafts rarely so they'll feed you items.<br>
+            <b>Attack them:</b> Midgame if they're consolidating. Each Roost destroyed denies them future VP.
+          </div>
+          <div class="card cond">
+            <div class="hdr"><span class="badge cond">Woodland Alliance</span></div>
+            <b>Threat read:</b> Count <b>cards in supporters + officers + bases</b>. Even a low-VP Alliance with 8 supporters is about to burst 15 VP. <b>The most-underestimated faction by score.</b><br>
+            <b>Aid them:</b> Carefully. Their items are good but every card you give them ≈ 1 VP. Don't max friendship.<br>
+            <b>Attack them:</b> Sympathy tokens are 1 VP each (low risk targets). Crossbow lets you bypass Guerrilla War. But beware Outrage — every battle gives them a card.
+          </div>
+          <div class="card dont">
+            <div class="hdr"><span class="badge dont">Lizard Cult</span></div>
+            <b>Threat read:</b> Count gardens + acolytes. Gardens score every turn AND fuel sanctify. A 6-garden Lizard is winning even at low VP.<br>
+            <b>Aid them:</b> Almost never. Cards = extra Lizard actions AND points. You're feeding the worst engine for you.<br>
+            <b>Attack them:</b> YES. Lightly-defended gardens are juicy (high VP per battle). Their warriors don't fight back well. Prime Infamy farm.
+          </div>
+          <div class="card dont">
+            <div class="hdr"><span class="badge dont">Riverfolk (Otters)</span></div>
+            <b>Threat read:</b> They can suddenly drop 5+ warriors anywhere via recruit. Volatile threat — judge by their hand size and warrior supply.<br>
+            <b>Aid them:</b> Tempting (they craft well). Don't over-feed cards.<br>
+            <b>Attack them:</b> YES. Killing Otter warriors denies them VP and gets you Infamy. Their lack of defended territory makes them safe targets. Best Hostile candidate.
+          </div>
+          <div class="card cond">
+            <div class="hdr"><span class="badge cond">Corvid Conspiracy</span></div>
+            <b>Threat read:</b> Look at face-down plot count × position. Bombs and snares can wipe warriors but you have no warriors to lose.<br>
+            <b>Aid them:</b> Neutral. They craft moderately.<br>
+            <b>Attack them:</b> Decent option. Plotter warriors when exposed = Infamy. Don't reveal plots accidentally.
+          </div>
+          <div class="card cond">
+            <div class="hdr"><span class="badge cond">Underground Duchy</span></div>
+            <b>Threat read:</b> Crown VP track + minister sway. Hard to read — they swing.<br>
+            <b>Aid them:</b> Cautious yes — they craft.<br>
+            <b>Attack them:</b> Tunnel-defended clearings are tough. Pick weak frontier targets.
+          </div>
+          <div class="card cond">
+            <div class="hdr"><span class="badge cond">Keepers in Iron</span></div>
+            <b>Threat read:</b> Relics recovered + waystation chains.<br>
+            <b>Aid them:</b> Neutral.<br>
+            <b>Attack them:</b> Decent — waystations destroyed = denied VP.
+          </div>
+        </div>
+
+        <div class="why"><b>The threat-assessment heuristic:</b> Look at <i>what each faction needs to score</i>. Cats need open slots. Eyrie needs Roosts. Alliance needs supporters + bases. Lizards need gardens. Riverfolk need card spending. Multiply those resources by remaining VP availability — that's the real threat, not the current score.</div>
+      </div>
+    </section>
+
+    <section class="tile t3 span2" id="s13" data-keys="coalition partner cats vagabond support help win">
+      <span class="tile-badge">ADVANCED</span>
+      <h3><span class="num">13</span>Coalition Path</h3>
+      <div class="body">
+        <p>Coalition is a special play where you and another player declare a partnership: if either of you reaches 30 VP first, you both win.</p>
+
+        <h4>When Vagabond should coalition</h4>
+        <ul>
+          <li>You're <b>far behind</b> on score with little chance to win solo (unusual but possible)</li>
+          <li>One other player is <b>close to winning</b> via dominance — you can support their final push</li>
+          <li>Two other players are <b>fighting each other</b>, leaving a third on track to win — coalition with the third</li>
+        </ul>
+
+        <h4>The Cat-Vagabond coalition (most common)</h4>
+        <p>Cats often coalition with the Vagabond before activating a dominance card. Why:</p>
+        <ul>
+          <li>Vagabond has flexible mobility (Slip)</li>
+          <li>Vagabond can quickly attack a key clearing (e.g. an Alliance base) to remove threats to the Cat dominance</li>
+          <li>Cats neutralize Vagabond's main threat (the Cat's huge army)</li>
+        </ul>
+
+        <h4>Scoundrel + Cats specifically</h4>
+        <div class="card do">
+          <span class="badge do">The Scorched Earth play</span>
+          BGG-mentioned scenario: Cats need to dominate but one path is blocked. <b>Scoundrel uses Scorched Earth to wipe a key clearing</b>, breaking the path. Cats activate dominance unopposed. Both win.<br>
+          One of the strongest closing plays in Root.
+        </div>
+
+        <div class="why"><b>The trade:</b> Coalition = giving up your independent win. But Vagabond's path to 30 is slow; coalitioning to a faction at 22 VP that can sprint to 30 is often higher EV than soloing from 18.</div>
+      </div>
+    </section>
+
+    <section class="tile t3" id="s14" data-keys="mental model mindset reframe wanderer threat reader">
+      <span class="tile-badge">ADVANCED</span>
+      <h3><span class="num">14</span>Mental Model</h3>
+      <div class="body">
+        <div class="card dont">
+          <div class="hdr"><span class="badge dont">Stop thinking</span></div>
+          "What's my next action?"
+        </div>
+        <div class="card do">
+          <div class="hdr"><span class="badge do">Start thinking</span></div>
+          "Who is closest to winning, and how can I delay them while scoring myself?"
+        </div>
+        <p class="dim" style="margin-top:8px;">You're not playing a faction strategy — you're playing a <b>table-state strategy</b>. Your job is to assess relative power every turn and intervene where you score most.</p>
+        <div class="card info"><span class="badge info">Heuristic</span> "If you've been ignored for 3 turns, you're winning."</div>
+      </div>
+    </section>
+
+    <section class="tile t3 span2" id="s15" data-keys="advanced tactics tricks hidden plays nuances">
+      <span class="tile-badge">ADVANCED</span>
+      <h3><span class="num">15</span>Advanced Tactics</h3>
+      <div class="body">
+        <div class="mini-grid" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));">
+          <div class="card do">
+            <div class="hdr"><span class="badge do">Sympathy as safe haven</span></div>
+            Alliance sympathy clearings deter most opponents (they trigger Outrage if attacked there). End your turn here when vulnerable.
+          </div>
+          <div class="card do">
+            <div class="hdr"><span class="badge do">Slip to forest = perfect cover</span></div>
+            Slip is free movement, doesn't trigger Hostile, and forests have no warriors. End in a forest to avoid all aggression.
+          </div>
+          <div class="card do">
+            <div class="hdr"><span class="badge do">Exploit overburdened factions</span></div>
+            Eyrie just turmoiled? Lizards just lost half their gardens? Alliance just bursted? They're depleted — easy Infamy farm.
+          </div>
+          <div class="card do">
+            <div class="hdr"><span class="badge do">Crossbow flip-trick</span></div>
+            Need to become Hostile but don't want to commit a full battle? Use the crossbow Strike to kill 1 warrior. Now Hostile, no counterattack.
+          </div>
+          <div class="card cond">
+            <div class="hdr"><span class="badge cond">Tinker → Favor crafting</span></div>
+            Tinker can search the discard pile. Combine with hammer access = only Vagabond capable of crafting Favor cards. Game-winning move if pulled off.
+          </div>
+          <div class="card cond">
+            <div class="hdr"><span class="badge cond">Damage rotation</span></div>
+            Take damage on items you don't need this turn. Boots damaged but you weren't moving anyway? Free damage absorbed.
+          </div>
+          <div class="card cond">
+            <div class="hdr"><span class="badge cond">Aid for items, not friendship</span></div>
+            Sometimes you Aid just for a single item, not pursuing Friendly status. Item + card draw + 1 friendship step is fine value even at 0 friendship VP.
+          </div>
+          <div class="card info">
+            <div class="hdr"><span class="badge info">Don't telegraph swords</span></div>
+            Players can see your sword count. Hold off on collecting the 4th sword visibly — opponents start noticing the threat at 3 swords.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="tile t3 span2" id="s16" data-keys="replay diagnosis post game checklist mistakes">
+      <span class="tile-badge">ADVANCED</span>
+      <h3><span class="num">16</span>Replay Diagnosis</h3>
+      <div class="body">
+        <p class="dim">After each game — first "no" = biggest leak.</p>
+        <div class="mini-grid">
+          <div class="card info"><span class="badge info">01</span> All 4 ruins looted by T5? <div class="dim">Or did one stay because of detours?</div></div>
+          <div class="card info"><span class="badge info">02</span> Hammer in T2-3? <div class="dim">Crafting starts compounding from there.</div></div>
+          <div class="card info"><span class="badge info">03</span> 2 swords by T4? <div class="dim">3 by T6? Combat is your endgame.</div></div>
+          <div class="card info"><span class="badge info">04</span> Crafted every craftable card? <div class="dim">Or hoarded cards that died in hand?</div></div>
+          <div class="card info"><span class="badge info">05</span> Hostile target picked by T6? <div class="dim">Who, and was it the right faction?</div></div>
+          <div class="card info"><span class="badge info">06</span> Got attacked early? <div class="dim">Why? Where did you end T1?</div></div>
+          <div class="card info"><span class="badge info">07</span> Aided the right factions? <div class="dim">Cats/Eyrie ✓ · Alliance/Lizards ✗</div></div>
+          <div class="card info"><span class="badge info">08</span> Misjudged threats? <div class="dim">Did you target the right opponent?</div></div>
+          <div class="card info"><span class="badge info">09</span> Quests opportunistic? <div class="dim">Or did you detour for them?</div></div>
+          <div class="card info"><span class="badge info">10</span> Damaged item recovery? <div class="dim">Did damage cripple you, or did you repair fast?</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="tile t3 span3" id="s17" data-keys="glossary terms definitions item refresh exhaust damage aid quest hostile friendly infamy slip lick wounds">
+      <span class="tile-badge">ADVANCED</span>
+      <h3><span class="num">17</span>Glossary</h3>
+      <div class="body">
+        <p class="dim">Every term used in this aid, defined. Quick reference for jargon.</p>
+
+        <h4>Vagabond Pieces &amp; Items</h4>
+        <div class="glossary">
+          <div class="term">
+            <div class="word">Pawn</div>
+            <div class="defn">Your single Vagabond meeple. The only piece you have on the board. Moves between clearings. When attacked, hits go to your items, not the pawn itself.</div>
+          </div>
+          <div class="term">
+            <div class="word">Item</div>
+            <div class="defn">Token in your inventory. Comes in 7 types: torch, boots, sword, hammer, crossbow, tea, bag, coin. Each has a face-up "refreshed" or face-down "exhausted" state. Damaged items go on a separate damaged track.</div>
+          </div>
+          <div class="term">
+            <div class="word">Refreshed</div>
+            <div class="defn">Item state where it can be used. Default starting state. Set face-up.</div>
+          </div>
+          <div class="term">
+            <div class="word">Exhausted</div>
+            <div class="defn">Item state after being used in an action this turn. Set face-down. Refreshed at start of next Birdsong, up to your refresh limit.</div>
+          </div>
+          <div class="term">
+            <div class="word">Damaged</div>
+            <div class="defn">Item state after being hit in combat. Set on the damaged track. Cannot be used or refreshed until repaired.</div>
+          </div>
+          <div class="term">
+            <div class="word">Refresh limit</div>
+            <div class="defn">Maximum items refreshed per Birdsong. Default 3. +1 per Tea item you have.</div>
+          </div>
+        </div>
+
+        <h4>Vagabond Actions</h4>
+        <div class="glossary">
+          <div class="term">
+            <div class="word">Move</div>
+            <div class="defn">Daylight action. Exhaust 1 boot. Move to an adjacent clearing or forest. If moving into a Hostile faction's clearing or with their pieces present, costs an extra boot.</div>
+          </div>
+          <div class="term">
+            <div class="word">Slip</div>
+            <div class="defn">Birdsong free action (1 per turn). Move to an adjacent clearing or forest WITHOUT exhausting a boot, AND without triggering Hostile passage costs. Vagabond's signature mobility tool.</div>
+          </div>
+          <div class="term">
+            <div class="word">Battle</div>
+            <div class="defn">Daylight action. Exhaust 1 sword. Battle in a clearing where you have your pawn. You're the attacker; deal hits = sword count.</div>
+          </div>
+          <div class="term">
+            <div class="word">Strike</div>
+            <div class="defn">Daylight action. Exhaust 1 crossbow. Deal 1 free hit to a clearing within range. No counter-attack. Doesn't directly score Infamy but kills count for Infamy if Hostile.</div>
+          </div>
+          <div class="term">
+            <div class="word">Aid</div>
+            <div class="defn">Daylight action. Discard a card matching the clearing's suit. Take 1 of that faction's crafted items. Draw a card. Move +1 on friendship track with that faction.</div>
+          </div>
+          <div class="term">
+            <div class="word">Quest</div>
+            <div class="defn">Daylight action. Be in a clearing matching a Quest card's suit. Exhaust the items the Quest requires. Score VP or draw a card.</div>
+          </div>
+          <div class="term">
+            <div class="word">Craft</div>
+            <div class="defn">Daylight free action (no item cost). Spend a card matching your hammer color to gain that card's item AND score the card's VP. Best scoring rate per card in the game for Vagabond.</div>
+          </div>
+          <div class="term">
+            <div class="word">Repair</div>
+            <div class="defn">Daylight action. Exhaust a hammer + spend a card matching the damaged item's color. Move 1 damaged item back to refreshed.</div>
+          </div>
+          <div class="term">
+            <div class="word">Lick wounds</div>
+            <div class="defn">Evening action (free). If alone in a forest, repair 1 damaged item. Slow recovery for when you can't afford a Repair action.</div>
+          </div>
+          <div class="term">
+            <div class="word">Special action</div>
+            <div class="defn">Each Vagabond has a unique once-per-turn or once-per-game ability: Steal (Thief), Tinker (Tinker), Hideout (Ranger), Instigate (Vagrant), Protector (Arbiter), Scorched Earth (Scoundrel).</div>
+          </div>
+        </div>
+
+        <h4>Relationships &amp; Scoring</h4>
+        <div class="glossary">
+          <div class="term">
+            <div class="word">Indifferent</div>
+            <div class="defn">Default relationship status with all factions. No bonuses, no penalties. Battling them once switches you to Hostile.</div>
+          </div>
+          <div class="term">
+            <div class="word">Friendly</div>
+            <div class="defn">Achieved after 3 Aids to a faction. Each subsequent Aid scores 1 VP. Cannot become Hostile to Friendly factions accidentally.</div>
+          </div>
+          <div class="term">
+            <div class="word">Allied</div>
+            <div class="defn">Achieved after 5 total Aids (3 + 2). Each Aid scores 2 VP. Allied factions are protected partners — battling near them doesn't trigger Hostile.</div>
+          </div>
+          <div class="term">
+            <div class="word">Hostile</div>
+            <div class="defn">Achieved by killing a faction's warrior while not Friendly/Allied. Combat against them now scores 1 VP per warrior killed (Infamy). They get 1 VP each time they remove your items in combat.</div>
+          </div>
+          <div class="term">
+            <div class="word">Infamy</div>
+            <div class="defn">VP scored by killing warriors of a Hostile faction. Vagabond's primary mid-late game scoring path. 1 VP per warrior (most Vagabonds), or 2 VP for the Vagrant in specific Instigate cases.</div>
+          </div>
+          <div class="term">
+            <div class="word">Friendship track</div>
+            <div class="defn">Per-faction track on your faction board showing Indifferent → Friendly → Allied progression. Aiding moves you forward; attacking can move you to Hostile.</div>
+          </div>
+        </div>
+
+        <h4>Game-Wide Concepts</h4>
+        <div class="glossary">
+          <div class="term">
+            <div class="word">Ruin</div>
+            <div class="defn">Pre-placed game-start tokens (4 total) on the map. Each contains an item. Vagabond can use Explore action (free) to extract the item. Once explored, the ruin is removed. Other factions can't loot ruins.</div>
+          </div>
+          <div class="term">
+            <div class="word">Hammer color</div>
+            <div class="defn">Hammers come in 4 colors (orange/blue/green/yellow) corresponding to crafting card suits (fox/rabbit/mouse/bird). Crafting requires a hammer of the matching color.</div>
+          </div>
+          <div class="term">
+            <div class="word">Forest</div>
+            <div class="defn">Spaces between clearings, no faction can place pieces there normally. Vagabond CAN move to forests. Useful for safety and licking wounds.</div>
+          </div>
+          <div class="term">
+            <div class="word">Coalition</div>
+            <div class="defn">Optional partnership where two players share a victory. If either reaches 30 VP, both win. Often the Vagabond's late-game pivot if solo path fails.</div>
+          </div>
+          <div class="term">
+            <div class="word">Birdsong / Daylight / Evening</div>
+            <div class="defn">Three phases of every player's turn. Birdsong = refresh, Slip. Daylight = main actions. Evening = lick wounds, draw cards.</div>
+          </div>
+        </div>
+
+        <h4>Other Faction Terms (Referenced)</h4>
+        <div class="glossary">
+          <div class="term">
+            <div class="word">Sympathy</div>
+            <div class="defn">Alliance token in a clearing. Triggers Outrage when removed. Useful safe-haven for Vagabond — opponents avoid attacking sympathy clearings.</div>
+          </div>
+          <div class="term">
+            <div class="word">Outrage</div>
+            <div class="defn">Alliance ability — when their sympathy is removed, they get a card. Why opponents avoid sympathy clearings.</div>
+          </div>
+          <div class="term">
+            <div class="word">Dominance card</div>
+            <div class="defn">Special victory cards (3 corners / one suit / etc). Cats often coalition with Vagabond before activating one to neutralize Vagabond's threat.</div>
+          </div>
+          <div class="term">
+            <div class="word">Decree</div>
+            <div class="defn">Eyrie's mandatory action stack. Predictable — lets you anticipate Eyrie movements and avoid being in their forced-action clearings.</div>
+          </div>
+          <div class="term">
+            <div class="word">Outcast suit</div>
+            <div class="defn">Lizards' designated bonus suit. Watch for it; Lizards may be aggressively expanding into outcast clearings, making them dense Infamy targets.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+(function(){
+  const tiles = () => document.querySelectorAll('.tile');
+  const railLinks = document.querySelectorAll('.rail a');
+  const search = document.getElementById('search');
+  const denseBtn = document.getElementById('dense');
+  const resetBtn = document.getElementById('reset');
+  const modeBtns = document.querySelectorAll('.mode-btn');
+
+  function setMode(mode) {
+    document.body.classList.remove('mode-beginner','mode-all','mode-advanced');
+    document.body.classList.add('mode-' + mode);
+    modeBtns.forEach(b => b.classList.toggle('active', b.dataset.mode === mode));
+    try { localStorage.setItem('vagabond-mode', mode); } catch(e){}
+  }
+  modeBtns.forEach(b => b.addEventListener('click', () => setMode(b.dataset.mode)));
+  try { const s = localStorage.getItem('vagabond-mode'); if (s) setMode(s); } catch(e){}
+
+  denseBtn.addEventListener('click', () => {
+    document.body.classList.toggle('dense');
+    denseBtn.classList.toggle('active');
+  });
+
+  resetBtn.addEventListener('click', () => {
+    search.value = '';
+    applyFilter('');
+    document.body.classList.remove('dense');
+    denseBtn.classList.remove('active');
+    setMode('beginner');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  function applyFilter(q) {
+    q = q.trim().toLowerCase();
+    tiles().forEach(t => {
+      if (!q) { t.classList.remove('dimmed'); return; }
+      const hay = (t.getAttribute('data-keys') || '') + ' ' + t.textContent.toLowerCase();
+      t.classList.toggle('dimmed', !hay.includes(q));
+    });
+  }
+  search.addEventListener('input', e => applyFilter(e.target.value));
+
+  document.addEventListener('keydown', e => {
+    const tag = (e.target.tagName || '').toLowerCase();
+    const typing = tag === 'input' || tag === 'textarea';
+    if (e.key === '/' && !typing) { e.preventDefault(); search.focus(); return; }
+    if (e.key === 'Escape') { search.value=''; applyFilter(''); search.blur(); return; }
+    if (typing) return;
+    if (e.key.toLowerCase() === 'd') { denseBtn.click(); return; }
+    if (e.key.toLowerCase() === 'r') { resetBtn.click(); return; }
+    if (e.key.toLowerCase() === 'b') { setMode('beginner'); return; }
+    if (e.key.toLowerCase() === 'a') { setMode('all'); return; }
+    if (e.key.toLowerCase() === 'v') { setMode('advanced'); return; }
+    if (/^[1-9]$/.test(e.key)) {
+      const el = document.getElementById('s' + e.key);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+
+  const idToLink = {};
+  railLinks.forEach(a => {
+    const id = a.getAttribute('href').slice(1);
+    idToLink[id] = a;
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        railLinks.forEach(a => a.classList.remove('active'));
+        const link = idToLink[entry.target.id];
+        if (link) link.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-80px 0px -60% 0px', threshold: 0 });
+  tiles().forEach(t => observer.observe(t));
+})();
+</script>
+</body>
+</html>
