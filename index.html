@@ -107,6 +107,17 @@
   .cats     { --c: #ff8c3a; --c2: #d35400; }
   .eyrie    { --c: #f4c960; --c2: #c89420; }
   .alliance { --c: #d64545; --c2: #a02828; }
+  .plan     { --c: #a78bfa; --c2: #7c5cd8; }
+
+  .section-label {
+    margin: 50px 0 16px;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg-dim);
+    font-weight: 700;
+    text-align: center;
+  }
 
   footer {
     text-align: center;
@@ -122,26 +133,37 @@
 <body>
   <div class="wrap">
     <h1>Root — Play Aids</h1>
-    <p class="tagline">Faction strategy guides · Beginner / All / Advanced views</p>
+    <p class="tagline">Faction strategy guides &amp; learning plan · Beginner / All / Advanced views</p>
 
+    <div class="section-label">Faction Aids</div>
     <div class="grid">
       <a class="card cats" href="root-cats-aid.html">
         <div class="icon">🐱</div>
         <div class="name">Marquise de Cat</div>
         <p class="desc">Build engine + dominance pivot. Keep everyone down, then pull the win out of nowhere.</p>
-        <div class="meta">18 tiles · BGG-aligned</div>
+        <div class="meta">20 tiles · BGG-aligned</div>
       </a>
       <a class="card eyrie" href="root-eyrie-aid.html">
         <div class="icon">🦅</div>
         <div class="name">Eyrie Dynasties</div>
         <p class="desc">Decree maintenance, leader sequencing, planned Turmoil resets.</p>
-        <div class="meta">15 tiles · BGG-aligned</div>
+        <div class="meta">17 tiles · BGG-aligned</div>
       </a>
       <a class="card alliance" href="root-alliance-aid.html">
         <div class="icon">🔥</div>
         <div class="name">Woodland Alliance</div>
         <p class="desc">Stay invisible, weaponize Guerrilla War, burst 15→30 in one turn.</p>
-        <div class="meta">15 tiles · BGG-aligned</div>
+        <div class="meta">17 tiles · BGG-aligned</div>
+      </a>
+    </div>
+
+    <div class="section-label">Learning System</div>
+    <div class="grid">
+      <a class="card plan" href="root-digital-plan.html">
+        <div class="icon">🦉</div>
+        <div class="name">Root Digital — Learning Plan</div>
+        <p class="desc">Closed-loop training: phased progression, Reach gates, diagnostic checkpoints. Don't just play more — play structured.</p>
+        <div class="meta">20 tiles · review-integrated v2</div>
       </a>
     </div>
 

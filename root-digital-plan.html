@@ -1,0 +1,1928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Root Digital — Structured Learning Plan</title>
+<style>
+  :root {
+    --bg: #0e1126;
+    --bg2: #14182f;
+    --bg3: #1c2240;
+    --bg4: #2a3258;
+    --fg: #ece9f5;
+    --fg-dim: #a8a3c0;
+    --fg-dim2: #6e6a85;
+    --border: #2a3258;
+    --border2: #3e4880;
+    --accent: #a78bfa;
+    --accent-deep: #7c5cd8;
+    --accent-glow: rgba(167,139,250,0.30);
+    --green: #7fb069;
+    --red: #d64545;
+    --yellow: #e3b341;
+    --blue: #6ba3c4;
+    --purple: #b07cc4;
+    --teal: #5eead4;
+    --essential: #818cf8;
+    --essential-glow: rgba(129,140,248,0.30);
+    --core: #5eead4;
+    --core-glow: rgba(94,234,212,0.25);
+    --advanced: #94a3b8;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    color: var(--fg);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 14px;
+    line-height: 1.45;
+  }
+  body {
+    background:
+      radial-gradient(ellipse at 50% -10%, rgba(167,139,250,0.10) 0%, transparent 55%),
+      radial-gradient(ellipse at 10% 100%, rgba(94,234,212,0.06) 0%, transparent 50%),
+      var(--bg);
+    background-attachment: fixed;
+    min-height: 100vh;
+  }
+  body.dense { font-size: 12.5px; }
+  body.dense .tile .body { padding: 8px 10px; }
+  body.dense .card { padding: 6px 8px; margin: 4px 0; }
+  body.dense .tile h3 { padding: 8px 12px; }
+
+  .dim { color: var(--fg-dim); }
+
+  .app {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    grid-template-rows: auto auto 1fr;
+    grid-template-areas:
+      "header header"
+      "hero   hero"
+      "rail   main";
+    min-height: 100vh;
+  }
+
+  header {
+    grid-area: header;
+    position: sticky; top: 0; z-index: 100;
+    background: linear-gradient(180deg, rgba(20,24,47,0.98) 0%, rgba(14,17,38,0.92) 100%);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 2px 20px rgba(0,0,0,0.5), 0 1px 0 rgba(167,139,250,0.10) inset;
+    padding: 10px 14px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 14px;
+    align-items: center;
+    backdrop-filter: blur(10px);
+  }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; }
+  .brand .owl {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, #b89cf7 0%, #7c5cd8 100%);
+    color: #1a1004;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    box-shadow: 0 2px 8px rgba(124,92,216,0.5), inset 0 1px 0 rgba(255,255,255,0.25);
+  }
+  .brand .sub { color: var(--fg-dim); font-size: 11px; font-weight: 500; }
+
+  .modes {
+    display: flex;
+    gap: 0;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 3px;
+  }
+  .mode-btn {
+    padding: 6px 14px;
+    background: transparent;
+    border: none;
+    color: var(--fg-dim);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 4px;
+    letter-spacing: 0.02em;
+  }
+  .mode-btn:hover { color: var(--fg); }
+  .mode-btn.active {
+    background: linear-gradient(135deg, #b89cf7 0%, #7c5cd8 100%);
+    color: #fff;
+    box-shadow: 0 2px 6px rgba(124,92,216,0.45), inset 0 1px 0 rgba(255,255,255,0.25);
+  }
+  .mode-btn .count { font-size: 10px; opacity: 0.75; margin-left: 4px; }
+
+  .controls { display: flex; gap: 6px; align-items: center; }
+  .controls input {
+    height: 34px; width: 200px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    color: var(--fg);
+    padding: 0 10px;
+    font-size: 13px;
+  }
+  .controls input:focus { outline: 2px solid var(--accent); border-color: var(--accent); }
+  .btn {
+    height: 34px; padding: 0 10px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    color: var(--fg);
+    font-size: 12px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .btn:hover { background: var(--bg4); border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent-glow); }
+  .btn.active {
+    background: linear-gradient(135deg, #b89cf7 0%, #7c5cd8 100%);
+    color: #fff;
+    border-color: var(--accent);
+    box-shadow: 0 2px 6px rgba(124,92,216,0.45), inset 0 1px 0 rgba(255,255,255,0.25);
+  }
+
+  .hero {
+    grid-area: hero;
+    background:
+      radial-gradient(ellipse at 50% 0%, rgba(167,139,250,0.18) 0%, transparent 65%),
+      linear-gradient(180deg, rgba(42,50,88,0.5) 0%, rgba(20,24,47,0.3) 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 18px 20px 16px;
+    position: relative;
+  }
+  .hero::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; bottom: 0; height: 1px;
+    background: linear-gradient(90deg, transparent 0%, rgba(167,139,250,0.4) 50%, transparent 100%);
+  }
+  .hero-banner {
+    text-align: center;
+    font-size: clamp(20px, 3.2vw, 30px);
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    background: linear-gradient(180deg, #d6c4ff 0%, #a78bfa 60%, #7c5cd8 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 16px;
+    text-shadow: 0 0 40px rgba(167,139,250,0.3);
+    filter: drop-shadow(0 2px 8px rgba(124,92,216,0.3));
+  }
+  .hero-banner .small {
+    display: block;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    color: var(--fg-dim);
+    font-weight: 700;
+    margin-bottom: 6px;
+    -webkit-text-fill-color: var(--fg-dim);
+  }
+
+  .gate-big {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+  }
+  @media (max-width: 900px) { .gate-big { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 500px) { .gate-big { grid-template-columns: 1fr; } }
+  .gate-step {
+    background: linear-gradient(180deg, rgba(42,50,88,0.8) 0%, rgba(20,24,47,0.6) 100%);
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    padding: 12px 14px 12px 34px;
+    position: relative;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(220,210,250,0.06);
+    transition: transform 150ms, box-shadow 150ms;
+  }
+  .gate-step:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(124,92,216,0.25), inset 0 1px 0 rgba(220,210,250,0.1);
+    border-color: var(--accent);
+  }
+  .gate-step .n {
+    position: absolute;
+    top: 50%; left: 10px;
+    transform: translateY(-50%);
+    width: 22px; height: 22px;
+    background: linear-gradient(135deg, #b89cf7 0%, #7c5cd8 100%);
+    color: #fff;
+    font-family: ui-monospace, monospace;
+    font-size: 10px;
+    font-weight: 800;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 2px 6px rgba(124,92,216,0.55), inset 0 1px 0 rgba(255,255,255,0.3);
+  }
+  .gate-step .q { font-weight: 700; font-size: 14px; color: var(--fg); }
+  .gate-step .a { font-size: 12px; color: var(--fg-dim); margin-top: 3px; }
+
+  .first-time {
+    margin-top: 14px;
+    background: linear-gradient(90deg, rgba(94,234,212,0.15) 0%, rgba(94,234,212,0.04) 100%);
+    border: 1px solid rgba(94,234,212,0.4);
+    border-left: 4px solid var(--teal);
+    border-radius: 8px;
+    padding: 11px 14px;
+    font-size: 13px;
+    display: flex; align-items: center; gap: 12px;
+    box-shadow: 0 2px 10px rgba(94,234,212,0.10), inset 0 1px 0 rgba(94,234,212,0.08);
+  }
+  .first-time .pill {
+    background: linear-gradient(135deg, #5eead4 0%, #2db89c 100%);
+    color: #082018;
+    font-weight: 800;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    padding: 4px 10px;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+    white-space: nowrap;
+  }
+  body.mode-advanced .first-time { display: none; }
+  body.mode-all .first-time { display: none; }
+
+  .rail {
+    grid-area: rail;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    padding: 10px 6px;
+    overflow-y: auto;
+    position: sticky;
+    top: 64px;
+    height: calc(100vh - 64px);
+  }
+  .rail-group {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--fg-dim2);
+    text-transform: uppercase;
+    padding: 10px 10px 4px;
+    margin-top: 4px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .rail-group .dot { width: 8px; height: 8px; border-radius: 50%; }
+  .rail-group.g1 .dot { background: var(--essential); }
+  .rail-group.g2 .dot { background: var(--core); }
+  .rail-group.g3 .dot { background: var(--advanced); }
+
+  .rail a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 10px;
+    color: var(--fg-dim);
+    text-decoration: none;
+    font-size: 13px;
+    border-radius: 5px;
+    border-left: 3px solid transparent;
+    margin-bottom: 2px;
+  }
+  .rail a:hover { background: var(--bg3); color: var(--fg); }
+  .rail a.active {
+    background: linear-gradient(90deg, rgba(167,139,250,0.18) 0%, rgba(167,139,250,0.02) 100%);
+    color: var(--fg);
+    border-left-color: var(--accent);
+    box-shadow: inset 0 0 0 1px rgba(167,139,250,0.15);
+  }
+  .rail a .n {
+    font-family: ui-monospace, monospace;
+    font-size: 11px;
+    color: var(--fg-dim2);
+    min-width: 22px;
+  }
+  .rail a.active .n { color: var(--accent); }
+  .rail a.t1::before { content: "●"; color: var(--essential); margin-left: auto; font-size: 10px; }
+  .rail a.t2::before { content: "●"; color: var(--core); margin-left: auto; font-size: 10px; }
+  .rail a.t3::before { content: "●"; color: var(--advanced); margin-left: auto; font-size: 10px; }
+
+  body.mode-beginner .rail a.t3 { display: none; }
+  body.mode-beginner .rail-group.g3 { display: none; }
+  body.mode-advanced .rail a.t1 { display: none; }
+  body.mode-advanced .rail-group.g1 { display: none; }
+
+  main {
+    grid-area: main;
+    padding: 14px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-auto-rows: min-content;
+    grid-auto-flow: dense;
+    gap: 12px;
+    align-content: start;
+  }
+  body.dense main { gap: 8px; padding: 8px; }
+
+  .tile {
+    background: linear-gradient(180deg, rgba(28,34,64,0.88) 0%, rgba(20,24,47,0.88) 100%);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    scroll-margin-top: 80px;
+    position: relative;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4), inset 0 1px 0 rgba(220,210,250,0.04);
+    transition: transform 180ms, box-shadow 180ms;
+  }
+  .tile:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.5), 0 0 0 1px rgba(167,139,250,0.2), inset 0 1px 0 rgba(220,210,250,0.08);
+  }
+  .tile h3 {
+    margin: 0;
+    padding: 11px 14px;
+    background: linear-gradient(180deg, rgba(42,50,88,0.9) 0%, rgba(28,34,64,0.6) 100%);
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-left: 3px solid var(--accent);
+    letter-spacing: 0.01em;
+  }
+  .tile h3 .num {
+    font-family: ui-monospace, monospace;
+    font-size: 11px;
+    color: var(--fg-dim2);
+    background: var(--bg);
+    padding: 1px 6px;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+  }
+  .tile .body { padding: 11px 14px; flex: 1; }
+  .tile-badge {
+    position: absolute;
+    top: 8px; right: 10px;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    padding: 2px 7px;
+    border-radius: 3px;
+    z-index: 2;
+  }
+
+  /* TIER 1 — Essential (indigo) */
+  .tile.t1 {
+    border: 2px solid var(--essential);
+    box-shadow: 0 0 0 1px var(--essential-glow), 0 6px 20px rgba(129,140,248,0.20), inset 0 1px 0 rgba(129,140,248,0.15);
+  }
+  .tile.t1:hover {
+    box-shadow: 0 0 0 1px var(--essential-glow), 0 10px 28px rgba(129,140,248,0.32), inset 0 1px 0 rgba(129,140,248,0.2);
+  }
+  .tile.t1 h3 {
+    background: linear-gradient(90deg, rgba(129,140,248,0.22) 0%, rgba(42,50,88,0.7) 100%);
+    border-left-color: var(--essential);
+    border-left-width: 4px;
+    font-size: 15px;
+  }
+  .tile.t1 h3 .priority {
+    background: linear-gradient(135deg, #a4b0fb 0%, #5560e8 100%);
+    color: #050a24;
+    font-family: ui-monospace, monospace;
+    font-size: 10px;
+    font-weight: 800;
+    padding: 3px 7px;
+    border-radius: 4px;
+    letter-spacing: 0.05em;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.25);
+  }
+  .tile.t1 .tile-badge {
+    background: linear-gradient(135deg, #a4b0fb 0%, #5560e8 100%);
+    color: #050a24;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  }
+
+  /* TIER 2 — Core (teal) */
+  .tile.t2 h3 { border-left-color: var(--core); }
+  .tile.t2 .tile-badge {
+    background: rgba(94,234,212,0.18);
+    color: var(--core);
+    border: 1px solid rgba(94,234,212,0.45);
+  }
+
+  /* TIER 3 — Advanced (slate) */
+  .tile.t3 { opacity: 0.94; }
+  .tile.t3 h3 {
+    border-left-color: var(--advanced);
+    background: rgba(28,34,64,0.6);
+    font-size: 12px;
+    color: var(--fg-dim);
+  }
+  .tile.t3 .tile-badge {
+    background: var(--bg3);
+    color: var(--fg-dim);
+    border: 1px solid var(--border2);
+  }
+  .tile.t3 .body { font-size: 13px; }
+  .tile.t3 .body b { color: var(--fg); }
+
+  body.mode-beginner .tile.t3 { display: none; }
+  body.mode-advanced .tile.t1 { display: none; }
+
+  .tile.t1 { order: 1; }
+  .tile.t2 { order: 2; }
+  .tile.t3 { order: 3; }
+
+  .tile.span2 { grid-column: span 2; }
+  .tile.span3 { grid-column: span 3; }
+  @media (max-width: 1200px) { .tile.span3 { grid-column: span 2; } }
+  @media (max-width: 900px) { .tile.span2, .tile.span3 { grid-column: span 1; } }
+
+  .tile h4 {
+    margin: 9px 0 4px;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .tile ul, .tile ol { margin: 4px 0; padding-left: 20px; }
+  .tile li { margin: 2px 0; }
+  .tile p { margin: 5px 0; }
+
+  .card {
+    background: linear-gradient(180deg, rgba(42,50,88,0.7) 0%, rgba(28,34,64,0.7) 100%);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--border);
+    border-radius: 6px;
+    padding: 9px 12px;
+    margin: 6px 0;
+    box-shadow: inset 0 1px 0 rgba(220,210,250,0.05), 0 1px 2px rgba(0,0,0,0.25);
+  }
+  .card.do    { border-left-color: var(--green); }
+  .card.dont  { border-left-color: var(--red); }
+  .card.cond  { border-left-color: var(--yellow); }
+  .card.info  { border-left-color: var(--blue); }
+  .card .hdr { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; font-size: 12px; font-weight: 600; }
+  .card ul, .card ol { margin: 2px 0; padding-left: 18px; }
+  .card li { font-size: 12px; }
+
+  .badge {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    padding: 1px 5px;
+    border-radius: 2px;
+    text-transform: uppercase;
+  }
+  .badge.do   { background: rgba(127,176,105,0.18); color: var(--green);  border: 1px solid rgba(127,176,105,0.45); }
+  .badge.dont { background: rgba(214,69,69,0.15);   color: var(--red);    border: 1px solid rgba(214,69,69,0.5); }
+  .badge.cond { background: rgba(227,179,65,0.15);  color: var(--yellow); border: 1px solid rgba(227,179,65,0.45); }
+  .badge.info { background: rgba(107,163,196,0.18); color: var(--blue);   border: 1px solid rgba(107,163,196,0.5); }
+
+  .line {
+    font-family: ui-monospace, monospace;
+    background: var(--bg);
+    padding: 4px 8px;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+    display: inline-block;
+    margin: 3px 3px 3px 0;
+    font-size: 12px;
+  }
+
+  .mini-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 6px;
+    margin: 6px 0;
+  }
+
+  .rule-big {
+    font-size: 15px;
+    text-align: center;
+    padding: 12px;
+    background: linear-gradient(180deg, rgba(167,139,250,0.18) 0%, rgba(167,139,250,0.06) 100%);
+    border: 2px solid rgba(167,139,250,0.55);
+    border-radius: 8px;
+    margin: 8px 0 10px;
+    font-weight: 700;
+    color: #ddd0ff;
+    box-shadow: 0 0 20px rgba(167,139,250,0.18), inset 0 1px 0 rgba(220,210,250,0.12);
+    letter-spacing: 0.01em;
+  }
+
+  /* Plain-English callouts */
+  .scenario {
+    background: linear-gradient(180deg, rgba(107,163,196,0.16) 0%, rgba(107,163,196,0.04) 100%);
+    border: 1px solid rgba(107,163,196,0.4);
+    border-left: 4px solid var(--blue);
+    border-radius: 6px;
+    padding: 9px 12px;
+    margin: 8px 0;
+    font-size: 13px;
+  }
+  .scenario .label {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 4px;
+  }
+  .tldr {
+    background: linear-gradient(90deg, rgba(94,234,212,0.14) 0%, transparent 100%);
+    border-left: 3px solid var(--teal);
+    padding: 6px 10px;
+    margin: 6px 0;
+    font-size: 13px;
+    border-radius: 0 4px 4px 0;
+  }
+  .tldr b { color: var(--teal); }
+  .why {
+    background: linear-gradient(90deg, rgba(227,179,65,0.12) 0%, transparent 100%);
+    border-left: 3px solid var(--yellow);
+    padding: 6px 10px;
+    margin: 6px 0;
+    font-size: 13px;
+    border-radius: 0 4px 4px 0;
+  }
+  .why b { color: var(--yellow); }
+  .fix {
+    background: linear-gradient(90deg, rgba(214,69,69,0.13) 0%, transparent 100%);
+    border-left: 3px solid var(--red);
+    padding: 6px 10px;
+    margin: 6px 0;
+    font-size: 13px;
+    border-radius: 0 4px 4px 0;
+  }
+  .fix b { color: #ff8d8d; }
+
+  /* Phase boxes */
+  .phases {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin: 8px 0;
+  }
+  @media (max-width: 600px) { .phases { grid-template-columns: 1fr; } }
+  .phase {
+    background: linear-gradient(180deg, rgba(42,50,88,0.85) 0%, rgba(28,34,64,0.85) 100%);
+    border: 1px solid var(--border2);
+    border-top: 3px solid var(--accent);
+    border-radius: 6px;
+    padding: 10px 11px;
+  }
+  .phase .ph-name {
+    font-weight: 800;
+    color: var(--accent);
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .phase .ph-when {
+    font-size: 11px;
+    color: var(--fg-dim);
+    margin-bottom: 6px;
+  }
+
+  /* Reach table */
+  .reach-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    margin: 6px 0;
+  }
+  .reach-table th, .reach-table td {
+    padding: 6px 8px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  .reach-table th {
+    background: rgba(42,50,88,0.6);
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .reach-table tr:hover td { background: rgba(167,139,250,0.06); }
+  .reach-table .num-col { font-family: ui-monospace, monospace; font-weight: 700; text-align: right; }
+  .reach-high { color: var(--green); font-weight: 700; }
+  .reach-mid { color: var(--yellow); font-weight: 700; }
+  .reach-low { color: var(--red); font-weight: 700; }
+
+  /* Glossary */
+  .glossary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 8px;
+    margin: 6px 0;
+  }
+  .term {
+    background: linear-gradient(180deg, rgba(42,50,88,0.7) 0%, rgba(28,34,64,0.7) 100%);
+    border: 1px solid var(--border2);
+    border-radius: 6px;
+    padding: 9px 11px;
+  }
+  .term .word {
+    font-weight: 800;
+    color: var(--accent);
+    font-size: 13px;
+    letter-spacing: 0.01em;
+  }
+  .term .defn {
+    font-size: 12px;
+    color: var(--fg);
+    margin-top: 3px;
+    line-height: 1.45;
+  }
+
+  /* Diagnostic box */
+  .diag {
+    background: linear-gradient(180deg, rgba(94,234,212,0.13) 0%, rgba(94,234,212,0.04) 100%);
+    border: 1px solid rgba(94,234,212,0.4);
+    border-left: 4px solid var(--teal);
+    border-radius: 6px;
+    padding: 10px 12px;
+    margin: 8px 0;
+  }
+  .diag .lbl {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 5px;
+  }
+  .diag ul { padding-left: 18px; }
+
+  .fail-block {
+    background: linear-gradient(90deg, rgba(214,69,69,0.13) 0%, transparent 100%);
+    border-left: 3px solid var(--red);
+    padding: 6px 10px;
+    margin: 6px 0;
+    font-size: 13px;
+    border-radius: 0 4px 4px 0;
+  }
+  .fail-block b { color: #ff8d8d; }
+
+  .pass-block {
+    background: linear-gradient(90deg, rgba(127,176,105,0.13) 0%, transparent 100%);
+    border-left: 3px solid var(--green);
+    padding: 6px 10px;
+    margin: 6px 0;
+    font-size: 13px;
+    border-radius: 0 4px 4px 0;
+  }
+  .pass-block b { color: var(--green); }
+
+  /* AI ladder */
+  .ladder {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 8px;
+    margin: 6px 0;
+  }
+  .step {
+    background: linear-gradient(180deg, rgba(42,50,88,0.7) 0%, rgba(28,34,64,0.7) 100%);
+    border: 1px solid var(--border2);
+    border-left: 3px solid var(--accent);
+    border-radius: 6px;
+    padding: 9px 11px;
+  }
+  .step .lvl {
+    font-size: 10px;
+    font-weight: 800;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .step .at {
+    font-family: ui-monospace, monospace;
+    font-size: 11px;
+    color: var(--fg-dim);
+    margin-top: 2px;
+  }
+  .step .ds { font-size: 12px; color: var(--fg); margin-top: 4px; }
+
+  /* Per-faction drill cards */
+  .drill {
+    background: linear-gradient(180deg, rgba(42,50,88,0.7) 0%, rgba(28,34,64,0.7) 100%);
+    border: 1px solid var(--border2);
+    border-top: 3px solid var(--accent);
+    border-radius: 6px;
+    padding: 10px 11px;
+  }
+  .drill .fac {
+    font-weight: 800;
+    color: var(--accent);
+    font-size: 13px;
+  }
+  .drill .skill {
+    font-size: 11px;
+    color: var(--fg-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 2px 0 5px;
+  }
+
+  .hidden { display: none !important; }
+  .dimmed { opacity: 0.15; pointer-events: none; }
+
+  .kbd {
+    display: inline-block;
+    font-family: ui-monospace, monospace;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-bottom-width: 2px;
+    border-radius: 3px;
+    padding: 0 5px;
+    font-size: 11px;
+  }
+
+  /* Mobile */
+  @media (max-width: 900px) {
+    .app { grid-template-columns: 1fr; grid-template-areas: "header" "hero" "main"; }
+    .rail { display: none; }
+    header { grid-template-columns: 1fr; gap: 8px; }
+    .controls input { width: 100%; }
+    .controls { flex-wrap: wrap; }
+  }
+
+  @media print {
+    body { background: #fff; color: #000; font-size: 9pt; }
+    header, .rail, .controls, .modes, .first-time { display: none; }
+    .app { display: block; }
+    .hero { background: #eee; color: #000; padding: 8px; }
+    .hero-banner { color: #000; -webkit-text-fill-color: #000; }
+    .gate-step { background: #fff; color: #000; border: 1px solid #666; }
+    main { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; padding: 0; }
+    .tile { border: 1px solid #666; page-break-inside: avoid; background: #fff; opacity: 1 !important; display: flex !important; box-shadow: none !important; }
+    .tile h3 { background: #eee; color: #000; font-size: 11pt !important; }
+    .tile.span2, .tile.span3 { grid-column: span 2; }
+    .card { background: #f6f6f6; color: #000; border: 1px solid #999; }
+    .badge, .tile-badge { border: 1px solid #000; color: #000; background: #eee; }
+    .reach-table th { background: #eee; color: #000; }
+  }
+</style>
+</head>
+<body class="mode-beginner">
+
+<div class="app">
+
+  <header>
+    <div class="brand">
+      <div class="owl">🦉</div>
+      <div>
+        <div>Root Digital — Learning Plan</div>
+        <div class="sub">Closed-loop training · v2 (review-integrated)</div>
+      </div>
+    </div>
+
+    <div class="modes" role="tablist">
+      <button class="mode-btn active" data-mode="beginner">Beginner<span class="count">6 tiles</span></button>
+      <button class="mode-btn" data-mode="all">All<span class="count">20</span></button>
+      <button class="mode-btn" data-mode="advanced">Advanced<span class="count">14</span></button>
+    </div>
+
+    <div class="controls">
+      <input id="search" type="search" placeholder="🔍 Filter… /" aria-label="Filter">
+      <button class="btn" id="dense" title="Dense (D)">Dense</button>
+      <button class="btn" id="reset" title="Reset (R)">Reset</button>
+    </div>
+  </header>
+
+  <div class="hero">
+    <div class="hero-banner">
+      <span class="small">THE ONE RULE</span>
+      Don't just play more. Play structured games with diagnostic gates.
+    </div>
+
+    <div class="gate-big">
+      <div class="gate-step">
+        <span class="n">01</span>
+        <div class="q">Reach OK?</div>
+        <div class="a">3P ≥ 18, 4P ≥ 21. No exceptions. Always include 2+ high/mid Reach factions.</div>
+      </div>
+      <div class="gate-step">
+        <span class="n">02</span>
+        <div class="q">Session limit?</div>
+        <div class="a">Max 2–3 games per session, max 2 consecutive. Stop on hot streaks too.</div>
+      </div>
+      <div class="gate-step">
+        <span class="n">03</span>
+        <div class="q">Faction rotation?</div>
+        <div class="a">No faction more than 2× consecutively. Maintain exposure diversity.</div>
+      </div>
+      <div class="gate-step">
+        <span class="n">04</span>
+        <div class="q">Diagnostic passed?</div>
+        <div class="a">Each phase has a checkpoint. Don't advance until you pass.</div>
+      </div>
+      <div class="gate-step">
+        <span class="n">05</span>
+        <div class="q">Post-game logged?</div>
+        <div class="a">2-min journal: who won, why, what you missed, what you learned.</div>
+      </div>
+    </div>
+
+    <div class="first-time">
+      <span class="pill">START HERE</span>
+      <div>This is a <b>closed-loop training system</b> for Root Digital. It controls cognitive load via phased progression, preserves system fidelity via Reach constraints, and ensures measurable improvement via diagnostic checkpoints. The <b>6 indigo-bordered tiles below</b> cover the core operating rules and Phases 0–2 (your first ~12 games). After that, expansion phases, AI/map progression, and human transition unlock. Most "how to learn Root" guides are just "play more" — this one isn't.</div>
+    </div>
+  </div>
+
+  <aside class="rail" aria-label="Section navigation">
+    <div class="rail-group g1"><span class="dot"></span> Essential</div>
+    <a href="#s01" class="t1"><span class="n">01</span>Operating Rules</a>
+    <a href="#s02" class="t1"><span class="n">02</span>Phase 0 — Orientation</a>
+    <a href="#s03" class="t1"><span class="n">03</span>Phase 1 — Base System</a>
+    <a href="#s04" class="t1"><span class="n">04</span>Phase 2 — Dynamics</a>
+    <a href="#s05" class="t1"><span class="n">05</span>Anti-Pattern Control</a>
+    <a href="#s06" class="t1"><span class="n">06</span>Diagnostic Gates</a>
+
+    <div class="rail-group g2"><span class="dot"></span> Core</div>
+    <a href="#s07" class="t2"><span class="n">07</span>Reach Reference</a>
+    <a href="#s08" class="t2"><span class="n">08</span>Phase 3A — Underworld</a>
+    <a href="#s09" class="t2"><span class="n">09</span>Phase 3B — Riverfolk</a>
+    <a href="#s10" class="t2"><span class="n">10</span>Phase 3C — Marauder + Hirelings</a>
+    <a href="#s11" class="t2"><span class="n">11</span>Per-Faction Drills</a>
+    <a href="#s12" class="t2"><span class="n">12</span>Map Progression</a>
+    <a href="#s13" class="t2"><span class="n">13</span>AI Difficulty Curve</a>
+
+    <div class="rail-group g3"><span class="dot"></span> Advanced</div>
+    <a href="#s14" class="t3"><span class="n">14</span>Phase 4 — Human Transition</a>
+    <a href="#s15" class="t3"><span class="n">15</span>Combat / Crafting / Timing</a>
+    <a href="#s16" class="t3"><span class="n">16</span>Post-Game Journaling</a>
+    <a href="#s17" class="t3"><span class="n">17</span>Challenges Mode</a>
+    <a href="#s18" class="t3"><span class="n">18</span>Table Politics</a>
+    <a href="#s19" class="t3"><span class="n">19</span>Mastery Definition</a>
+    <a href="#s20" class="t3"><span class="n">20</span>Glossary</a>
+  </aside>
+
+  <main>
+
+    <!-- ===================== TIER 1 — ESSENTIAL ===================== -->
+
+    <section class="tile t1 span2" id="s01" data-keys="rules reach session rotation regression core operating">
+      <span class="tile-badge">ESSENTIAL</span>
+      <h3><span class="num">01</span><span class="priority">CORE RULES</span>Operating Rules (Global Constraints)</h3>
+      <div class="body">
+        <p>These four rules apply to every game in the plan. Violating them produces unreliable learning data — passive games, burnout, false-mastery readings.</p>
+
+        <h4>1. Reach Constraint <span style="color:var(--red);font-weight:700">[non-negotiable]</span></h4>
+        <div class="card do">
+          <div class="hdr"><span class="badge do">Targets</span></div>
+          <ul>
+            <li><b>3 players:</b> Reach ≥ 18 (Leder Games official 3P floor)</li>
+            <li><b>4 players:</b> Reach ≥ 21 (4P floor — <i>not</i> 17, that's the 2P number)</li>
+            <li><b>Practical rule:</b> always include ≥2 high/mid Reach factions (Cat 10, Eyrie 7, Duchy 8, Hundreds 9)</li>
+          </ul>
+        </div>
+        <div class="fix"><b>Correction from v1:</b> The original plan listed "minimum 17" for 4P. That's the 2-player floor, not the 4-player one. The 4P minimum is <b>21</b>, and even that's tight — aim higher when possible.</div>
+
+        <h4>2. Session Limits (Burnout Control)</h4>
+        <ul>
+          <li>Max <b>2–3 games per session</b></li>
+          <li>Max <b>2 consecutive games</b> without a break</li>
+          <li><b>Stop even if performance is high</b> — fatigue inflates wins, so a hot streak is the worst time to keep playing</li>
+        </ul>
+
+        <h4>3. Rotation Rule</h4>
+        <ul>
+          <li>No faction more than <b>2 times consecutively</b></li>
+          <li>Maintain exposure diversity — playing 5 Cat games in a row teaches Cat, not Root</li>
+        </ul>
+
+        <h4>4. Regression Trigger</h4>
+        <div class="card cond">
+          <div class="hdr"><span class="badge cond">If you experience</span></div>
+          <ul>
+            <li><b>Unclear losses</b> — "I don't know why I lost" — the diagnostic gate failing silently</li>
+            <li><b>Overwhelm</b> — too many simultaneous systems to track</li>
+          </ul>
+          <p style="margin-top:6px"><b>Action:</b> remove the latest complexity layer (drop the newest expansion or revert to a smaller player count) and revert <b>1 phase</b>.</p>
+        </div>
+        <div class="fix"><b>Correction from v1:</b> The original used a Devanagari-script word ("अस्पष्ट") here — almost certainly a translation artifact. The correct word is <b>unclear</b>.</div>
+      </div>
+    </section>
+
+    <section class="tile t1 span2" id="s02" data-keys="phase 0 orientation tutorial easy ai first games">
+      <span class="tile-badge">ESSENTIAL</span>
+      <h3><span class="num">02</span><span class="priority">PHASE 0</span>Orientation — Touch Every Faction</h3>
+      <div class="body">
+        <p><b>Goal:</b> See each base-game faction execute its strategy at least once. Build a mental model of "what each faction does to win" before you have to play any of them seriously.</p>
+
+        <div class="tldr"><b>Plan v1 said 1–2 games. Reviews flag this as too short.</b> v2 = <b>3–4 games</b>. With only 1–2 you may have only watched 2 of the 4 factions actually play — not enough to understand their scoring models.</div>
+
+        <h4>Setup</h4>
+        <ul>
+          <li>Complete the base game tutorial (built into Root Digital)</li>
+          <li><b>3–4 AI games</b>, 4 players (so all 4 base factions are present)</li>
+          <li><b>AI difficulty: Easy</b> — you're observing, not competing</li>
+          <li>Map: Autumn (default). Other maps come in Phase 3.</li>
+        </ul>
+
+        <h4>Learning targets</h4>
+        <ul>
+          <li><b>Turn structure:</b> Birdsong / Daylight / Evening — what fits in each phase</li>
+          <li><b>Movement &amp; Rule:</b> who controls each clearing and why it matters</li>
+          <li><b>High-level scoring model</b> of each faction: what generates VP for them</li>
+          <li><b>Reach awareness</b>: feel the difference between an "empty" board and a "tense" one</li>
+        </ul>
+
+        <div class="diag">
+          <div class="lbl">Diagnostic Checkpoint 0 — must answer</div>
+          <ul>
+            <li>What generates points for each base faction (Cat, Eyrie, Alliance, Vagabond)?</li>
+            <li>What causes each faction's engine to fail?</li>
+            <li>Who is currently winning at any given turn (approximate)?</li>
+          </ul>
+          <div class="fail-block"><b>Fail:</b> repeat 1 game and re-attempt the checkpoint.</div>
+          <div class="pass-block"><b>Pass:</b> proceed to Phase 1.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="tile t1 span2" id="s03" data-keys="phase 1 base system isolation 3 players 4 players cat eyrie alliance vagabond">
+      <span class="tile-badge">ESSENTIAL</span>
+      <h3><span class="num">03</span><span class="priority">PHASE 1</span>Base System Isolation (~6–8 games)</h3>
+      <div class="body">
+        <p>Now you play, not just observe. Build core mechanical fluency with all 4 base factions. AI difficulty: <b>Medium</b> by end of phase.</p>
+
+        <div class="phases">
+          <div class="phase">
+            <div class="ph-name">Step 1 — 3 Players</div>
+            <div class="ph-when">3–4 games</div>
+            <ul>
+              <li>Cat (Reach 10)</li>
+              <li>Eyrie (Reach 7)</li>
+              <li>Alliance (Reach 3)</li>
+            </ul>
+            <p style="margin-top:6px"><b>Total Reach: 20</b> · 3P ≥ 18 ✓</p>
+          </div>
+          <div class="phase">
+            <div class="ph-name">Step 2 — 4 Players</div>
+            <div class="ph-when">3–4 games</div>
+            <ul>
+              <li>+ Vagabond (Reach 5)</li>
+            </ul>
+            <p style="margin-top:6px"><b>Total Reach: 25</b> · 4P ≥ 21 ✓</p>
+          </div>
+          <div class="phase">
+            <div class="ph-name">Per-game focus</div>
+            <div class="ph-when">Every game</div>
+            <ul>
+              <li>Pick ONE faction-specific drill goal (see §11)</li>
+              <li>Note ONE prediction per turn</li>
+              <li>2-min post-game log (§16)</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="fix"><b>Reframe from review:</b> The Alliance has a reputation as one of the <i>hardest</i> factions to learn — its delayed/burst scoring, supporter-bank deception, and Lizard-counter outcast manipulation are advanced topics, not "base game easy." If you have unclear losses as Alliance in this phase, that's expected — see <a href="#s05">Anti-Pattern Control</a>.</div>
+
+        <h4>Mechanical learning targets (per faction)</h4>
+        <ul>
+          <li><b>Cat:</b> action economy (3 actions/turn bottleneck), connectivity for wood</li>
+          <li><b>Eyrie:</b> deterministic planning via Decree, Turmoil cost-benefit</li>
+          <li><b>Alliance:</b> delayed scoring via supporter banking, big-turn execution</li>
+          <li><b>Vagabond:</b> opportunism, relationship management, item gating</li>
+        </ul>
+
+        <h4>System awareness targets</h4>
+        <ul>
+          <li>What creates board pressure</li>
+          <li>What causes collapse (one faction crashes) or runaway (one faction surges)</li>
+        </ul>
+
+        <h4>System Debug Task (1–2 times only)</h4>
+        <div class="card info">
+          <span class="badge info">Local Play</span>
+          Use Root Digital's <b>Local Play</b> mode — solo "hot-seat" play where you control all 4 factions yourself. Simulate a turn or two of:
+          <ul>
+            <li>Movement → Rule shifts</li>
+            <li>Battle resolution mechanics</li>
+            <li>Decree fulfillment edge cases</li>
+          </ul>
+          <p style="margin-top:6px"><b>Timebox: ≤ 10 minutes</b>. This is debugging, not playing.</p>
+        </div>
+
+        <div class="diag">
+          <div class="lbl">Diagnostic Checkpoint 1 — must demonstrate</div>
+          <ul>
+            <li><b>Awareness:</b> identify the leader by turn 5–6 · predict ≥1 opponent move per turn</li>
+            <li><b>Understanding:</b> explain why each faction scores · detect imminent VP spikes</li>
+            <li><b>Reach awareness:</b> recognize when a board feels "empty" (low interaction) vs "tense" (healthy state)</li>
+            <li><b>Per-faction proficiency (added per review):</b> at least one win — or one game with a clear understanding of why you lost — as <b>each base faction</b></li>
+          </ul>
+          <div class="fail-block"><b>Fail:</b> play 2 more base games before advancing.</div>
+          <div class="pass-block"><b>Pass:</b> proceed to Phase 2.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="tile t1 span2" id="s04" data-keys="phase 2 system dynamics deck transition exiles partisans aggressive passive crafting">
+      <span class="tile-badge">ESSENTIAL</span>
+      <h3><span class="num">04</span><span class="priority">PHASE 2</span>System Dynamics (~4–6 games)</h3>
+      <div class="body">
+        <p><b>Goal:</b> shift from mechanical fluency to strategic play. Threat assessment, intervention timing, deck literacy. AI difficulty: <b>Hard</b>.</p>
+
+        <h4>Setup</h4>
+        <ul>
+          <li>Always 4 players</li>
+          <li>Maintain Reach ≥ <b>21</b> (corrected per review)</li>
+          <li>Use base factions (optionally Vagabond)</li>
+        </ul>
+
+        <h4>Deck Transition</h4>
+        <table class="reach-table">
+          <thead>
+            <tr><th>Games</th><th>Deck</th><th>What it teaches</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>First 2–3</td><td>Base Deck</td><td>Variance spikes — Favor cards, Dominance cards, Ambushes hit hard</td></tr>
+            <tr><td>Next 2–3</td><td>Exiles &amp; Partisans</td><td>Incremental advantage — more upgrades, persistent effects</td></tr>
+          </tbody>
+        </table>
+
+        <h4>Structured Experiments (with faction binding — added per review)</h4>
+        <p>The original plan said "1 passive / 1 aggressive / 1 crafting" without specifying factions. Different factions express these styles very differently — bind them:</p>
+        <div class="ladder">
+          <div class="step">
+            <div class="lvl">Passive Game</div>
+            <div class="at">Faction: Alliance</div>
+            <div class="ds">Hoard supporters, place sympathy as bait, never push score visibly. Win by big-turn burst.</div>
+          </div>
+          <div class="step">
+            <div class="lvl">Aggressive Game</div>
+            <div class="at">Faction: Cats (with Command Warren)</div>
+            <div class="ds">Use Battle commands to police table. Smother Alliance, force Eyrie turmoil. Then dominance.</div>
+          </div>
+          <div class="step">
+            <div class="lvl">Crafting Game</div>
+            <div class="at">Faction: Vagabond Tinker</div>
+            <div class="ds">Maximize item collection and crafting VP. Test: can you avoid the "Vagabond Trap"?</div>
+          </div>
+        </div>
+
+        <h4>Strategic learning targets</h4>
+        <ul>
+          <li><b>Threat assessment:</b> who to stop and when</li>
+          <li><b>Timing aggression:</b> when to intervene vs hold</li>
+          <li><b>Table policing dynamics:</b> being the table cop without burning out</li>
+        </ul>
+
+        <h4>Deck literacy</h4>
+        <ul>
+          <li>Base deck = high-variance, big-swing cards (Dominance, Favor, Ambush)</li>
+          <li>E&amp;P = consistent edge, more crafted upgrades, fewer game-ending moments</li>
+        </ul>
+
+        <div class="diag">
+          <div class="lbl">Diagnostic Checkpoint 2 — must demonstrate</div>
+          <ul>
+            <li><b>Strategic competence:</b> intervene <i>before</i> scoring bursts, justify attacks based on board state (not emotion)</li>
+            <li><b>Prediction:</b> anticipate multi-turn outcomes (2 turns ahead)</li>
+            <li><b>Analytical clarity:</b> distinguish a deck-driven win (lucky Favor) from an engine-driven win</li>
+          </ul>
+          <div class="fail-block"><b>Fail:</b> repeat Phase 2.</div>
+          <div class="pass-block"><b>Pass:</b> proceed to Phase 3.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="tile t1 span2" id="s05" data-keys="anti pattern vagabond trap emotional retaliation low interaction failure state">
+      <span class="tile-badge">ESSENTIAL</span>
+      <h3><span class="num">05</span><span class="priority">SAFEGUARDS</span>Anti-Pattern Control System</h3>
+      <div class="body">
+        <p>Three ways your data lies to you. If any of these appear, your training signal is contaminated — fix the root cause before continuing.</p>
+
+        <h4>1. The Vagabond Trap</h4>
+        <div class="card cond">
+          <div class="hdr"><span class="badge cond">Symptom</span></div>
+          You won 3 of your last 5 games as Vagabond and feel mastery is approaching.<br><br>
+          <b>Reality:</b> Vagabond can win without teaching you Root. Their relationship-management and item-collection scoring is a <i>different</i> game from the four-corners power dance you need to master.<br><br>
+          <b>Validation gate:</b> mastery requires winning as <b>Cat or Eyrie</b>, not just Vagabond. If you can only win as Vagabond, you're not yet competent.
+        </div>
+
+        <h4>2. Emotional Retaliation</h4>
+        <div class="card cond">
+          After every attack you make, ask three questions:
+          <ol>
+            <li>Was the target leading?</li>
+            <li>Was the target about to score a burst?</li>
+            <li>Or am I just punishing them for what they did to me last turn?</li>
+          </ol>
+          If the answer is #3, that's tilt. Reset your decision criterion.
+        </div>
+
+        <h4>3. Low-Interaction Failure State</h4>
+        <div class="card cond">
+          <div class="hdr"><span class="badge cond">Symptom</span></div>
+          The game feels passive. Few combats, no contested clearings, factions racing in parallel without colliding.<br><br>
+          <b>Diagnosis:</b> almost always one of:
+          <ul>
+            <li><b>Reach too low</b> — count it: under 21 in 4P? Under 18 in 3P? That's the cause.</li>
+            <li><b>Faction mix is too "soft"</b> — too many low-Reach factions (Alliance + Lizards + Corvids = 8). Need 2+ high-Reach.</li>
+          </ul>
+          <p style="margin-top:6px">A passive game produces no useful learning signal. End it, fix the setup, restart.</p>
+        </div>
+
+        <h4>Bonus pattern (from reviews): Single-AI plateau</h4>
+        <div class="card cond">
+          If you're winning consistently against a fixed AI difficulty, you're not improving — you're optimizing for that AI's flaws. Promote difficulty (see §13) or transition to humans (see §14).
+        </div>
+      </div>
+    </section>
+
+    <section class="tile t1 span2" id="s06" data-keys="diagnostic gates checkpoint pass fail regression">
+      <span class="tile-badge">ESSENTIAL</span>
+      <h3><span class="num">06</span><span class="priority">GATES</span>Diagnostic Checkpoints (Overview)</h3>
+      <div class="body">
+        <p>Every phase ends with a checkpoint. You must <b>pass</b> before advancing. Passing means honestly answering the gate questions — not "I think I get it" but "I can articulate this without hesitation."</p>
+
+        <div class="phases">
+          <div class="phase">
+            <div class="ph-name">Checkpoint 0</div>
+            <div class="ph-when">After Phase 0</div>
+            <ul>
+              <li>Faction scoring models</li>
+              <li>Engine failure modes</li>
+              <li>Identify the leader</li>
+            </ul>
+          </div>
+          <div class="phase">
+            <div class="ph-name">Checkpoint 1</div>
+            <div class="ph-when">After Phase 1</div>
+            <ul>
+              <li>Predict opponent moves</li>
+              <li>VP spike detection</li>
+              <li>Reach feel ("empty/tense")</li>
+              <li>Per-faction proficiency</li>
+            </ul>
+          </div>
+          <div class="phase">
+            <div class="ph-name">Checkpoint 2</div>
+            <div class="ph-when">After Phase 2</div>
+            <ul>
+              <li>Pre-emptive intervention</li>
+              <li>2-turn prediction</li>
+              <li>Deck-driven vs engine-driven wins</li>
+            </ul>
+          </div>
+          <div class="phase">
+            <div class="ph-name">Checkpoint 3</div>
+            <div class="ph-when">After each Phase 3 expansion</div>
+            <ul>
+              <li>New faction win conditions</li>
+              <li>Identify weaknesses fast</li>
+              <li>Adapt strategy to mix</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="fail-block"><b>If you fail a checkpoint:</b> trigger the Regression rule (§01) — revert one phase, drop the latest complexity layer, re-attempt.</div>
+        <div class="pass-block"><b>If you pass:</b> proceed. Don't overthink it. The gates exist to prevent skipping, not to gatekeep forever.</div>
+
+        <h4>Honest self-assessment hack</h4>
+        <p>Self-grading is unreliable. After each phase, write your answers to the checkpoint questions in your post-game log (§16). A week later, re-read what you wrote. If it sounds confused or contradictory, you didn't actually pass.</p>
+      </div>
+    </section>
+
+    <!-- ===================== TIER 2 — CORE ===================== -->
+
+    <section class="tile t2 span2" id="s07" data-keys="reach reference table values factions math evaluator">
+      <span class="tile-badge">CORE</span>
+      <h3><span class="num">07</span>Reach Reference Table</h3>
+      <div class="body">
+        <p>The canonical Reach values from Leder Games. Use this for every setup decision.</p>
+
+        <table class="reach-table">
+          <thead>
+            <tr>
+              <th>Faction</th>
+              <th>Expansion</th>
+              <th class="num-col">Reach</th>
+              <th>Tier</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Marquise de Cat</td><td>Base</td><td class="num-col reach-high">10</td><td><span class="reach-high">High</span></td></tr>
+            <tr><td>Lord of the Hundreds</td><td>Marauder</td><td class="num-col reach-high">9</td><td><span class="reach-high">High</span></td></tr>
+            <tr><td>Underground Duchy</td><td>Underworld</td><td class="num-col reach-high">8</td><td><span class="reach-high">High</span></td></tr>
+            <tr><td>Eyrie Dynasties</td><td>Base</td><td class="num-col reach-mid">7</td><td><span class="reach-mid">Mid</span></td></tr>
+            <tr><td>Keepers in Iron</td><td>Marauder</td><td class="num-col reach-mid">6</td><td><span class="reach-mid">Mid</span></td></tr>
+            <tr><td>Vagabond</td><td>Base</td><td class="num-col reach-mid">5</td><td><span class="reach-mid">Mid</span></td></tr>
+            <tr><td>Riverfolk Company (Otters)</td><td>Riverfolk</td><td class="num-col reach-mid">5</td><td><span class="reach-mid">Mid</span></td></tr>
+            <tr><td>Corvid Conspiracy</td><td>Underworld</td><td class="num-col reach-low">3</td><td><span class="reach-low">Low</span></td></tr>
+            <tr><td>Woodland Alliance</td><td>Base</td><td class="num-col reach-low">3</td><td><span class="reach-low">Low</span></td></tr>
+            <tr><td>Lizard Cult</td><td>Riverfolk</td><td class="num-col reach-low">2</td><td><span class="reach-low">Low</span></td></tr>
+          </tbody>
+        </table>
+
+        <h4>Player-count Reach minimums</h4>
+        <table class="reach-table">
+          <thead>
+            <tr><th>Players</th><th class="num-col">Min Reach</th><th class="num-col">Target Reach</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>2 players</td><td class="num-col">17</td><td class="num-col">19+</td></tr>
+            <tr><td>3 players</td><td class="num-col">18</td><td class="num-col">20+</td></tr>
+            <tr><td>4 players</td><td class="num-col">21</td><td class="num-col">23+</td></tr>
+            <tr><td>5 players</td><td class="num-col">25</td><td class="num-col">27+</td></tr>
+            <tr><td>6 players</td><td class="num-col">28</td><td class="num-col">30+</td></tr>
+          </tbody>
+        </table>
+
+        <div class="why"><b>Why Reach matters:</b> low Reach = factions don't naturally collide. Games feel like 4 solitaires. You learn nothing because there's no contested play. The Reach floor exists specifically to force interaction.</div>
+
+        <h4>Verified setup combinations (4P)</h4>
+        <ul>
+          <li><b>Phase 1 Step 1 (3P):</b> Cat + Eyrie + Alliance = 10+7+3 = <b>20</b> ✓</li>
+          <li><b>Phase 1 Step 2 (4P):</b> + Vagabond = 10+7+3+5 = <b>25</b> ✓</li>
+          <li><b>Phase 3A example:</b> Cat + Eyrie + Duchy + Corvids = 10+7+8+3 = <b>28</b> ✓</li>
+          <li><b>Phase 3A alt:</b> Eyrie + Duchy + Alliance + Vagabond = 7+8+3+5 = <b>23</b> ✓</li>
+          <li><b>Phase 3B example:</b> Cat + Eyrie + Riverfolk + Lizards = 10+7+5+2 = <b>24</b> ✓</li>
+          <li><b>Phase 3B INVALID:</b> Riverfolk + Lizards + Vagabond + Alliance = 5+2+5+3 = <b>15</b> ✗ (under 21)</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="tile t2 span2" id="s08" data-keys="phase 3a underworld duchy moles corvids hidden information sway">
+      <span class="tile-badge">CORE</span>
+      <h3><span class="num">08</span>Phase 3A — Underworld (~6 games, split)</h3>
+      <div class="body">
+        <p>The Underworld expansion adds two factions of <b>very different</b> learning load. Reviews recommend splitting them — adding both at once doubles cognitive complexity.</p>
+
+        <div class="fix"><b>Reframe from review:</b> The original plan added Underground Duchy (Moles) and Corvid Conspiracy together. Reviews recommend <b>Moles first (2–3 sessions), then Corvids</b>. Moles introduce mechanical density (sway, lords, prince/duchess); Corvids introduce conceptual novelty (face-down plots). Stagger them.</p></div>
+
+        <h4>Step 1 — Add Moles (2–3 sessions)</h4>
+        <div class="card do">
+          <div class="hdr"><span class="badge do">Stable setups</span></div>
+          <ul>
+            <li>Cat + Eyrie + Duchy + Alliance = <b>28</b> Reach</li>
+            <li>Cat + Eyrie + Duchy + Vagabond = <b>30</b> Reach</li>
+            <li>Eyrie + Duchy + Alliance + Vagabond = <b>23</b> Reach</li>
+          </ul>
+        </div>
+        <h4>Mole-specific learning targets</h4>
+        <ul>
+          <li>Scaling engines via the Crown Track</li>
+          <li>Sway mechanics — when to spend cards on ministers</li>
+          <li>Prince/Duchess switching — leader pivots mid-game</li>
+        </ul>
+
+        <h4>Step 2 — Add Corvids (2–3 sessions)</h4>
+        <div class="card do">
+          <div class="hdr"><span class="badge do">Stable setup</span></div>
+          <ul>
+            <li>Cat + Eyrie + Duchy + Corvids = <b>28</b> Reach</li>
+            <li>Cat + Duchy + Vagabond + Corvids = <b>26</b> Reach</li>
+          </ul>
+        </div>
+        <h4>Corvid-specific learning targets</h4>
+        <ul>
+          <li>Hidden information management — face-down plots</li>
+          <li>Bluffing &amp; perception — does that plot do what you think?</li>
+          <li>Reading opponent commitments around plot tiles</li>
+        </ul>
+
+        <div class="diag">
+          <div class="lbl">Diagnostic Checkpoint 3 (Underworld)</div>
+          <ul>
+            <li>Interpret Mole and Corvid win conditions in &lt; 1 minute</li>
+            <li>Identify weaknesses within the first game of facing them</li>
+            <li>Adapt your strategy to the new faction mix</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="tile t2 span2" id="s09" data-keys="phase 3b riverfolk company otters lizards external economies cult">
+      <span class="tile-badge">CORE</span>
+      <h3><span class="num">09</span>Phase 3B — Riverfolk Expansion (~4 games)</h3>
+      <div class="body">
+        <div class="fix"><b>Disambiguation (added per review):</b> "<b>Riverfolk</b>" refers to both the <b>expansion</b> AND the <b>Otters faction</b> within it. To avoid confusion: in this aid, "Riverfolk Expansion" = the box, "Otters" = the faction.</div>
+
+        <p>The Riverfolk Expansion adds two factions: <b>Otters</b> (external-economy services) and <b>Lizard Cult</b> (rule-breaking outcast/sanctify).</p>
+
+        <h4>Critical constraint</h4>
+        <div class="card dont">
+          <span class="badge dont">Required</span>
+          Both Otters and Lizards are LOW-Reach (5 and 2). You <b>must</b> pair them with 2 high/mid Reach factions. Otherwise the game collapses into a passive failure state.
+        </div>
+
+        <h4>Setup combinations</h4>
+        <table class="reach-table">
+          <thead>
+            <tr><th>Combo</th><th class="num-col">Reach</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Cat + Eyrie + Otters + Lizards</td><td class="num-col">24</td><td><span class="reach-high">Valid</span></td></tr>
+            <tr><td>Cat + Duchy + Otters + Lizards</td><td class="num-col">25</td><td><span class="reach-high">Valid</span></td></tr>
+            <tr><td>Cat + Eyrie + Lizards + Vagabond</td><td class="num-col">24</td><td><span class="reach-high">Valid (no Otters)</span></td></tr>
+            <tr><td>Otters + Lizards + Vagabond + Alliance</td><td class="num-col">15</td><td><span class="reach-low">INVALID — under 21</span></td></tr>
+          </tbody>
+        </table>
+
+        <h4>Otters-specific learning targets</h4>
+        <ul>
+          <li>External economies — selling services to other players</li>
+          <li>Funds vs Reach tradeoffs</li>
+          <li>How NOT to over-buy (the Riverfolk-customer trap)</li>
+        </ul>
+
+        <h4>Lizard-specific learning targets</h4>
+        <ul>
+          <li>Rule-breaking systems — outcast suit / sanctify mechanics</li>
+          <li>Acolyte economy</li>
+          <li>How discard manipulation moves the outcast cycle</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="tile t2 span2" id="s10" data-keys="phase 3c marauder hundreds keepers hirelings persistent pressure objective">
+      <span class="tile-badge">CORE</span>
+      <h3><span class="num">10</span>Phase 3C — Marauder + Hirelings (~6 games)</h3>
+      <div class="body">
+        <div class="fix"><b>Promoted from "optional" per review:</b> The Marauder expansion isn't optional in any modern Root setup that includes online matchmaking. Hundreds and Keepers are common, and <b>Hirelings</b> are arguably the biggest learning-friendly addition since Riverfolk.</div>
+
+        <h4>Two factions added</h4>
+        <ul>
+          <li><b>Lord of the Hundreds (Hundreds)</b> — Reach 9. Persistent board pressure via mob warriors and warlord track.</li>
+          <li><b>Keepers in Iron</b> — Reach 6. Objective play via relics and waystation chains.</li>
+        </ul>
+
+        <h4>Hirelings — the missing tool</h4>
+        <div class="card do">
+          <div class="hdr"><span class="badge do">What hirelings do</span></div>
+          <p>Hirelings are mini-factions you can add to any game without committing a player slot. They run on simplified AI rules and add interaction to the board.</p>
+          <p><b>Practical use for this plan:</b> Hirelings let you boost Reach in low-faction setups without bloating the player count. Want to play 3P with two low-Reach factions? Add a hireling for ~5 Reach.</p>
+        </div>
+
+        <h4>Hireling-augmented setups</h4>
+        <ul>
+          <li>3P: Eyrie + Alliance + Lizards + Hireling-Cats = 7+3+2+~5 = <b>17</b> (3P ≥ 18 still tight — pick a higher-reach hireling)</li>
+          <li>4P: Otters + Lizards + Vagabond + Alliance + Hireling-Hundreds-Promoted = 5+2+5+3+~5 = <b>20</b> (close to 21 — add a 2nd hireling if needed)</li>
+        </ul>
+        <div class="why"><b>Hirelings are the workaround</b> for the "I want to play this fun low-Reach combo but it'd be a passive game" problem. Add a hireling, hit the floor, play.</div>
+
+        <h4>Marauder-specific learning targets</h4>
+        <ul>
+          <li>Persistent board pressure (Hundreds' mob mechanic)</li>
+          <li>Objective play (Keepers' relic chains)</li>
+          <li>Hireling integration without overwhelming the main board</li>
+        </ul>
+
+        <div class="diag">
+          <div class="lbl">Diagnostic Checkpoint 3 (Marauder)</div>
+          <ul>
+            <li>Quickly read a mob warlord's threat level (Hundreds)</li>
+            <li>Block a relic corridor or waystation chain (Keepers)</li>
+            <li>Predict how a hireling will affect your turn-order options</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="tile t2 span2" id="s11" data-keys="per faction drill targets cat eyrie alliance vagabond proficiency tracking">
+      <span class="tile-badge">CORE</span>
+      <h3><span class="num">11</span>Per-Faction Drill Targets</h3>
+      <div class="body">
+        <p>The original plan said "play X faction" but not "with what specific learning goal." Reviews flagged this — without a per-faction skill focus, you can play 2 Cat games and learn nothing specific because the goal was just "play Cat." Bind a goal to each faction.</p>
+
+        <h4>Base factions</h4>
+        <div class="mini-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
+          <div class="drill">
+            <div class="fac">Marquise de Cat</div>
+            <div class="skill">Drill: dominance setup + multi-build turns</div>
+            <ul>
+              <li>Identify dominance suit by turn 3</li>
+              <li>Place recruiters in dominance clearings</li>
+              <li>Practice 2-build turns powered by Overwork</li>
+              <li>Mastery: trigger a dominance attempt and survive turn 1 of opposition</li>
+            </ul>
+          </div>
+          <div class="drill">
+            <div class="fac">Eyrie Dynasties</div>
+            <div class="skill">Drill: Decree column risk management</div>
+            <ul>
+              <li>Add only 2 cards per turn, never 3+</li>
+              <li>Use Move column as the dump (safest)</li>
+              <li>Plan one turmoil deliberately, not by accident</li>
+              <li>Mastery: 5+ actions/turn for 3 turns straight without turmoil</li>
+            </ul>
+          </div>
+          <div class="drill">
+            <div class="fac">Woodland Alliance</div>
+            <div class="skill">Drill: card hoarding + big-turn execution</div>
+            <ul>
+              <li>Reach 6 cards in supporters before your 2nd base</li>
+              <li>Stay 2nd or 3rd in score until ready</li>
+              <li>Plan a turn that scores 10+ VP from supporters → spread → organize chain</li>
+              <li>Mastery: win a game from 15 → 30 in your last 1–2 turns</li>
+            </ul>
+          </div>
+          <div class="drill">
+            <div class="fac">Vagabond</div>
+            <div class="skill">Drill: relationship management (avoid the trap)</div>
+            <ul>
+              <li>Aid each opponent at least once</li>
+              <li>Manage Hostile relations deliberately, not by accident</li>
+              <li>Score from 3+ different sources (quests, items, hostile attacks)</li>
+              <li>Mastery: <b>winning is NOT the goal here</b> — the goal is understanding the broader game while playing as Vagabond</li>
+            </ul>
+          </div>
+        </div>
+
+        <h4>Expansion factions (bind drills similarly when you reach Phase 3)</h4>
+        <ul>
+          <li><b>Underground Duchy:</b> sway timing, prince/duchess pivot</li>
+          <li><b>Corvid Conspiracy:</b> hidden-info management, plot-bluff balance</li>
+          <li><b>Riverfolk Otters:</b> service pricing, fund cycling</li>
+          <li><b>Lizard Cult:</b> outcast manipulation, sanctify chains</li>
+          <li><b>Hundreds:</b> warlord track, mob deployment</li>
+          <li><b>Keepers in Iron:</b> relic recovery routes, waystation chains</li>
+        </ul>
+
+        <h4>Per-faction proficiency gating (added per review)</h4>
+        <div class="card do">
+          Before advancing past Phase 1, you should have:
+          <ul>
+            <li>At least <b>1 win</b> as Cat OR Eyrie (the "real" mastery factions)</li>
+            <li>At least <b>1 game per base faction</b> where you can articulate why you won/lost</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="tile t2" id="s12" data-keys="map progression autumn winter lake mountain">
+      <span class="tile-badge">CORE</span>
+      <h3><span class="num">12</span>Map Progression</h3>
+      <div class="body">
+        <div class="fix"><b>Added per review:</b> the original plan was implicit-Autumn throughout. All 4 Root maps play very differently — Lake especially changes movement rules (rivers + ferries).</div>
+
+        <h4>Map progression by phase</h4>
+        <ul>
+          <li><b>Phase 0–2:</b> Autumn (default, balanced, learn the game on this)</li>
+          <li><b>Phase 3A:</b> introduce Winter (suit randomization on clearings)</li>
+          <li><b>Phase 3B:</b> introduce Lake (rivers + ferries — major movement rule shift)</li>
+          <li><b>Phase 3C:</b> introduce Mountain (passes / chokepoints, slowest movement)</li>
+        </ul>
+
+        <h4>Map effects on Reach</h4>
+        <ul>
+          <li>Mountain reduces interaction by ~10% (passes block movement)</li>
+          <li>Winter reduces interaction by ~5% (suits don't pre-bind to clearings)</li>
+          <li>Bump Reach targets +1–2 on these maps</li>
+        </ul>
+
+        <h4>Map-specific notes</h4>
+        <ul>
+          <li><b>Winter:</b> craft / overwork from cards alone, hoard cards, delay workshops</li>
+          <li><b>Lake:</b> sawmills NOT adjacent to rivers, stacks near landings</li>
+          <li><b>Mountain:</b> seize a pass early, sawmills behind passes are near-invulnerable</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="tile t2" id="s13" data-keys="ai difficulty curve easy medium hard plateau">
+      <span class="tile-badge">CORE</span>
+      <h3><span class="num">13</span>AI Difficulty Curve</h3>
+      <div class="body">
+        <div class="fix"><b>Added per review:</b> the original plan said Phase 0 = Easy AI but never specified what difficulty for later phases. Without progression you plateau.</div>
+
+        <div class="ladder">
+          <div class="step">
+            <div class="lvl">Easy</div>
+            <div class="at">Phase 0</div>
+            <div class="ds">You're observing, not competing. AI plays sub-optimally so you can see textbook scoring patterns.</div>
+          </div>
+          <div class="step">
+            <div class="lvl">Medium</div>
+            <div class="at">Phase 1</div>
+            <div class="ds">AI starts contesting clearings and threatening sympathy. You'll lose sometimes — that's the point.</div>
+          </div>
+          <div class="step">
+            <div class="lvl">Hard</div>
+            <div class="at">Phase 2 → 3</div>
+            <div class="ds">AI plays close to optimal opening lines. You need actual strategic play to win.</div>
+          </div>
+          <div class="step">
+            <div class="lvl">Hard + variety</div>
+            <div class="at">Phase 3</div>
+            <div class="ds">Mix Hard AI with new expansions. The interaction is what teaches.</div>
+          </div>
+        </div>
+
+        <h4>Plateau warning</h4>
+        <div class="card cond">
+          <span class="badge cond">If you win 3 in a row at any difficulty</span>
+          Promote to the next tier OR transition to humans (§14). Continued play at the same level is optimization, not learning.
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== TIER 3 — ADVANCED ===================== -->
+
+    <section class="tile t3 span2" id="s14" data-keys="phase 4 human transition online matchmaking psychology coalition">
+      <span class="tile-badge">ADVANCED</span>
+      <h3><span class="num">14</span>Phase 4 — Human Transition</h3>
+      <div class="body">
+        <div class="fix"><b>Added per review:</b> the original plan was AI-only. AI vs human is a <b>fundamentally different game</b>. After Phase 3, transition to humans.</div>
+
+        <h4>Why AI alone caps you</h4>
+        <ul>
+          <li>AI has predictable patterns; human play has psychology</li>
+          <li>AI doesn't form coalitions, doesn't bluff, doesn't tilt</li>
+          <li>AI doesn't read the room — Phase 2 skills like "intervene before VP burst" require <i>humans</i> for full expression</li>
+        </ul>
+
+        <h4>Transition path</h4>
+        <div class="phases">
+          <div class="phase">
+            <div class="ph-name">Step 1</div>
+            <div class="ph-when">After Phase 3</div>
+            <ul>
+              <li>1–2 games online matchmaking</li>
+              <li>Same setup rules (Reach, rotation)</li>
+              <li>Just observe how humans differ</li>
+            </ul>
+          </div>
+          <div class="phase">
+            <div class="ph-name">Step 2</div>
+            <div class="ph-when">After Step 1</div>
+            <ul>
+              <li>Practice table-talk: deflect aggression, propose truces</li>
+              <li>Read coalition signals</li>
+              <li>Manage emotional retaliation in YOURSELF</li>
+            </ul>
+          </div>
+          <div class="phase">
+            <div class="ph-name">Step 3</div>
+            <div class="ph-when">Ongoing</div>
+            <ul>
+              <li>Mix online + AI</li>
+              <li>AI for drilling new factions, humans for testing</li>
+              <li>This is where 50+ games turns into mastery</li>
+            </ul>
+          </div>
+        </div>
+
+        <h4>What humans add</h4>
+        <ul>
+          <li><b>Coalition formation</b> — informal teams against perceived leaders</li>
+          <li><b>Tilt management</b> — emotional retaliation goes both ways</li>
+          <li><b>Bluffing</b> — pretending to be weaker / stronger than you are</li>
+          <li><b>Negotiation</b> — proposing truces, trades, or temporary alliances</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="tile t3 span2" id="s15" data-keys="combat dice crafting timing micro skills">
+      <span class="tile-badge">ADVANCED</span>
+      <h3><span class="num">15</span>Combat / Crafting / Timing — Micro-Skills</h3>
+      <div class="body">
+        <div class="fix"><b>Added per review:</b> these are real skills the original plan mentions implicitly but never isolates as drill-able subjects.</div>
+
+        <h4>Combat micro-skill</h4>
+        <ul>
+          <li><b>Dice math:</b> 2d3, attacker takes higher, defender takes lower (Guerrilla War flips for Alliance). Memorize the kill-probability table.</li>
+          <li><b>When to fight:</b> after the cost-benefit changes — battle that enables a build &gt; battle that just kills warriors</li>
+          <li><b>Stack thresholds:</b> 1, 2, 3, 5 warriors each have different vulnerability profiles</li>
+        </ul>
+
+        <h4>Crafting micro-skill</h4>
+        <ul>
+          <li><b>Timing windows:</b> craft when the suit clearing is uncontested. Fresh sympathy → craft same turn (Alliance trick)</li>
+          <li><b>Suit dependency:</b> match craftable cards to your reliable craft suits — don't hold a fox-costing item if you only ever Rule mouse clearings</li>
+          <li><b>VP vs upgrade:</b> 1 VP items are filler; persistent upgrades (Cobbler, Armorers) are S-tier</li>
+        </ul>
+
+        <h4>Timing micro-skill</h4>
+        <ul>
+          <li><b>Scoring spike anticipation:</b> count opponent supporters / wood / acolytes; predict their next big VP turn</li>
+          <li><b>Pre-emptive intervention:</b> knock down their setup the turn BEFORE the spike, not during</li>
+          <li><b>Coalition timing:</b> know when offering a truce or coalition trade will land</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="tile t3 span2" id="s16" data-keys="post game journaling log review notes diary">
+      <span class="tile-badge">ADVANCED</span>
+      <h3><span class="num">16</span>Post-Game Journaling</h3>
+      <div class="body">
+        <div class="fix"><b>Added per review:</b> the cheapest leverage in this plan, and the original missed it. Self-grading via memory after 8 games is unreliable. A 2-minute log per game is the fix.</div>
+
+        <h4>Template</h4>
+        <div class="card info">
+          <div class="hdr"><span class="badge info">Per-game log</span></div>
+          <ul>
+            <li><b>Date / phase / # games this session</b></li>
+            <li><b>Factions in play + Reach total</b></li>
+            <li><b>Who won. Final scores.</b></li>
+            <li><b>Why they won (one sentence)</b></li>
+            <li><b>One turn I'd play differently</b> — and why</li>
+            <li><b>One thing I noticed about an opponent</b> (a tell, a pattern)</li>
+            <li><b>Did I pass the per-faction drill goal? (§11)</b></li>
+          </ul>
+        </div>
+
+        <h4>Use Root Digital's game logs</h4>
+        <ul>
+          <li>Root Digital records every action of every game — review the log of the LAST game played</li>
+          <li>Find one inflection point (a turn where the leader changed, or you lost a key clearing)</li>
+          <li>Ask: "what would I do differently from that point?"</li>
+        </ul>
+
+        <h4>Weekly review (every 6–8 games)</h4>
+        <ul>
+          <li>Re-read your last 6–8 logs in one sitting</li>
+          <li>Look for repeating patterns: "I always over-march in Phase 1," "I forget Outrage triggers vs Alliance"</li>
+          <li>One weakness identified per week → drill it next session</li>
+        </ul>
+
+        <div class="why"><b>Why this is leverage:</b> the diagnostic checkpoints rely on accurate self-assessment. Without notes, you'll forget what happened in game 4 by game 8. With notes, your assessments stay honest.</div>
+      </div>
+    </section>
+
+    <section class="tile t3" id="s17" data-keys="challenges mode tactical drills puzzle">
+      <span class="tile-badge">ADVANCED</span>
+      <h3><span class="num">17</span>Challenges Mode</h3>
+      <div class="body">
+        <p>Root Digital's <b>Challenges Mode</b> is a puzzle library — specific board states with specific win goals.</p>
+
+        <h4>When to use</h4>
+        <ul>
+          <li>After 12–15 total games (not before — you need basic fluency first)</li>
+          <li>Max 1–2 per session</li>
+          <li>Supplement only — never replace real games</li>
+        </ul>
+
+        <h4>Purpose</h4>
+        <ul>
+          <li><b>Tactical calculation drills</b> — "given this exact board, find the winning sequence"</li>
+          <li>Pure mechanical practice — they don't teach strategic timing or threat assessment</li>
+        </ul>
+
+        <div class="why"><b>What Challenges DON'T teach:</b> threat assessment, table dynamics, coalition reading, opponent psychology. Don't substitute these for live games.</div>
+      </div>
+    </section>
+
+    <section class="tile t3 span2" id="s18" data-keys="table politics negotiation diplomacy 4 player coalition social">
+      <span class="tile-badge">ADVANCED</span>
+      <h3><span class="num">18</span>Table Politics (Late Skill)</h3>
+      <div class="body">
+        <div class="fix"><b>Added per review:</b> the original plan treats Root as a solvable optimization problem. Vs AI that's fine. Vs humans, especially in 4P, Root is partly a <b>negotiation game</b> — and that's a separate skill.</div>
+
+        <h4>What table politics actually means</h4>
+        <ul>
+          <li><b>Coalition theory:</b> 2 humans agreeing informally to focus on a 3rd. Often unspoken.</li>
+          <li><b>Threat distribution:</b> directing aggression away from yourself by re-framing threats</li>
+          <li><b>Truce negotiation:</b> "I won't attack your border if you don't attack mine"</li>
+          <li><b>Bluffing:</b> appearing weaker (to dodge attention) or stronger (to deter attacks)</li>
+          <li><b>Vagabond diplomacy:</b> Aid trades, hostile relationships, the entire Vagabond faction is essentially diplomacy in mechanical form</li>
+        </ul>
+
+        <h4>When to start drilling this</h4>
+        <ul>
+          <li>Phase 4 (humans) is when this becomes essential</li>
+          <li>Pre-Phase 4: just be aware it exists; don't try to "solve" it analytically</li>
+        </ul>
+
+        <h4>The hardest political skill: managing yourself</h4>
+        <ul>
+          <li>Detect tilt — emotional retaliation in YOU, not just in opponents</li>
+          <li>Don't make threats you won't follow through on (you lose credibility)</li>
+          <li>Honesty in non-binding talk is a long-term asset</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="tile t3 span2" id="s19" data-keys="mastery definition end state honest behavioral">
+      <span class="tile-badge">ADVANCED</span>
+      <h3><span class="num">19</span>Mastery Definition (Honest)</h3>
+      <div class="body">
+        <div class="fix"><b>Reframed per review:</b> the original plan's "mastery" criteria after 18–20 games are actually "competent baseline" criteria. Real Root mastery takes 100+ games. Set expectations honestly.</div>
+
+        <h4>Competent (after the 18–20 game plan)</h4>
+        <p>You're playing competently when:</p>
+        <ul>
+          <li>You track <b>relative power</b>, not just your own board</li>
+          <li>You intervene based on <b>timing precision</b>, not emotion</li>
+          <li>You can predict scoring turns <i>before</i> they happen (1 turn ahead)</li>
+          <li>You understand <i>why</i> every game outcome occurred (you can articulate it)</li>
+          <li>You've won at least once as Cat or Eyrie (not just Vagabond)</li>
+        </ul>
+
+        <h4>Mastery (50–100+ games)</h4>
+        <ul>
+          <li>2-turn predictions consistent across factions</li>
+          <li>Coalition reads in &lt; 2 turns of human play</li>
+          <li>You can play <b>any</b> faction at competent level (not just your favorites)</li>
+          <li>You can identify low-Reach failure-state setups before turn 1</li>
+          <li>You understand the meta of your local group / online tier</li>
+        </ul>
+
+        <h4>True mastery (~200+ games)</h4>
+        <ul>
+          <li>You can win 1v3 (you + handicap vs 3 strong players) some fraction of the time</li>
+          <li>You teach others without confusing them</li>
+          <li>You see asymmetric mismatches and adapt instantly</li>
+        </ul>
+
+        <div class="why"><b>The honest read:</b> finishing this plan makes you <b>competent</b>. Mastery is a separate, longer journey. Don't confuse "I finished the plan" with "I'm good at Root."</div>
+      </div>
+    </section>
+
+    <section class="tile t3 span3" id="s20" data-keys="glossary terms definitions reach decree sympathy turmoil sanctify hireling local play challenges">
+      <span class="tile-badge">ADVANCED</span>
+      <h3><span class="num">20</span>Glossary</h3>
+      <div class="body">
+        <p class="dim">Terms used throughout this aid. Reference when stuck.</p>
+
+        <h4>Plan-specific terms</h4>
+        <div class="glossary">
+          <div class="term">
+            <div class="word">Reach</div>
+            <div class="defn">Official Leder Games rating of how aggressively a faction interacts. Sum of all factions' Reach must meet a player-count floor or the game becomes passive (low-interaction failure state).</div>
+          </div>
+          <div class="term">
+            <div class="word">Phase (0–4)</div>
+            <div class="defn">Sequenced learning blocks. Each phase has a goal, setup constraints, learning targets, and a diagnostic checkpoint.</div>
+          </div>
+          <div class="term">
+            <div class="word">Diagnostic Checkpoint</div>
+            <div class="defn">Pass/fail gate at the end of each phase. Failure triggers the regression rule (revert one phase).</div>
+          </div>
+          <div class="term">
+            <div class="word">Regression Trigger</div>
+            <div class="defn">Conditions (unclear losses, overwhelm) that force you back one phase. Prevents pretending to be ready when you're not.</div>
+          </div>
+          <div class="term">
+            <div class="word">Vagabond Trap</div>
+            <div class="defn">Anti-pattern: winning as Vagabond without learning Root. Vagabond's relationship-management scoring sidesteps the core systems. Mastery requires Cat or Eyrie wins too.</div>
+          </div>
+          <div class="term">
+            <div class="word">Low-Interaction Failure State</div>
+            <div class="defn">Anti-pattern: a passive, low-conflict game. Almost always caused by Reach &lt; floor. Diagnose, fix, restart.</div>
+          </div>
+        </div>
+
+        <h4>Root Digital terms</h4>
+        <div class="glossary">
+          <div class="term">
+            <div class="word">Local Play</div>
+            <div class="defn">Root Digital's hot-seat mode where you control all factions yourself. Used in this plan only for System Debug Tasks (≤10 min) — too slow to use as your main mode.</div>
+          </div>
+          <div class="term">
+            <div class="word">Challenges Mode</div>
+            <div class="defn">Puzzle library — specific board states with win goals. Tactical calculation drill, not strategic learning.</div>
+          </div>
+          <div class="term">
+            <div class="word">AI Difficulty (Easy/Medium/Hard)</div>
+            <div class="defn">Three AI tiers. Easy = textbook, Medium = competitive, Hard = near-optimal opening lines. See §13 for phase mapping.</div>
+          </div>
+          <div class="term">
+            <div class="word">Online Matchmaking</div>
+            <div class="defn">Phase 4 — playing humans via Root Digital matchmaking queue. Adds psychology, coalition, bluff dimensions.</div>
+          </div>
+          <div class="term">
+            <div class="word">Hireling</div>
+            <div class="defn">Marauder-expansion mini-faction. Adds board interaction without consuming a player slot. Use to boost Reach in low-faction setups.</div>
+          </div>
+        </div>
+
+        <h4>Root mechanical terms</h4>
+        <div class="glossary">
+          <div class="term">
+            <div class="word">Birdsong / Daylight / Evening</div>
+            <div class="defn">The three turn phases for every faction. Different factions do different things in each — see faction-specific aids.</div>
+          </div>
+          <div class="term">
+            <div class="word">Decree (Eyrie)</div>
+            <div class="defn">Eyrie's stack of mandatory promised actions. Failing to fulfill = Turmoil.</div>
+          </div>
+          <div class="term">
+            <div class="word">Turmoil</div>
+            <div class="defn">Eyrie's failure state. Discard Decree, lose VP per bird card in the discarded Decree, demote leader.</div>
+          </div>
+          <div class="term">
+            <div class="word">Sympathy / Outrage</div>
+            <div class="defn">Alliance mechanics. Sympathy = scoring tokens. Outrage = Alliance gets a free card when sympathy is removed/battled.</div>
+          </div>
+          <div class="term">
+            <div class="word">Outcast Suit / Sanctify</div>
+            <div class="defn">Lizard mechanics. Outcast = the suit Lizards get bonuses on each round. Sanctify = replace an enemy building with a Lizard garden.</div>
+          </div>
+          <div class="term">
+            <div class="word">Sway (Duchy)</div>
+            <div class="defn">Underground Duchy mechanic. Spend cards to add a card to a minister's slot; ministers grant ongoing abilities and contribute to the Crown Track.</div>
+          </div>
+          <div class="term">
+            <div class="word">Plot (Corvid)</div>
+            <div class="defn">Corvid Conspiracy mechanic. Face-down tokens with secret effects. Bluffing/scouting around plots is core Corvid gameplay.</div>
+          </div>
+          <div class="term">
+            <div class="word">Dominance Card</div>
+            <div class="defn">Special card that swaps the win condition: hold 3 corners / all 3 of one suit / 5 specific bird clearings instead of reaching 30 VP. Cats win 2/3 of their games via these.</div>
+          </div>
+          <div class="term">
+            <div class="word">Coalition</div>
+            <div class="defn">Late-game move: play a Dominance card to team up with the lowest-score player. They win if either of you hits the win condition. Used to neutralize threats like the Vagabond.</div>
+          </div>
+          <div class="term">
+            <div class="word">Field Hospitals (Cat)</div>
+            <div class="defn">Cat ability. When a warrior dies, discard a card matching the clearing's suit to revive at the Keep clearing. Lose the Keep clearing → no revives → faction collapses.</div>
+          </div>
+          <div class="term">
+            <div class="word">Guerrilla War (Alliance)</div>
+            <div class="defn">Alliance ability. When defending, you take the HIGHER of the two dice rolled (instead of the lower). Makes attacking the Alliance very expensive.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+(function(){
+  const tiles = () => document.querySelectorAll('.tile');
+  const railLinks = document.querySelectorAll('.rail a');
+  const search = document.getElementById('search');
+  const denseBtn = document.getElementById('dense');
+  const resetBtn = document.getElementById('reset');
+  const modeBtns = document.querySelectorAll('.mode-btn');
+
+  function setMode(mode) {
+    document.body.classList.remove('mode-beginner','mode-all','mode-advanced');
+    document.body.classList.add('mode-' + mode);
+    modeBtns.forEach(b => b.classList.toggle('active', b.dataset.mode === mode));
+    try { localStorage.setItem('digital-plan-mode', mode); } catch(e){}
+  }
+  modeBtns.forEach(b => b.addEventListener('click', () => setMode(b.dataset.mode)));
+  try { const s = localStorage.getItem('digital-plan-mode'); if (s) setMode(s); } catch(e){}
+
+  denseBtn.addEventListener('click', () => {
+    document.body.classList.toggle('dense');
+    denseBtn.classList.toggle('active');
+  });
+
+  resetBtn.addEventListener('click', () => {
+    search.value = '';
+    applyFilter('');
+    document.body.classList.remove('dense');
+    denseBtn.classList.remove('active');
+    setMode('beginner');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  function applyFilter(q) {
+    q = q.trim().toLowerCase();
+    tiles().forEach(t => {
+      if (!q) { t.classList.remove('dimmed'); return; }
+      const hay = (t.getAttribute('data-keys') || '') + ' ' + t.textContent.toLowerCase();
+      t.classList.toggle('dimmed', !hay.includes(q));
+    });
+  }
+  search.addEventListener('input', e => applyFilter(e.target.value));
+
+  document.addEventListener('keydown', e => {
+    const tag = (e.target.tagName || '').toLowerCase();
+    const typing = tag === 'input' || tag === 'textarea';
+    if (e.key === '/' && !typing) { e.preventDefault(); search.focus(); return; }
+    if (e.key === 'Escape') { search.value=''; applyFilter(''); search.blur(); return; }
+    if (typing) return;
+    if (e.key.toLowerCase() === 'd') { denseBtn.click(); return; }
+    if (e.key.toLowerCase() === 'r') { resetBtn.click(); return; }
+    if (e.key.toLowerCase() === 'b') { setMode('beginner'); return; }
+    if (e.key.toLowerCase() === 'a') { setMode('all'); return; }
+    if (e.key.toLowerCase() === 'v') { setMode('advanced'); return; }
+  });
+
+  const idToLink = {};
+  railLinks.forEach(a => {
+    const id = a.getAttribute('href').slice(1);
+    idToLink[id] = a;
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        railLinks.forEach(a => a.classList.remove('active'));
+        const link = idToLink[entry.target.id];
+        if (link) link.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-80px 0px -60% 0px', threshold: 0 });
+  tiles().forEach(t => observer.observe(t));
+})();
+</script>
+</body>
+</html>
